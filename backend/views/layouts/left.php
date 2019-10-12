@@ -43,6 +43,8 @@
                     ['label' => '学期','icon'=>'calendar text-blue','url' => ['/school/teachyear']],
                     ['label' => '班级','icon'=>'group text-primary','url' => ['/school/teachclass']],
                     ['label' => '任教','icon'=>'tripadvisor text-primary','url' => ['/school/teachmanage']],
+                    ['label' => '作息表','icon'=>'tripadvisor text-primary','url' => ['/school/teachmanage']],
+                    ['label' => '课表','icon'=>'tripadvisor text-primary','url' => ['/school/teachmanage']],
                     ]],
                     //信息技术练习
                     ['label' => '在线教学','icon'=>'bicycle','items'=>[
