@@ -29,6 +29,22 @@ class CommonFunction{
 		];
 		return $subjects;
 	}
+
+	static function getWeekday()
+	{
+		return ['7'=>'星期天','1'=>'星期一','2'=>'星期二','3'=>'星期三','4'=>'星期四','5'=>'星期五','6'=>'星期六'];
+	}
+	static function getAllSubjects()
+	{
+		    $subjects = [
+		    'yw'=>'语文','ds'=>'数学','yy'=>'英语',
+		    'wl'=>'物理','hx'=>'化学','sw'=>'生物',
+		    'zz'=>'政治','ls'=>'历史','dl'=>'地理',
+		    'ty'=>'体育','ms'=>'美术','yu'=>'音乐',
+		    'xx'=>'信息技术','ty'=>'通用技术'
+		];
+		return $subjects;
+	}
 	static function getLksubjects()
 	{
 		$subjects = [

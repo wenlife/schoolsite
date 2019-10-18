@@ -39,12 +39,12 @@
                     ['label' => '成绩分析','icon' => 'bar-chart text-red', 'url' => ['/testService/exam']],
                     //选课建议系统
                     //
-                    ['label' => '教学秩序','icon'=>'calculator','items'=>[
-                    ['label' => '学期','icon'=>'calendar text-blue','url' => ['/school/teachyear']],
+                    ['label' => '教学安排','icon'=>'calculator text-green','items'=>[
+                    ['label' => '学期','icon'=>'calendar text-primary','url' => ['/school/teachyear']],
                     ['label' => '班级','icon'=>'group text-primary','url' => ['/school/teachclass']],
-                    ['label' => '任教','icon'=>'tripadvisor text-primary','url' => ['/school/teachmanage']],
-                    ['label' => '作息表','icon'=>'tripadvisor text-primary','url' => ['/school/teachmanage']],
-                    ['label' => '课表','icon'=>'tripadvisor text-primary','url' => ['/school/teachmanage']],
+                    ['label' => '任教','icon'=>'user-plus text-primary','url' => ['/school/teachmanage']],
+                    ['label' => '作息','icon'=>'clock-o text-primary','url' => ['/school/daytime']],
+                    ['label' => '课表','icon'=>'calendar text-success','url' => ['/school/teachcourse']],
                     ]],
                     //信息技术练习
                     ['label' => '在线教学','icon'=>'bicycle','items'=>[
@@ -60,16 +60,6 @@
                         ['label' => '图片','icon'=>'tint', 'url' => ['/content/picturelist']],             
                         ['label' => '栏目', 'icon'=>'tasks','url' => ['/content/infoitem']],
                     ]],
-
-                    //用户关系
-                    ['label' => '学校关系', 'options' => ['class' => 'header']],
-
-
-                    ['label' => '学校人事','icon'=>'gears','items'=>[
-                        ['label'=>'学生','icon'=>'user','url'=> ['/guest/user']],
-                        ['label'=>'教师','icon'=>'user text-blue','url' => ['/guest/teacher']],
-                    ]],
-
                     ['label' => '系统管理', 'options' => ['class' => 'header']],
                     ['label' => '前台界面','icon'=>'ambulance','items'=>[
                         ['label'=>'置顶图片','icon'=>'fire','url'=>['/interface/logo']],
@@ -78,6 +68,8 @@
                     ]],
                     ['label' => '系统用户','icon'=>'rocket','items'=>[
                         ['label'=>'管理员','icon'=>'user','url'=>['/guest/adminuser']],
+                        ['label'=>'学生','icon'=>'user','url'=> ['/guest/user']],
+                        ['label'=>'教师','icon'=>'user text-blue','url' => ['/guest/teacher']],
                        
                     ]],
                     //开发工具
