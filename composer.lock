@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4b6e140430977f3f643fb40ebee19dac",
+    "content-hash": "a180228a3c9ea284f00d036b5f47da18",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -522,6 +522,45 @@
                 "icon"
             ],
             "time": "2016-10-24T15:52:54+00:00"
+        },
+        {
+            "name": "hyii2/yii2-avatar",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/org-yii-china/yii2-avatar.git",
+                "reference": "8adb4ccd7aba4fa88f51eb3f71484d29f652f4da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/org-yii-china/yii2-avatar/zipball/8adb4ccd7aba4fa88f51eb3f71484d29f652f4da",
+                "reference": "8adb4ccd7aba4fa88f51eb3f71484d29f652f4da",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "hyii2\\avatar\\": ""
+                }
+            },
+            "license": [
+                "BSD-4-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Xianan Huang",
+                    "email": "xianan_huang@163.com"
+                }
+            ],
+            "description": "基于cropper的一款头像上传yii2组件",
+            "keywords": [
+                "extension",
+                "yii2"
+            ],
+            "time": "2016-08-01T09:28:29+00:00"
         },
         {
             "name": "kartik-v/yii2-krajee-base",
@@ -4067,7 +4106,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "hyii2/yii2-avatar": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

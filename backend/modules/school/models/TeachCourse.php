@@ -46,12 +46,17 @@ class TeachCourse extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'class_id' => 'Class ID',
-            'weekday' => 'Weekday',
-            'day_time_id' => 'Day Time ID',
-            'subject_id' => 'Subject ID',
-            'subject2_id' => 'Subject2 ID',
-            'note' => 'Note',
+            'class_id' => '班级',
+            'weekday' => '星期',
+            'day_time_id' => '节次',
+            'subject_id' => '科目',
+            'subject2_id' => '科目2',
+            'note' => '备注',
         ];
+    }
+
+    public function getBanji()
+    {
+        return $this->hasOne(TeachClass::className(),['id'=>'class_id']);
     }
 }

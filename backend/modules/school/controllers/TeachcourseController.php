@@ -4,6 +4,8 @@ namespace backend\modules\school\controllers;
 
 use Yii;
 use backend\modules\school\models\TeachCourse;
+use backend\modules\school\models\TeachManage;
+use backend\modules\guest\models\UserTeacher;
 use backend\modules\school\models\TeachcourseSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -34,15 +36,42 @@ class TeachcourseController extends Controller
      * Lists all TeachCourse models.
      * @return mixed
      */
-    public function actionIndex($yearpost=null,$department=null,$banji=null)
+    public function actionIndex($yearpost=null,$department=null,$banji=null,$teacher=null,$subject=null)
     {
+        $courseArr = array();
+        $name = "未设置";
+        if($teacher!=null&&$subject!=null&&$yearpost!=null)
+        {
+            $teacher_id =  $teacher;
+            $teacher = TeachManage::find()->where(['teacher_id'=>$teacher_id])->one();
+
+            $name = UserTeacher::find()->where(['id'=>$teacher_id])->one()->name;
+            
+            $allTeachClass = TeachManage::find()->select(['class_id','id'])->where(['teacher_id'=>$teacher_id])->indexby('class_id')->column();
+            $allCourse = TeachCourse::find()->select(['id','class_id','weekday','day_time_id'])->where(['year_id'=>$yearpost,'subject_id'=>$subject])->andWhere(['in','class_id',$allTeachClass])->all();
+            
+            foreach ($allCourse as $key => $course) {
+
+                if(isset($courseArr[$course->weekday][$course->day_time_id]))
+                {
+                    $courseArr[$course->weekday][$course->day_time_id] = $courseArr[$course->weekday][$course->day_time_id].'/'.$course->banji->title;
+                }else{
+                    $courseArr[$course->weekday][$course->day_time_id] = $course->banji->title;
+                }
+                
+            }
+        }
         //$post = Yii::$app->request->post();
         //var_export($post);
         return $this->render('index', [
             'var' =>['yearpost'=>$yearpost,'department'=>$department,'banji'=>$banji],
+            'courseArr'=>$courseArr,
+            'teacherName'=>$name,
+            'subject'=>$subject
         ]);
     }
 
+    //负责返回顶部自动生成的选择框
     public function actionGetclass($department)
     {
         //$class = (new \yii\db\Query())->select(['title','id'])->from('teach_class')->indexby('id')->column();
@@ -52,20 +81,16 @@ class TeachcourseController extends Controller
 
     public function actionSetcourse()
     {
-        $post = Yii::$app->request->post();
-        $year = ArrayHelper::getValue($post,'year');
-        $banji = ArrayHelper::getValue($post,'banji');
+        $post    = Yii::$app->request->post();
+        $year    = ArrayHelper::getValue($post,'year');
+        $banji   = ArrayHelper::getValue($post,'banji');
         $weekday = ArrayHelper::getValue($post,'weekday');
         $daytime = ArrayHelper::getValue($post,'daytime');
         $subject = ArrayHelper::getValue($post,'subject');
-       if($year&&$banji&&$weekday&&$daytime)
-       {
-            $model = TeachCourse::find()->where([
-                    'year_id'=>$year,
-                    'class_id' => $banji,
-                    'weekday' => $weekday,
-                    'day_time_id' => $daytime,
-                    ])->one();
+        if($year&&$banji&&$weekday&&$daytime)
+        {
+            $model = TeachCourse::find()->where(['year_id'=>$year,'class_id' => $banji,'weekday' => $weekday,
+                                                 'day_time_id' => $daytime,])->one();
             if(!$model){
               $model = new TeachCourse();
               $model->year_id = $year;
@@ -73,19 +98,34 @@ class TeachcourseController extends Controller
               $model->weekday = $weekday;
               $model->day_time_id = $daytime;
             }
-
             $model->subject_id = $subject;
             if($model->save())
             {
-                return 'success';
-            }else{
-                return var_export($model);
-            }
+                //返回当前任课教师的课程表
+                //
+                $teacherMSG =  TeachManage::find()->where(['class_id'=>$banji,'subject'=>$subject])->one();
+                // $allTeachClass = TeachManage::find()->select(['class_id','id'])->where(['teacher_id'=>$teacher_id])->indexby('class_id')->column();
+                // $allCourse = TeachCourse::find()->select(['id','class_id','weekday','day_time_id'])->where(['year_id'=>$year,'subject_id'=>$subject])->andWhere(['in','class_id',$allTeachClass])->all();
+                // $courseArr = array();
+                // foreach ($allCourse as $key => $course) {
+                //     $courseArr[$course->weekday][$course->day_time_id] = $course->banji->title;
+                // }
+                if($teacherMSG){
+                    $teacher_id = $teacherMSG->teacher_id;
+                }else{
+                    $teacher_id = "";
+                }
 
-            
-       }else{
-           return 'empty value!';
-       }
+                return  json_encode(['teacher_id'=>$teacher_id,'yearpost'=>$year,'subject'=>$subject]);           //$teacher_id;
+                //return 'success';
+            }else{
+                //return 'SaveError';
+                return var_export($model);
+            } 
+        }else{
+            return 'SaveError';
+           //return 'EmptyValue!';
+        }
     }
 
     /**
