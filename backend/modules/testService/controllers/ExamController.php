@@ -21,7 +21,7 @@ class ExamController extends Controller
    {
      if (Yii::$app->user->isGuest) 
       {
-        $this->layout = '/simple';
+        $this->layout = '/tcenter';
 
       }
    }

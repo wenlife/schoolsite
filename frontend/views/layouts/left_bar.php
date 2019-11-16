@@ -50,9 +50,9 @@ if ($task) {
 <!-- Profile Image -->
 <div class="box box-primary">
   <div class="box-body box-profile">
-    
-  <?= \hyii2\avatar\AvatarWidget::widget(['imageUrl'=>'uploads/avatar/'.$username.'/avatar_big.png']); ?>
-
+    <p>
+    <?= \hyii2\avatar\AvatarWidget::widget(['imageUrl'=>'uploads/avatar/'.$username.'/avatar_big.png']); ?>
+    </p>
     <h3 class="profile-username text-center"><a href=<?=url::to(['detail'])?>><?=$user->name?></a></h3>
 
     <p class="text-muted text-center"><?=$user->teachclass->title?></p>

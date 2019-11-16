@@ -24,8 +24,8 @@ dmstr\web\AdminLteAsset::register($this);
 <div class="content-wrapper">
 <?php
 NavBar::begin([
-    'brandLabel' => '七中成绩分析',
-    'brandUrl' =>['/testService/exam/forteacher'], //Yii::$app->homeUrl,
+    'brandLabel' => '攀枝花七中校内网',
+    'brandUrl' =>'http://www.pzhqz.com', //Yii::$app->homeUrl,
     'options' => [
         'class' => 'navbar navbar-static-top navbar-custom',
     ],
@@ -33,7 +33,8 @@ NavBar::begin([
 
 echo Nav::widget([
     'items'=>[
-        ['label' => '考试分析', 'url' => ['/testService/exam/forteacher']],
+            ['label'=>'个人中心','url'=>['tcenter/index']],
+            ['label'=>'学校校历','url'=>['tcenter/cal']],
     ],
     'options'=>['class'=>'navbar-nav'],
 ]);
@@ -43,7 +44,7 @@ $menuItems = [
 
 if (Yii::$app->user->isGuest) {
     $menuItems[] = ['label' => '登录', 'url' => ['/site/login']];
-   // $menuItems[] = ['label' => 'signup', 'url' => ['/site/signup']];
+    $menuItems[] = ['label' => 'signup', 'url' => ['/site/signup']];
 } else {
     $menuItems[] = '<li>'
         . Html::beginForm(['/site/logout'], 'post')
@@ -79,6 +80,7 @@ NavBar::end();
     </section>
      <section class="content">
         <?= Alert::widget() ?>
+        <p></p>
         <?= $content ?>
     </section>
 </div>

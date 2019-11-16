@@ -1,5 +1,4 @@
 <?php
-
 namespace backend\modules\guest\controllers;
 
 use Yii;
@@ -8,6 +7,10 @@ use backend\modules\guest\models\UserTeacherSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\modules\guest\forms\teacherUpload;
+use ciniran\excel\ReadExcel;
+use yii\web\UploadedFile;
+use backend\libary\CommonFunction;
 
 /**
  * TeacherController implements the CRUD actions for UserTeacher model.
@@ -69,6 +72,57 @@ class TeacherController extends Controller
             return $this->render('create', [
                 'model' => $model,
             ]);
+        }
+    }
+
+
+    public function actionImport()
+    {
+       
+       $form = new teacherUpload();
+       
+      if($post=Yii::$app->request->post())
+        {
+            $errMSG = array();
+            $form->load($post);
+            $form->imageFile = UploadedFile::getInstance($form, 'imageFile');
+            if ($url = $form->upload()) {
+                $excel = new ReadExcel([
+                    'path' => $url,
+                    'head' => true,
+                    'headLine' => 1,
+                ]);
+                $data = $excel->getArray();
+                $subjects = CommonFunction::getAllSubjects();
+                $subjects = array_flip($subjects);
+                //var_export($subjects);
+                //exit();
+                foreach ($data as $key1 => $tm) {
+                    $model = new UserTeacher();
+                    $model->name = $tm['xm'];
+                    $model->pinx = $tm['pinx'];
+
+                    $model->subject = $subjects[$tm['km']];
+                    $model->type = 'js';
+                    $model->gender = $tm['xb'];
+                    $model->school = "市七中";
+                    if(!$model->save())
+                    {
+                        $errMSG[] = $key1.'行导入失败！';
+                    }
+
+                }
+                if(!is_null($errMSG))
+                {
+                    $this->redirect['/index'];
+                }else{
+                    var_export($errMSG);
+                }
+
+
+            }
+        }else{
+            return $this->render('import',['model'=>$form]);
         }
     }
 

@@ -24,12 +24,13 @@ $department = ArrayHelper::getValue($var,'department')?ArrayHelper::getValue($va
 $allClass = (new \yii\db\Query())->select(['title','id'])->from('teach_class')
                ->where(['department_id'=>$department])->indexby('id')->column();
 $banji = ArrayHelper::getValue($var,'banji')?ArrayHelper::getValue($var,'banji'):key($allClass);
+//需要增加对教学部的判断，每个教学部的作息表不一致
 $allDaytime = (new \yii\db\Query())->from('teach_daytime')->orderby('sort')->all();
 $week = CommonFunction::getWeekday();
 ?>
 <div class="teach-manage-index">
   <p>
-  <?= Html::a('课程总览', ['allview'], ['class' => 'btn btn-success']) ?>
+  <?= Html::a('导入课程', ['import'], ['class' => 'btn btn-success']) ?>
   <?= Html::a('清空数据', ['allview'], ['class' => 'btn btn-danger']) ?>
   </p>
 </div>

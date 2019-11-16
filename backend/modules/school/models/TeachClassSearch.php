@@ -19,7 +19,7 @@ class TeachClassSearch extends TeachClass
     {
         return [
              [['id', 'department_id', 'serial'], 'integer'],
-            [['title', 'grade', 'type', 'school', 'note'], 'safe'],
+             [['title', 'grade', 'type', 'school', 'note'], 'safe'],
         ];
     }
 

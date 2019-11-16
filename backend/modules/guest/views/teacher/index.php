@@ -22,7 +22,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('创建新教师', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('创建教师', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('导入教师', ['import'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('清空数据', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -42,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 $type = CommonFunction::getTeacherType();
                 return $type[$model->type];
             }],
-            'graduate',
+            //'school',
             //'note',
 
             ['class' => 'yii\grid\ActionColumn'],

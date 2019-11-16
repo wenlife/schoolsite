@@ -80,7 +80,7 @@ class SiteController extends Controller
     public function actionIndex()
     { 
         if (Yii::$app->user->isGuest) {
-            return $this->redirect(['testService/exam/forteacher']);
+            return $this->redirect(['/tcenter']);
         }
 
         
@@ -242,12 +242,19 @@ class SiteController extends Controller
     {
         //$this->layout = false;
         if (!\Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->redirect(['site/login']);
         }
 
         $model = new BackendLoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            $user = AdminUser::findByUsername($model->username);
+            if($user->type == "admin")
+            {
+               return  $this->redirect(['/tcenter']);
+            }else{
+               return  $this->redirect(['/tcenter']);
+            }
+            //return $this->goBack();
         } else {
             return $this->render('login', [
                 'model' => $model,
@@ -290,6 +297,7 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
+        //return $this->goHome();
+        return $this->redirect(['/tcenter']);
     }
 }

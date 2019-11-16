@@ -3,23 +3,30 @@
 body{
 	padding-top: 0px;	
 }
-.navbar-custom{
-    background:#3c8dbc;
-    font-color:#fff;
-	height:20px;
-	margin:0;
-}
-.navbar-custom a{
+
+nav{
+	background-color:#3c8dbc;
 	color:#fff;
+	margin-bottom: 0px;
 }
-.navbar-custom button{
-	color:#fff;
+
+nav a{
+	color: #fff;
 }
+
+nav button.navbar-toggle span{
+	border:1px #fff solid;
+}
+
+nav ul li:hover{
+	background-color: #fff;
+}
+
 
 .my .jumbotron{
 	height:150px;
-	margin:10px 0 10px 0;
-	background:#fff url(/images/wali.png) repeat-x;	
+	margin:0px 0 10px 0;
+	background:#fff url(http://192.168.3.19:83/images/wali.png) repeat-x;	
 }
 
 .breadcrumb{

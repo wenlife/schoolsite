@@ -47,7 +47,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout'],
                 'rules' => [
                     [
                         'actions' => ['signup','index'],
@@ -113,58 +113,6 @@ class SiteController extends Controller
         return $this->render('index',['column'=>$column,'pictures'=>$pictures,'picture2'=>$picture2,'picture3'=>$picture3,'notice'=>$notice->content]);
     }
 
-    /**
-     * Logs in a user.
-     *
-     * @return mixed
-     */
-    // public function actionCenter()
-    // {
-
-    //     $userStu = User::findByUsername(Yii::$app->user->identity->username);
-    //     $class = userBanji::find($userStu->class)->one();
-    //     $teacherID = $class->xx;
-
-    //     $taskModel = new Task();
-    //     $task = $taskModel->find()->where(['creator'=>$teacherID])->orderBy('createdate desc')->one();
-    //     if ($task) {
-    //         $testScoreModel = new TestScore();
-    //         $testScore = $testScoreModel->find()->where(['userid'=>Yii::$app->user->identity->username,'testid'=>$task->test])->all();
-    //         if (empty($testScore)) {
-    //             $ifTestWasDone = false;
-    //         }else{
-    //             $ifTestWasDone = 1;
-    //             foreach ($testScore as $k => $test) {
-    //                 if ($test->score > $ifTestWasDone) {
-    //                     $ifTestWasDone = $test->score;
-    //                 }
-    //             }
-    //         }
-    //     }else{
-    //         $ifTestWasDone=false;
-    //     }
-        
-
-    //     //$ifPaperWasDone = 
-
-    //     if(Yii::$app->user->isGuest){
-    //         return $this->redirect(['site/login']);
-    //     }else{
-    //         $username = Yii::$app->user->identity->username;           
-    //         $user = User::findByUsername($username);
-    //     }
-
-    //     $itemModel = new infoitem();
-    //     $section1 = $itemModel->find()->where(['parentid'=>19])->all();
-
-    //     return $this->render('center',['task'=>$task,'user'=>$user,'section1'=>$section1,'ifTestWasDone'=>$ifTestWasDone]);
-
-    // }
-
-    // public function actionTaskdetail()
-    // {
-    //     exit('testing');
-    // }
 
     public function actionAvatar()
     {
@@ -317,7 +265,7 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
-        exit('暂时不提供注册！');
+        //exit('暂时不提供注册！');
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {

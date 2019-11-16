@@ -7,15 +7,15 @@ use yii\grid\GridView;
 /* @var $searchModel backend\modules\school\models\TeachdepartmentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Teach Departments';
+$this->title = '教学级部';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="teach-department-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Teach Department', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('新建级部', ['create'], ['class' => 'btn btn-success']) ?>
+        <span>确保班级是当前年份的班级：(1)修改班级，修改任教数据；（2）确保班级年份和级部设置一致</span>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'title',
-            'name',
+            'year',
             'manager',
             'note',
 

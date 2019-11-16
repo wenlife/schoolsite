@@ -11,13 +11,6 @@ use backend\modules\testService\models\SclikeSearch;
 use backend\modules\testService\models\ScWenke;
 use backend\modules\testService\models\ScwenkeSearch;
 
-// use backend\modules\testService\libary\DataAnalysis;
-// use backend\modules\testService\libary\DataCollection;
-// use backend\modules\testService\libary\DataColl;
-// use backend\modules\testService\libary\DataColw;
-// use backend\modules\testService\libary\ClassRespond;
-// use backend\modules\school\models\TeachClass;
-use PHPExcel;
 use backend\libary\CommonFunction;
 use backend\modules\testService\models\Classmap;
 use yii\filters\VerbFilter;

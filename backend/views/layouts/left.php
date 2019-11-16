@@ -40,10 +40,12 @@
                     //选课建议系统
                     //
                     ['label' => '教学安排','icon'=>'calculator text-green','items'=>[
+                    ['label' => '学部','icon'=>'calendar text-primary','url' => ['/school/teachdepartment']],
                     ['label' => '学期','icon'=>'calendar text-primary','url' => ['/school/teachyear']],
                     ['label' => '班级','icon'=>'group text-primary','url' => ['/school/teachclass']],
                     ['label' => '任教','icon'=>'user-plus text-primary','url' => ['/school/teachmanage']],
                     ['label' => '作息','icon'=>'clock-o text-primary','url' => ['/school/daytime']],
+                    ['label' => '课程数量','icon'=>'calendar text-success','url' => ['/school/teachcourselimit']],
                     ['label' => '课表','icon'=>'calendar text-success','url' => ['/school/teachcourse']],
                     ]],
                     //信息技术练习
@@ -83,23 +85,6 @@
                         'items' => [
                             ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],],
                             ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug'],],
-                            [
-                                'label' => 'Level One',
-                                'icon' => 'circle-o',
-                                'url' => '#',
-                                'items' => [
-                                    ['label' => 'Level Two', 'icon' => 'circle-o', 'url' => '#',],
-                                    [
-                                        'label' => 'Level Two',
-                                        'icon' => 'circle-o',
-                                        'url' => '#',
-                                        'items' => [
-                                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
-                                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
-                                        ],
-                                    ],
-                                ],
-                            ],
                         ],
                     ],
                 ],

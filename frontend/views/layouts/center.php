@@ -27,7 +27,7 @@ NavBar::begin([
     'brandLabel' => '攀枝花七中校内网',
     'brandUrl' =>'http://www.pzhqz.com', //Yii::$app->homeUrl,
     'options' => [
-        'class' => 'navbar navbar-static-top navbar-custom',
+        'class' => 'navbar navbar-static-top',
     ],
 ]);
 
@@ -54,7 +54,7 @@ if (Yii::$app->user->isGuest) {
         . Html::beginForm(['/site/logout'], 'post')
         . Html::submitButton(
             'Logout (' . Yii::$app->user->identity->username . ')',
-            ['class' => 'btn btn-link']
+            ['class' => 'btn btn-link','style'=>"color:green"]
         )
         . Html::endForm()
         . '</li>';

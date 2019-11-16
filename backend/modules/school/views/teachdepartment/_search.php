@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'title') ?>
 
-    <?= $form->field($model, 'name') ?>
+    <?= $form->field($model, 'year') ?>
 
     <?= $form->field($model, 'manager') ?>
 

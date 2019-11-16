@@ -75,4 +75,15 @@ class FrontendLoginForm extends Model
 
         return $this->_user;
     }
+
+    public function attributeLabels()
+    {
+        return [
+               'username' => '用户名',
+               'name'  => '姓名',
+               'password' =>'密码',
+               'email' =>'邮件',
+
+           ];
+    }
 }

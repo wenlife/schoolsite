@@ -18,7 +18,7 @@ class TeachdepartmentSearch extends TeachDepartment
     {
         return [
             [['id'], 'integer'],
-            [['title', 'name', 'manager', 'note'], 'safe'],
+            [['title', 'year', 'manager', 'note'], 'safe'],
         ];
     }
 
@@ -62,7 +62,7 @@ class TeachdepartmentSearch extends TeachDepartment
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'year', $this->year])
             ->andFilterWhere(['like', 'manager', $this->manager])
             ->andFilterWhere(['like', 'note', $this->note]);
 

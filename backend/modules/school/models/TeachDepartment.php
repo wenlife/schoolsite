@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property string $title
- * @property string $name
+ * @property string $year
  * @property string $manager
  * @property string $note
  */
@@ -29,8 +29,8 @@ class TeachDepartment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'name'], 'required'],
-            [['title', 'name', 'note'], 'string', 'max' => 100],
+            [['title', 'year'], 'required'],
+            [['title', 'year', 'note'], 'string', 'max' => 100],
             [['manager'], 'string', 'max' => 50],
         ];
     }
@@ -43,7 +43,7 @@ class TeachDepartment extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => 'Title',
-            'name' => 'Name',
+            'year' => 'Year',
             'manager' => 'Manager',
             'note' => 'Note',
         ];
