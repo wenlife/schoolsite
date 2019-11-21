@@ -36,9 +36,18 @@ class TcenterController extends \yii\web\Controller
         if(!Yii::$app->user->isGuest)
         {
         	$teacher = UserTeacher::find()->where(['username'=>Yii::$app->user->identity->username])->one();
+            if(!$teacher)
+            {
+                exit('当前教师并没有在数据库中设置自己的用户名啊！');
+            }
         	$subject = $teacher->subject;
         	$teacher_id = $teacher->id;
         }
+
+        if($year==null)
+            $year = (new \yii\db\Query())->select(['id'])->from('teach_year_manage')->indexby('id')->scalar();
+        //echo $year;
+        //exit();
 
         if($teacher_id!=null&&$subject!=null&&$year!=null)
         {
