@@ -32,7 +32,7 @@ $department = (new \yii\db\Query())->select(['title','id'])->from('teach_departm
     </div>
     <div class="form-group">
       <?= $form->field($model, 'imageFile')->fileInput()->label('年级课程安排表') ?>
-      <p class="help-block"><a href="teach_import.xls" download="任教导入模板.xlsx">任教信息例表下载</a></p>
+      <p class="help-block"><a href="course.xls" download="课程导入模板.xlsx">课程安排样例表</a></p>
     </div>
   </div>
   <div class="box-footer">
