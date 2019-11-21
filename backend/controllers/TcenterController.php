@@ -38,7 +38,7 @@ class TcenterController extends \yii\web\Controller
         	$teacher = UserTeacher::find()->where(['username'=>Yii::$app->user->identity->username])->one();
             if(!$teacher)
             {
-                exit('当前教师并没有在数据库中设置自己的用户名啊！');
+                exit('当前教师'.Yii::$app->user->identity->username.'并没有在数据库中设置自己的用户名啊！');
             }
         	$subject = $teacher->subject;
         	$teacher_id = $teacher->id;
