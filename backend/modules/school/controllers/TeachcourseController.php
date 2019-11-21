@@ -43,7 +43,7 @@ class TeachcourseController extends Controller
     public function actionIndex($yearpost=null,$department=null,$banji=null,$teacher=null,$subject=null)
     {
         $courseArr = array();
-        $name = "未设置";
+        $name = null;
         if($teacher!=null&&$subject!=null&&$yearpost!=null)
         {
             $teacher_id =  $teacher;
@@ -191,7 +191,9 @@ class TeachcourseController extends Controller
             $weekday = CommonFunction::getWeekday();
             $i = 0;
             
-            $query1 = TeachCourse::find()->where(['year_id'=>$form->year])->all();
+            //$query1 = TeachCourse::find()->where(['year_id'=>$form->year])->all();
+            //var_export($query1);
+            //exit();
 
             foreach ($weekday as $weekday_id => $weekday_title) {
                 foreach ($daytime_list as $daytime_id => $daytime_serial) {
@@ -200,69 +202,56 @@ class TeachcourseController extends Controller
                     $val = ''.($weekday_id+$daytime_serial/100).''; //组装出标题
                     //echo "(".$val.")";
                     $daytime_id_all_class_course = ArrayHelper::getColumn($data,$val);
+                    $query1 = TeachCourse::find()->where(['year_id'=>$form->year,'weekday'=>$weekday_id,'day_time_id'=>$daytime_id])->all();
                     //var_export($daytime_id_all_class_course);
                     foreach ($class_list as $class_id => $class_serial) {
                         //录入数据，查找是否有该课程数据
+                        $model = clone $model1;
+                        //搜索耗时过高！！！！！！！！！！！！！！！！
 
-                        // foreach ($query1 as $q1 => $v1) {
-                        //     if($v1->class_id == $class_id&&$v1->weekday == $weekday_id&&$v1->day_time_id==$daytime_id){
-                        //         $model = $v1;
-                        //     }else{
-                        //         $model = clone $model1;
-                        //     }
-                        //     $i++;
+                        foreach ($query1 as $q1 => $v1) {
+                            if(($v1->class_id == $class_id)&&($v1->weekday == $weekday_id)&&($v1->day_time_id==$daytime_id)){
+                                $model = $v1; 
+                                break;    
+                            }
+                             $i++;
+                        } 
 
-                        // } 
-                        //echo $weekday_title."第".$daytime_serial."节".$class_serial."班";
-                        // $model->year_id = $form->year;
-                        // $model->class_id = $class_id;
-                        // $model->weekday = $weekday_id."";
-                        // $model->day_time_id = $daytime_id;
-                         $subArr = array_flip(CommonFunction::getAllSubjects());
-                         $sub1 = ArrayHelper::getValue($daytime_id_all_class_course,$class_serial);
-                        //  if($sub1)
-                        //  {
-                        //     $sub = ArrayHelper::getValue(array_flip(CommonFunction::getAllSubjects()),$sub1); 
-                        //     if($sub)
-                        //     {
-                        //        $model->subject_id = $sub; 
-                        //     }else{
-                        //       $errMSG[] = $weekday_title.$class_serial."班，第".$daytime_serial."节的课程名字无法被转换为系统名字！";
-                        //        continue;
-                        //     }
-                        // }else{
+                        $subArr = array_flip(CommonFunction::getAllSubjects());
+                        $sub1 = ArrayHelper::getValue($daytime_id_all_class_course,$class_serial);
+                        // if(!$sub1)
+                        // {
                         //     $errMSG[] = $weekday_title.$class_serial."班，第".$daytime_serial."节导入数据无法从数据表中找到！";
                         // }
-                         
-                       // $model->subject_id = $sub = ArrayHelper::getValue($subArr,$sub1);
 
-                        // if(!$model->save())
-                        // {
-                          
-                        //     $errMSG[] = $weekday_title.$class_serial."班，第".$daytime_serial."节导入数据出现错误：".serialize($model->getErrors());
-                        // }
-                        //echo "<p>";
-                        // echo $form->year."+";
-                        // echo $class_serial."+";
-                        // echo $weekday_title."+";
-                        // echo $daytime_id."+";
-                        // echo $daytime_id_all_class_course[$class_serial];
-                        //var_export($model);
-                        //echo "</p>";
-                        unset($model);
-
+                        $sub = ArrayHelper::getValue($subArr,$sub1);
+                        if(!$sub)
+                        {
+                            $errMSG[] = $weekday_title.$class_serial."班，第".$daytime_serial."节的课程".$sub1."名字无法被转换为系统名字！";
+                        }
+                        if($model->subject_id == $sub)
+                            continue;
+                        $model->year_id = $form->year;
+                        $model->class_id = $class_id;
+                        $model->weekday = $weekday_id."";
+                        $model->day_time_id = $daytime_id;
+                        $model->subject_id = $sub;
+                        if(!$model->save())
+                        {   
+                            $errMSG[] = $weekday_title.$class_serial."班，第".$daytime_serial."节导入数据出现错误：".serialize($model->getErrors());
+                        }
                     }
                 }
             }
-            unset($query1);
-            echo "运行查询了".$i."次";
-            // if(count($errMSG)>0)
-            // {
+            //unset($query1);
+            //echo "运行查询了".$i."次";
+            if(count($errMSG)>0)
+            {
                 return $this->render('import',['model'=>$form,'errMSG'=>$errMSG]);
-            // }else{
-            //     return $this->redirect(['index']);
-            // }
-            // 
+            }else{
+                return $this->redirect(['index']);
+            }
+             
         }
         
         return $this->render('import',['model'=>$form,'errMSG'=>$errMSG]);

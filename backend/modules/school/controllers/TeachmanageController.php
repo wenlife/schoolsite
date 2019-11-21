@@ -1,24 +1,20 @@
 <?php
-
 namespace backend\modules\school\controllers;
-
 use Yii;
-use backend\modules\school\models\TeachManage;
-use backend\modules\school\models\TeachmanageSearch;
-use backend\modules\guest\models\UserTeacher;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use backend\libary\CommonFunction;
 use backend\modules\school\forms\Teach;
 use backend\modules\school\models\TeachYearManage;
 use backend\modules\school\models\TeachClass;
-use backend\libary\CommonFunction;
-use yii\helpers\ArrayHelper;
+use backend\modules\school\models\TeachManage;
+use backend\modules\school\models\TeachmanageSearch;
+use backend\modules\guest\models\UserTeacher;
 use ciniran\excel\ReadExcel;
-use yii\web\UploadedFile;
 use backend\modules\school\forms\Tm_form;
-
-
 /**
  * TeachmanageController implements the CRUD actions for TeachManage model.
  */
@@ -43,12 +39,55 @@ class TeachmanageController extends Controller
      * Lists all TeachManage models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($yearpost=null,$department=null)
     {
         $post = Yii::$app->request->post();
+
+        $cuSubject = key(CommonFunction::getAllSubjects());
+
+        $teachers = (new \yii\db\Query())->select(['name','id'])->from('user_teacher')->where(['subject'=>$cuSubject])->indexby('id')->column();
+
         return $this->render('index', [
-            'var' =>$post,
+            //'var' =>$post,
+            'yearpost'=>$yearpost,
+            'department'=>$department,
+            'teachers'=>$teachers
         ]);
+    }
+
+
+    public function actionSetmanage()
+    {
+      $post = Yii::$app->request->post();
+      if($post){
+          $term    = ArrayHelper::getValue($post,'term');
+          $banji   = ArrayHelper::getValue($post,'banji');
+          $subject = ArrayHelper::getValue($post,'subject');
+          $teacher = ArrayHelper::getValue($post,'teacher');
+          if($term&&$banji&&$subject&&$teacher)
+          {
+              $model = new TeachManage();
+              $t1 = TeachManage::find()->where(['year_id'=>$term,'class_id'=>$banji,'subject'=>$subject])->one();
+              if($t1)
+                $model = $t1;  
+              $model->year_id = $term;
+                $model->class_id = $banji;
+                $model->subject = $subject;
+                $model->teacher_id = $teacher;
+              if($model->save())
+              {
+                return 'success';
+              }else{
+                return 'saveError';
+              }
+          }
+          //return var_export($post);
+          return 'paramGetError';
+      }else{
+        return 'getError';
+      }
+
+      return 'unknownError';
     }
 
     /**
@@ -62,6 +101,12 @@ class TeachmanageController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+    }
+
+    public function actionGetteachers($subject)
+    {
+        $teachers = (new \yii\db\Query())->select(['name','id'])->from('user_teacher')->where(['subject'=>$subject])->indexby('id')->column();
+        return json_encode($teachers);
     }
 
     /**
@@ -106,10 +151,9 @@ class TeachmanageController extends Controller
                 $subarr = CommonFunction::getAllTeachDuty();
                 foreach ($subarr as $sub_en_name => $sub_cn_name) {
                     $sub_teach_duty = ArrayHelper::getColumn($data,$sub_cn_name);
-                     // echo $sub_cn_name."++";
-                     // var_export($sub_teach_duty);
-                     // echo "<br>";
+                    //var_export($sub_teach_duty);
                     foreach ($class_list as $class_id => $class_serial) {
+
                         $sub_teacher_name = trim(ArrayHelper::getValue($sub_teach_duty,$class_serial-1));
                         //$sub_teacher_name = $sub_teach_duty[$class_serial-1];
                         if($sub_teacher_name)//找不到名字也不做任何操作
@@ -147,7 +191,7 @@ class TeachmanageController extends Controller
                                 }
                             }
                         }else{
-                            //$errMSG[] = $class_serial."班的".$sub_cn_name."老师的名字无法在系统中找到！";
+                            //$errMSG[] = $class_serial."班的".$sub_cn_name."老师的名字<".$sub_teacher_name."在表中没有设置！";
                         }
                     }
                 }

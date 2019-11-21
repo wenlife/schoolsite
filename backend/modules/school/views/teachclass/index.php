@@ -13,6 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="teach-class-index">
     <p>
     <?= Html::a('创建新班级', ['create'], ['class' => 'btn btn-success']) ?>
+    <?= Html::a('批量班级创建', ['factory'], ['class' => 'btn btn-success']) ?>
     <?= Html::a('指标分配', ['/testService/taskline'], ['class' => 'btn btn-success']) ?>
     </p>
 </div>

@@ -43,7 +43,7 @@ $department = (new \yii\db\Query())->select(['title','id'])->from('teach_departm
 </div>
 
 <?php
-if(!is_null($errMSG)) 
+if(!is_null($errMSG)&&count($errMSG)>0) 
 {
 ?>
   <div class="col-md-6">

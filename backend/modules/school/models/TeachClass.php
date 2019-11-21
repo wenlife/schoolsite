@@ -1,5 +1,4 @@
 <?php
-
 namespace backend\modules\school\models;
 
 use Yii;
@@ -67,6 +66,7 @@ class TeachClass extends \yii\db\ActiveRecord
             'department_id' => '教学部',
             'type' => '类别',
             'school' => '学校',
+            'serial' =>'班级序号',
             'note' => '备注',
         ];
     }

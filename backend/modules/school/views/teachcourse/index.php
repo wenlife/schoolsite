@@ -90,7 +90,7 @@ $week = CommonFunction::getWeekday();
                 ?>
                    <td><?=ArrayHelper::getValue($daytime,'sort')?></td>
                    <td><?=ArrayHelper::getValue($daytime,'title')?></td>
-                  <?php
+                   <?php
                     foreach ($week as $week_id => $weekday) {
                           $ifset = (new \yii\db\Query())
                                 ->from('teach_course')
@@ -98,15 +98,14 @@ $week = CommonFunction::getWeekday();
                                 ->indexby('id')->one();
                           $courseName = '<span class="glyphicon glyphicon-plus-sign"></span>';
                          if($ifset)
-                         {   
+                          {   
                             $getcourseName = ArrayHelper::getValue(CommonFunction::getAllSubjects(),ArrayHelper::getValue($ifset,'subject_id'));
                             if($courseName)
                             {  
                                 $courseName = $getcourseName;
                             }
-
-                        }
-                        echo '<td><a type="button" href="#" class="" data-toggle="modal"
+                          }
+                          echo '<td><a type="button" href="#" class="" data-toggle="modal"
                                    data-year = "'.$term.'""
                                    data-banji="'.$banji.'" 
                                    data-weekday="'.$week_id.'"
@@ -181,15 +180,16 @@ $week = CommonFunction::getWeekday();
 
 </div>
 </div>
+<?php
+  if($teacherName != null ){
+?>
 <div class="tab">
-<?php Pjax::begin(); ?>
 <div class="box box-success">
-    <div class="box-header with-border"><h3 class="box-title" >当前<b class="text-danger"><?=ArrayHelper::getValue($allSubject,$subject)?></b>教师<b class="text-danger"><?=$teacherName?></b>课程表</h3></div>
-    <div class="box-body no-padding">
-        <div class="box-body" style="font-size:10px">
+        <div class="box-header with-border"><h3 class="box-title" >当前<b class="text-danger"><?=ArrayHelper::getValue($allSubject,$subject)?></b>教师<b class="text-danger"><?=$teacherName?></b>课程表</h3>
+        </div>
+        <div class="box-body no-padding" style="font-size:10px">
           <table class="table table-bordered">
-            <thead>
-              
+            <thead>  
             <tr>
               <th>节次</th>
               <?php  foreach ($week as $id => $weekday) {echo '<th>'.$weekday.'</th>';}?>
@@ -216,11 +216,12 @@ $week = CommonFunction::getWeekday();
             <?php }?>   
           </tbody>
         </table>
-        </div>
+      </div>
 </div>
 </div>
-<?php Pjax::end(); ?>
-</div>
+
+<?php }?>
+
 </div>
 </div>
 <style type="text/css">
@@ -282,7 +283,7 @@ $(function(){
             //alert(data);
             var thisURL = document.location.href;
             thisURL = thisURL.split("&");
-            thisURL = thisURL[0]+'&teacher='+data['teacher_id']+'&yearpost='+data['yearpost']+'&subject='+data['subject']+'&banji='+recipient;
+            thisURL = thisURL[0]+'&teacher='+data['teacher_id']+'&yearpost='+data['yearpost']+'&subject='+data['subject']+'&banji='+recipient+'&department='+<?=$department?>;
             document.location.href = thisURL;
           }
         });

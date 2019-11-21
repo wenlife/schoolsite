@@ -85,6 +85,61 @@ class TeachclassController extends Controller
         ]);
     }
 
+    public function actionFactory()
+    {
+        $errMSG = null;
+        if($post = Yii::$app->request->post())
+        {
+            $department = $post['department'];
+            $start = $post['start'];
+            $end = $post['end'];
+            if(is_numeric($start)&&is_numeric($end)&&($start<=$end))
+            {
+                if(is_numeric($department))
+                {
+                    $grade = (new \yii\db\Query())->select(['year'])->from('teach_department')->where(['id'=>$department])->indexby('year')->scalar();
+                    if($grade)
+                    {
+                        for($i=$start;$i<=$end;$i++)
+                        {
+                            $model = TeachClass::find()->where(['department_id'=>$department,
+                                                                'grade'=>$grade,'serial'=>$i])->one();
+                            if($model)
+                            {
+                                $errMSG.= '<li>'.$grade.'届'.$i.'班已经存在！</li>';
+                                continue;
+                            }
+                            $model = new TeachClass();
+                            $model->title = $grade.'届'.$i.'班';
+                            $model->grade = $grade;
+                            $model->department_id = $department;
+                            $model->serial = $i;
+                            $model->school = "市七中";
+                            $model->type = 'lk';
+                            if(!$model->save()){
+                                 $errMSG.= '<li>'.$i.'班生成失败！</li>';
+                            }
+                        }
+                    }else{
+                        $errMSG.='<li>年级部无法在数据库中找到！<li>';
+                    }
+                }else{
+                    $errMSG .= '<li>年级部选择错误！</li>';
+                }
+
+            }else{
+                $errMSG = '<li>班级序号顺序选择错误，请重新开始！</li>';
+            }
+
+            if($errMSG == null)
+                return $this->redirect(['index']);
+        }
+
+
+        return $this->render('factory',['errMSG'=>$errMSG]);
+
+    }
+
     /**
      * Updates an existing TeachClass model.
      * If update is successful, the browser will be redirected to the 'view' page.
