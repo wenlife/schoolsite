@@ -52,7 +52,7 @@ if (Yii::$app->user->isGuest) {
         . Html::submitButton(
             'Logout (' . Yii::$app->user->identity->username . ')',
            // ['class' => 'btn btn-link','style'=>'height:50px;']
-            ['class' => 'btn btn-link','style'=>'line-height:40px;']
+            ['class' => 'btn btn-link','style'=>'line-height:20px;']
         )
         . Html::endForm()
         . '</li>';
@@ -65,19 +65,19 @@ NavBar::end();
 ?>
 <div class="container">    
 <div class="row">
-        <section class="content-header">
-        <?=
-        Breadcrumbs::widget(
-            [
-                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-            ]
-        ) ?>
+    <section class="content-header">
+    <?=
+    Breadcrumbs::widget(
+        [
+            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        ]
+    ) ?>
     </section>
-     <section class="content">
-        <?= Alert::widget() ?>
-        <p></p>
-        <?= $content ?>
-    </section>
+    <section class="content">
+    <?= Alert::widget() ?>
+    <p></p>
+    <?= $content ?>
+</section>
 </div>
 </div>
 </div>
