@@ -16,6 +16,7 @@ $week = CommonFunction::getWeekday();
 $allDaytime = (new \yii\db\Query())->from('teach_daytime')->orderby('sort')->all();
 $department = $department?$department:key($departments);
 $classes = (new \yii\db\Query())->select(['title','id'])->from('teach_class')->where(['department_id'=>$department])->indexby('id')->column();
+$class_id = $class_id?$class_id:key($classes);
 ?>
 <div class="row">
 <div class="col-md-9">
@@ -46,6 +47,7 @@ $classes = (new \yii\db\Query())->select(['title','id'])->from('teach_class')->w
                       </div>
                       <button type="submit" class="btn btn-primary">查询</button>
                       <?php ActiveForm::end(); ?>
+                      <p>任课教师：</p>
                   </div>
                   <div class="box-body table-responsive no-padding">
                     
