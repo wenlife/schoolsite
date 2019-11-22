@@ -1,8 +1,5 @@
 <?php
 /* @var $this yii\web\View */
-use backend\modules\content\models\Information;
-use yii\widgets\ListView;
-use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
@@ -71,8 +68,17 @@ $allDaytime = (new \yii\db\Query())->from('teach_daytime')->orderby('sort')->all
                           ?>        
                           <td><?=ArrayHelper::getValue($daytime,'title')?></td>
                           <?php foreach ($week as $week_id => $weekday) { 
-                              //var_export($courseArr);
-                             echo '<td>'.(isset($courseArr[$week_id][$daytime['id']]) ? $courseArr[$week_id][$daytime['id']] : null).'</td>';
+                            // var_export($courseArr);
+                            // exit();
+                            $banji = isset($courseArr[$week_id][$daytime['id']]) ? $courseArr[$week_id][$daytime['id']] : null;
+                            echo "<td>";
+                            if($banji)
+                             {
+                                echo '<a href="index.php?r=tcenter/bcourse&class_id='.$banji->id.'">'.$banji->title."</a>";
+                             }else{
+                             }
+                            echo "</td>";
+                             // echo '<td>'.(isset($courseArr[$week_id][$daytime['id']]) ? $courseArr[$week_id][$daytime['id']] : null).'</td>';
                              //echo '<td>'.$week_id.$daytime['id'].'</td>';
                           }
                           ?>

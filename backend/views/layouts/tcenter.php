@@ -34,6 +34,7 @@ NavBar::begin([
 echo Nav::widget([
     'items'=>[
             ['label'=>'个人中心','url'=>['/tcenter/index']],
+            ['label'=>'班级课表','url'=>['/tcenter/bcourse']],
             ['label'=>'学校校历','url'=>['/tcenter/cal']],
     ],
     'options'=>['class'=>'navbar-nav'],

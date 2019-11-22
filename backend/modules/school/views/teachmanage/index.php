@@ -2,46 +2,33 @@
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
-//use yii\grid\GridView;
-use backend\libary\CommonFunction;
 use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
+use backend\libary\CommonFunction;
 
 $this->title = '任教管理';
 $this->params['breadcrumbs'][] = $this->title;
-
 $allTerm = (new \yii\db\Query())
                 ->select(['title','id'])
                 ->from('teach_year_manage')
                 ->indexby('id')
                 ->orderby('end_date desc')
                 ->column();
-//$yearpost = ArrayHelper::getValue('post','yearpost')?ArrayHelper::getValue('post','yearpost'):key($allTerm);
-//$yearpost = $yearpost?$yearpost:key($allTerm);
 $term = $yearpost?$yearpost:key($allTerm);
 
-$allDepartment = (new \yii\db\Query())->select(['title','id'])->from('teach_department')->indexby('id')->column();
-
+$allDepartment = (new \yii\db\Query())->select(['title','id'])->from('teach_department')
+                                      ->indexby('id')->column();
 $allSubject = CommonFunction::getAllTeachDuty();
-
-
-//$department = ArrayHelper::getValue($var,'department')?ArrayHelper::getValue($var,'department'):key($allDepartment);
 $department = $department?$department:key($allDepartment);
 //var_export($department);
 //$department = ArrayHelper::getValue('department');
-$allClass = (new \yii\db\Query())
-              // ->select(['title','id'])
-               ->from('teach_class')
-               ->where(['department_id'=>$department])
-               ->indexby('id')
-              // ->column();
-              ->all();
+$allClass = (new \yii\db\Query())->from('teach_class')->where(['department_id'=>$department])
+               ->indexby('id')->all();
 ?>
 <div class="teach-manage-index">
     <p>
         <?= Html::a('新建任教', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('批量导入', ['import'], ['class' => 'btn btn-primary']) ?>
-        
+        <?= Html::a('批量导入', ['import'], ['class' => 'btn btn-primary']) ?>      
     </p>
 </div>
 <div class="tab">

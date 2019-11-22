@@ -3,6 +3,7 @@ namespace backend\controllers;
 use Yii;
 use backend\modules\school\models\TeachCourse;
 use backend\modules\school\models\TeachManage;
+use backend\modules\school\models\TeachClass;
 use backend\modules\guest\models\UserTeacher;
 use common\models\BackendLoginForm;
 
@@ -27,27 +28,33 @@ class TcenterController extends \yii\web\Controller
 	        ]
 	    ]; 
 	}
-    public function actionIndex($year=null,$subject='yw',$teacher_id=null)
+    public function actionIndex($year=null,$subject=null,$teacher_id=null)
     {
         //$post = Yii::$app->request->post();
-        $model = new BackendLoginForm();
+        $model     = new BackendLoginForm();
         $courseArr = array();
-
-        if(!Yii::$app->user->isGuest)
+        if($teacher_id==null)
         {
-        	$teacher = UserTeacher::find()->where(['username'=>Yii::$app->user->identity->username])->one();
-            if(!$teacher)
+            if(!Yii::$app->user->isGuest)
             {
-                exit('当前教师'.Yii::$app->user->identity->username.'并没有在数据库中设置自己的用户名啊！');
+                $teacher = UserTeacher::find()->where(['username'=>Yii::$app->user->identity->username])->one();
+                if(!$teacher)
+                {
+                    exit('当前教师'.Yii::$app->user->identity->username.'并没有在数据库中设置自己的用户名啊！');
+                }
+                $subject = $teacher->subject;
+                $teacher_id = $teacher->id;
             }
-        	$subject = $teacher->subject;
-        	$teacher_id = $teacher->id;
+
+        }else{
+            $teacher = UserTeacher::findOne($teacher_id);
+            $subject = $teacher->subject;
+            $teacher_id = $teacher->id;
         }
+        
 
         if($year==null)
-            $year = (new \yii\db\Query())->select(['id'])->from('teach_year_manage')->indexby('id')->scalar();
-        //echo $year;
-        //exit();
+            $year = (new \yii\db\Query())->select(['id'])->from('teach_year_manage')->orderby('start_date desc')->indexby('id')->scalar();
 
         if($teacher_id!=null&&$subject!=null&&$year!=null)
         {
@@ -64,7 +71,7 @@ class TcenterController extends \yii\web\Controller
 	            {
 	                $courseArr[$course->weekday][$course->day_time_id] = $courseArr[$course->weekday][$course->day_time_id].'/'.$course->banji->title;
 	            }else{
-	                $courseArr[$course->weekday][$course->day_time_id] = $course->banji->title;
+	                $courseArr[$course->weekday][$course->day_time_id] = $course->banji;
 	            }
 	            
 	        }
@@ -93,6 +100,26 @@ class TcenterController extends \yii\web\Controller
     {
     	//$this->layout = false;
     	return $this->render('cal');
+    }
+
+    public function actionBcourse($year=null,$class_id=null,$department=null)
+    {
+        $model = new BackendLoginForm();
+        if($class_id!=null)
+        {
+            $department = TeachClass::findOne($class_id)->department_id;
+        }
+        return $this->render('bcourse',[
+            'model'=>$model,
+            'year'=>$year,
+            'department'=>$department,
+            'class_id'=>$class_id,
+        ]);
+    }
+
+    public function actionGetclass($department)
+    {
+        return json_encode((new \yii\db\Query())->select(['title','id'])->from('teach_class')->where(['department_id'=>$department])->indexby('id')->column());
     }
 
 }
