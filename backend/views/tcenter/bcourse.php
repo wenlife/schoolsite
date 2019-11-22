@@ -47,7 +47,6 @@ $class_id = $class_id?$class_id:key($classes);
                       </div>
                       <button type="submit" class="btn btn-primary">查询</button>
                       <?php ActiveForm::end(); ?>
-                      <p>任课教师：</p>
                   </div>
                   <div class="box-body table-responsive no-padding">
                     
@@ -96,6 +95,17 @@ $class_id = $class_id?$class_id:key($classes);
              echo $this->render("left_bar",['model'=>$model]);
          }
     ?>
+   <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">班级任教</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                   
+            </div>
+            <!-- /.box-body -->
+          </div>
+
 </div>
   <!-- /.col -->
 </div>
