@@ -52,7 +52,7 @@ if (Yii::$app->user->isGuest) {
         . Html::submitButton(
             'Logout (' . Yii::$app->user->identity->username . ')',
            // ['class' => 'btn btn-link','style'=>'height:50px;']
-            ['class' => 'btn btn-link','style'=>'line-height:20px;']
+            ['class' => 'btn btn-link','style'=>'line-height:20px;color:#fff']
         )
         . Html::endForm()
         . '</li>';
