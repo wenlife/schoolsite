@@ -32,7 +32,7 @@
                 'items' => [
                     //主页设置
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
-                    ['label' => '主页','icon' => 'dashboard text-green', 'url' => ['/site/center']],
+                    ['label' => '主页','icon' => 'dashboard text-green', 'url' => ['/site/index']],
                     
                     //成绩分析系统
                     ['label' => '系统功能', 'options' => ['class' => 'header']],

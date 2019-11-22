@@ -19,7 +19,8 @@ class UserTeacherSearch extends UserTeacher
     {
         return [
             [['id'], 'integer'],
-            [['name', 'pinx', 'subject', 'type', 'graduate', 'note'], 'safe'],
+            [['name', 'pinx','subject', 'type', 'graduate', 'note'], 'safe'],
+            ['secode','string','max'=>5]
         ];
     }
 
@@ -65,6 +66,7 @@ class UserTeacherSearch extends UserTeacher
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'subject', $this->subject])
             ->andFilterWhere(['like', 'type', $this->type])
+            ->andFilterWhere(['like', 'secode', $this->type])
             ->andFilterWhere(['like', 'graduate', $this->graduate])
             ->andFilterWhere(['like', 'note', $this->note]);
 

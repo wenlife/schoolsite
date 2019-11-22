@@ -29,7 +29,7 @@ class TeachmanageController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    //'delete' => ['POST'],
                 ],
             ],
         ];
@@ -275,10 +275,18 @@ class TeachmanageController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($yearpost,$department)
     {
-        $this->findModel($id)->delete();
 
+        if(is_numeric($yearpost)&&is_numeric($department))
+        {
+            $grade = (new \yii\db\Query())->select(['year'])->from('teach_department')->where(['id'=>$department])->indexby('year')->scalar();
+            $classArr = (new \yii\db\Query())->select(['id'])->from('teach_class')->where(['grade'=>$grade])->indexby('id')->column();
+            $models = TeachManage::find()->where(['year_id'=>$yearpost])->andWhere(['in','class_id',$classArr])->all();
+            foreach ($models as $model) {
+              $model->delete();
+            }
+        }
         return $this->redirect(['index']);
     }
 

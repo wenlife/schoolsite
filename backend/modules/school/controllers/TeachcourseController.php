@@ -30,7 +30,7 @@ class TeachcourseController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                   // 'delete' => ['POST'],
                 ],
             ],
         ];
@@ -227,17 +227,45 @@ class TeachcourseController extends Controller
                         $sub = ArrayHelper::getValue($subArr,$sub1);
                         if(!$sub)
                         {
-                            $errMSG[] = $weekday_title.$class_serial."班，第".$daytime_serial."节的课程".$sub1."名字无法被转换为系统名字！";
+                             $errMSG[] = $weekday_title.$class_serial."班，第".$daytime_serial."节的课程".$sub1."名字无法被转换为系统名字！";
+                             continue;//科目无法转换，跳过
                         }
                         if($model->subject_id == $sub)
-                            continue;
+                            continue;//已经存在，跳过
                         $model->year_id = $form->year;
                         $model->class_id = $class_id;
                         $model->weekday = $weekday_id."";
                         $model->day_time_id = $daytime_id;
                         $model->subject_id = $sub;
-                        if(!$model->save())
-                        {   
+                        //var_export($model);
+                        if($model->save())
+                        { 
+
+                            //校验是否有同时上两个班的老师，可以存储，必须提示标红
+                            $teacher_id = (new \yii\db\Query())->select(['teacher_id'])->from('teach_manage')->where([
+                                'class_id'=>$class_id,'year_id'=>$form->year,'subject'=>$sub])->indexby('teacher_id')->scalar();
+                            //echo $teacher_id;
+
+
+                            $classArr = (new \yii\db\Query())->select(['class_id'])->from('teach_manage')
+                                    ->where(['year_id'=>$form->year,'teacher_id'=>$teacher_id,'subject'=>$sub])
+                                    ->indexby('class_id')->column();
+                            //var_export($classArr);
+
+                            $single_teach_course = (new \yii\db\Query())->select(['class_id'])->from('teach_course')
+                                    ->where([
+                                        'year_id'=>$form->year,
+                                        'weekday'=>$weekday_id,
+                                        'day_time_id'=>$daytime_id,
+                                        'subject_id'=>$sub
+                                     ])->andWhere(['in','class_id',$classArr])->count();
+                            //echo $weekday_id.'-'.$daytime_id;
+                            //var_export($single_teach_course);
+                            //exit();
+                            if($single_teach_course>1)
+                                $errMSG[] = "<p class='text-danger'>".$weekday_title.$class_serial."班，第".$daytime_serial."节的教师出现同一时间的重复课程！</p>";
+                            
+                        }else{
                             $errMSG[] = $weekday_title.$class_serial."班，第".$daytime_serial."节导入数据出现错误：".serialize($model->getErrors());
                         }
                     }
@@ -284,9 +312,17 @@ class TeachcourseController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($year,$department)
     {
-        $this->findModel($id)->delete();
+        if(is_numeric($year)&&is_numeric($department))
+        {
+            $grade = (new \yii\db\Query())->select(['year'])->from('teach_department')->where(['id'=>$department])->indexby('year')->scalar();
+            $classArr = (new \yii\db\Query())->select(['id'])->from('teach_class')->where(['grade'=>$grade])->indexby('id')->column();
+            $models = TeachCourse::find()->where(['year_id'=>$year])->andWhere(['in','class_id',$classArr])->all();
+            foreach ($models as $model) {
+              $model->delete();
+            }
+        }       
 
         return $this->redirect(['index']);
     }

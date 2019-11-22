@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use backend\libary\CommonFunction;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\guest\models\TeacherSearch */
@@ -42,8 +43,9 @@ $this->params['breadcrumbs'][] = $this->title;
             }],
             ['attribute'=>'type','value'=>function($model){
                 $type = CommonFunction::getTeacherType();
-                return $type[$model->type];
+                return ArrayHelper::getValue($type,$model->type);
             }],
+            'secode',
             //'school',
             //'note',
 

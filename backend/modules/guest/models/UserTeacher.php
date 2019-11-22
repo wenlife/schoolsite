@@ -31,7 +31,8 @@ class UserTeacher extends \yii\db\ActiveRecord
         return [
             [['name', 'subject'], 'required'],
             [['gender'], 'integer'],
-            [['name','username','secode'], 'string', 'max' => 50],
+            [['name','username','pinx','type'], 'string', 'max' => 100],
+            ['secode','string','max'=>50],
             [['subject'], 'string', 'max' => 20],
             [['note'], 'string', 'max' => 200]
         ];
@@ -49,6 +50,7 @@ class UserTeacher extends \yii\db\ActiveRecord
             'name' => '姓名',
             'pinx' => '拼写',
             'subject' => '任教科目',
+            'secode'=>'安全码',
             'type' => '类型',
             'graduate' => '任教学校',
             'note' => '备注',

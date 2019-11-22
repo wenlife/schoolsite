@@ -18,6 +18,8 @@ $subjects = CommonFunction::getSubjects();
     
      <?= $form->field($model, 'pinx')->textInput(['maxlength' => true]) ?>
 
+     <?= $form->field($model, 'secode')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'subject')->dropDownList($subjects,['prompt'=>'请选择任教科目']) ?>
 
     <?= $form->field($model, 'type')->dropDownList(CommonFunction::getTeacherType()) ?>

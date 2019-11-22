@@ -3,9 +3,12 @@ namespace backend\controllers;
 
 use Yii;
 use yii\filters\AccessControl;
-use yii\web\Controller;
-use common\models\BackendLoginForm;
 use yii\filters\VerbFilter;
+use yii\web\Controller;
+use common\models\user;
+use common\models\AdminUser;
+use common\models\BackendLoginForm;
+use backend\models\SignupForm;
 use backend\modules\content\models\Information;
 use backend\modules\content\models\ContentMenu;
 use backend\modules\content\models\infoitem;
@@ -16,13 +19,8 @@ use backend\modules\content\models\Picture;
 use backend\modules\test\models\TestItem;
 use backend\modules\test\models\TestScore;
 use backend\modules\test\models\Task;
-use backend\models\SignupForm;
 use backend\modules\guest\models\UserTeacher;
-use common\models\AdminUser;
-use common\models\user;
 use backend\modules\school\models\TeachClass;
-
-
 /**
  * Site controller
  */
@@ -79,12 +77,22 @@ class SiteController extends Controller
 
     public function actionIndex()
     { 
-        if (Yii::$app->user->isGuest) {
-            return $this->redirect(['/tcenter']);
-        }
+        $articles = ContentMenu::find()->count();
+        $students = User::find()->count();
+        $teachers = UserTeacher::find()->count();
+        $classes = TeachClass::find()->count();
+        $testItems = TestItem::find()->count();
 
-        
-        return $this->render('index');
+        $username = Yii::$app->user->identity->username;
+        $myself = UserTeacher::find()->where(['username'=>$username])->one();
+ 
+        return $this->render('index',[
+            'articles'=>$articles,
+            'students'=>$students,   
+            'testItems'=>$testItems,
+            'myself'=>$myself
+        ]);
+
     }
 
     public function actionTest()
@@ -97,20 +105,14 @@ class SiteController extends Controller
    public function actionCenter()
     {
 
-        $articles = ContentMenu::find()->count();
-        $students = User::find()->count();
-        $teachers = UserTeacher::find()->count();
-        $classes = TeachClass::find()->count();
-        $testItems = TestItem::find()->count();
 
-        $username = Yii::$app->user->identity->username;
-        $teacher = UserTeacher::find()->where(['username'=>$username])->one();
- 
-        return $this->render('center',[
-            'articles'=>$articles,
-            'students'=>$students,   
-            'testItems'=>$testItems,
-        ]);
+
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['/tcenter']);
+        }
+
+        
+        return $this->render('center');
     }
 
 

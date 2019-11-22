@@ -18,9 +18,10 @@ use yii\helpers\Html;
         <div class="navbar-custom-menu">
 
             <ul class="nav navbar-nav">
-                <li><?=Html::a('用户管理',['/guest'])?></li>
-                 <li><?=Html::a('内容管理',['/content'])?></li>
-                 <li><?=Html::a('选科指导',['/guidance'])?></li>
+                <li><?=Html::a('我的主页',['/site/index'])?></li>
+                <li><?=Html::a('教师管理',['/guest/teacher'])?></li>
+                 <li><?=Html::a('任教管理',['/school/teachmanage'])?></li>
+                 <li><?=Html::a('课程安排',['/school/teachcourse'])?></li>
                 <!-- Messages: style can be found in dropdown.less-->
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">

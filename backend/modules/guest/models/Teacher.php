@@ -32,6 +32,7 @@ class Teacher extends \yii\db\ActiveRecord
         return [
             [['name', 'subject'], 'required'],
             [['name', 'subject','pinx','type', 'graduate', 'note'], 'string', 'max' => 100],
+            ['secode','string','max'=>5]
         ];
     }
 
@@ -44,6 +45,7 @@ class Teacher extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => '姓名',
             'pinx' => '拼写',
+            'secode'=>'安全码',
             'subject' => '任教科目',
             'type' => '类型',
             'graduate' => '任教学校',

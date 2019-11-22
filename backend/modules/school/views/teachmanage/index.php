@@ -41,8 +41,7 @@ $allClass = (new \yii\db\Query())
     <p>
         <?= Html::a('新建任教', ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::a('批量导入', ['import'], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('任教总览', ['allview'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('清空数据', ['allview'], ['class' => 'btn btn-danger']) ?>
+        
     </p>
 </div>
 <div class="tab">
@@ -58,6 +57,7 @@ $allClass = (new \yii\db\Query())
           <?php echo Html::dropDownList('department',$department,$allDepartment,['class'=>'form-control']);?>
         </div>
         <button type="submit" class="btn btn-primary">查询</button>
+        <?= Html::a('清空数据', ['delete','yearpost'=>$term,'department'=>$department], ['class' => 'btn btn-danger pull-right','onclick'=>'return confirm("确实要删除当前级部的任教信息吗？")']) ?>
         <?php ActiveForm::end(); ?>
     </div>
     <!-- /.box-header -->
