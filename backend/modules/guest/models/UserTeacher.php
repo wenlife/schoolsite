@@ -33,6 +33,7 @@ class UserTeacher extends \yii\db\ActiveRecord
             [['gender'], 'integer'],
             [['name','username','pinx','type'], 'string', 'max' => 100],
             ['secode','string','max'=>50],
+            ['secode','unique','message'=>'安全码已经存在，请重设！'],
             [['subject'], 'string', 'max' => 20],
             [['note'], 'string', 'max' => 200]
         ];

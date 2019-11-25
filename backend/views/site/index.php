@@ -1,6 +1,8 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
+use backend\libary\CommonFunction;
 $this->title = '';
 
 ?>
@@ -14,36 +16,36 @@ $this->title = '';
               <h3 class="box-title">欢迎来到管理员中心！</h3>
             </div>
             <div class="box-body">
-              <a class="btn btn-app">
-                <i class="fa fa-edit"></i> 主页
+              <a class="btn btn-app" href="<?=Url::toRoute(['/tcenter/index'])?>">
+                <i class="fa fa-home"></i> 主页
               </a>
-              <a class="btn btn-app">
-                <i class="fa fa-play"></i> 教师
+              <a class="btn btn-app" href="<?=Url::toRoute(['/guest/teacher'])?>">
+                <i class="fa fa-user"></i> 教师
               </a>
-              <a class="btn btn-app">
-                <i class="fa fa-repeat"></i>学部
+              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachdepartment'])?>">
+                <i class="fa fa-institution"></i>学部
               </a>
-              <a class="btn btn-app">
-                <i class="fa fa-pause"></i>学期
+              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachyear'])?>">
+                <i class="fa fa-calendar"></i>学期
               </a>
-              <a class="btn btn-app">
-                <i class="fa fa-save  text-primary"></i> 任教
+              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachmanage'])?>">
+                <i class="fa fa-binoculars text-primary"></i> 任教
               </a>
-              <a class="btn btn-app">
+              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/daytime'])?>">
                 <span class="badge bg-yellow">3</span>
-                <i class="fa fa-bullhorn"></i> 作息
+                <i class="fa fa-list-alt"></i> 作息
               </a>
-              <a class="btn btn-app">
+              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachcourse'])?>">
                 <span class="badge bg-green">300</span>
-                <i class="fa fa-barcode"></i> 课程
+                <i class="fa fa-table"></i> 课程
               </a>
-              <a class="btn btn-app">
+              <a class="btn btn-app"  href="<?=Url::toRoute(['/guest/adminuser'])?>">
                 <span class="badge bg-purple">891</span>
-                <i class="fa fa-users"></i> 管理员
+                <i class="fa fa-user-md"></i> 管理员
               </a>
-              <a class="btn btn-app">
+              <a class="btn btn-app"  href="<?=Url::toRoute(['/guest/user'])?>">
                 <span class="badge bg-teal">67</span>
-                <i class="fa fa-inbox"></i> 学生
+                <i class="fa fa-users"></i> 学生
               </a>
               <a class="btn btn-app">
                 <span class="badge bg-aqua">12</span>
@@ -77,10 +79,15 @@ $this->title = '';
 
               <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <b>类型</b> <a class="pull-right"><?=$myself->type?></a>
+                  <b>类型</b> 
+                  <a class="pull-right">
+                  	<?=ArrayHelper::getValue(CommonFunction::getTeacherType(),$myself->type)?>
+                  </a>
                 </li>
                 <li class="list-group-item">
-                  <b>学科</b> <a class="pull-right"><?=$myself->subject?></a>
+                  <b>学科</b> <a class="pull-right">
+                    <?=ArrayHelper::getValue(CommonFunction::getAllSubjects(),$myself->subject)?>
+                  	</a>
                 </li>
                 <li class="list-group-item">
                   <b>用户名</b> <a class="pull-right"><?=$myself->username?></a>

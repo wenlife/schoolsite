@@ -44,6 +44,8 @@ class TcenterController extends \yii\web\Controller
                 }
                 $subject = $teacher->subject;
                 $teacher_id = $teacher->id;
+            }else{
+                $subject = 'yw';
             }
 
         }else{

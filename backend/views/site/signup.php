@@ -20,15 +20,22 @@ use yii\bootstrap\ActiveForm;
 
               <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                <?= $form->field($model, 'username')->textInput(['autofocus' => true])->label('用户名') ?>
 
-                <?= $form->field($model, 'secode') ?>
+                <?= $form->field($model, 'secode')->label('安全码(请联系管理员获取)') ?>
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
-                <?= $form->field($model, 'email') ?>
+                <?= $form->field($model, 'password')->passwordInput()->label('密码') ?>
 
+                <?= $form->field($model, 'email')->label('电子邮件') ?>
+                <ul>
+                    <?php
+                         foreach ($errMSG as $km => $vm) {
+                            echo "<li>".$vm."</li>";
+                         }
+                    ?>
+                </ul>
                 <div class="form-group">
-                    <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                    <?= Html::submitButton('注册', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 </div>
 
             <?php ActiveForm::end(); ?>
@@ -36,8 +43,7 @@ use yii\bootstrap\ActiveForm;
 
         <!-- /.social-auth-links -->
 
-        <a href="#">I forgot my password</a><br>
-        <a href="register.html" class="text-center">Register a new membership</a>
+        <a href="index.php?r=site/login">已经有账号，直接登录</a><br>
 
     </div>
     <!-- /.login-box-body -->

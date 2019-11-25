@@ -36,17 +36,33 @@ return [
 
     ],
     'components' => [
+        // 'request' => [
+        //     'csrfParam' => '_csrf-backend',
+        // ],
+        // 'user' => [
+        //     'identityClass' => 'common\models\User',
+        //     'enableAutoLogin' => true,
+        //     'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+        // ],
+        // 'session' => [
+        //     // this is the name of the session cookie used for login on the backend
+        //     'name' => 'advanced-backend',
+        // ],
+        'user' =>[
+           'identityClass'=>'common\models\Adminuser',
+           'enableAutoLogin'=>true,
+           'identityCookie'=>[
+                    'name'=>'_backendUser',
+                ]
+        ],
+        'session'=>[
+            'name'=>'PHPBACKSESSID',
+            'savePath'=>sys_get_temp_dir(),
+        ],
         'request' => [
-            'csrfParam' => '_csrf-backend',
-        ],
-        'user' => [
-            'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
-        ],
-        'session' => [
-            // this is the name of the session cookie used for login on the backend
-            'name' => 'advanced-backend',
+            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+            'cookieValidationKey' => 'TaMa1ELJgYLdQy-9wU0zv8EwRICrl3IR',
+                'csrfParam' => '_backendCSRF',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

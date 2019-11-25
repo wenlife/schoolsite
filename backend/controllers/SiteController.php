@@ -33,8 +33,8 @@ class SiteController extends Controller
    {
      if (Yii::$app->user->isGuest) 
       {
-        $this->layout = '/simple';
-
+        //$this->layout = '/simple';
+        //return $this->redirect(['/site/login']);
       }
    }
     public function behaviors()
@@ -77,6 +77,10 @@ class SiteController extends Controller
 
     public function actionIndex()
     { 
+        if (Yii::$app->user->isGuest) 
+        {
+            return $this->redirect(['/tcenter']);
+        }
         $articles = ContentMenu::find()->count();
         $students = User::find()->count();
         $teachers = UserTeacher::find()->count();
@@ -104,14 +108,9 @@ class SiteController extends Controller
     
    public function actionCenter()
     {
-
-
-
         if (Yii::$app->user->isGuest) {
             return $this->redirect(['/tcenter']);
         }
-
-        
         return $this->render('center');
     }
 
@@ -199,16 +198,10 @@ class SiteController extends Controller
                     exit('请在list中设置相应类别的页面');
                     break;
             }
-
             return $this->render($view,['article'=>$contents]);
-
         }else{
-
             exit('综合页面还在开发中');
-
-        }
-
-        
+        }    
     }
 
 
@@ -243,10 +236,9 @@ class SiteController extends Controller
     public function actionLogin()
     {
         //$this->layout = false;
-        if (!\Yii::$app->user->isGuest) {
-            return $this->redirect(['site/login']);
+        if (!Yii::$app->user->isGuest) {
+            return $this->redirect(['/tcenter']);
         }
-
         $model = new BackendLoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             $user = AdminUser::findByUsername($model->username);
@@ -258,40 +250,48 @@ class SiteController extends Controller
             }
             //return $this->goBack();
         } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+            return $this->render('login', ['model' => $model,]);
         }
     }
 
     public function actionSignup()
     {
         $this->layout = 'main-login';
+        $errMSG = [];
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             //exit(var_export($model));
             //如果已经注册
             if(AdminUser::findByUsername($model->username)){
-                exit('您已经注册，如果忘记密码，可到信息中心重置！');
+                $errMSG[] = '您已经注册，如果忘记密码，可到信息中心重置！';
+                return $this->render('signup', ['model' => $model,]);
             }
             //查找是否有安全码
             $teacherModel = new userTeacher();
-            $teacher = $teacherModel->find()->where(['username'=>$model->username])->one();
-            if ($teacher!=null&&($teacher->secode == $model->secode)) {
+            $teacher = $teacherModel->find()->where(['secode'=>$model->secode])->one();
+            if ($teacher!=null) {
                 $model->name = $teacher->name;
+                //$model->status = 10;
                 if ($user = $model->signup()) {
-                    if (Yii::$app->getUser()->login($user)) {
-                        return $this->goHome();
-                        }
+                     $user->status = 10;
+                     $user->save();
+                     $teacher->username = $model->username;
+                    if(!$teacher->save())
+                    {
+                        $errMSG[] = '用户名添加到数据库失败，请联系管理员解决！';
+                        return $this->render('signup', ['model' => $model,]);
+                    }
+                    return $this->redirect(['/site/login']);
                 }else{
-                    exit('注册失败！');
+                    $errMSG[] = '注册失败！';
                 }
             }else{
-                echo "用户名或者安全码不正确！";
+                $errMSG[] = "安全码不正确！";
             }
         }
         return $this->render('signup', [
             'model' => $model,
+            'errMSG'=>$errMSG
         ]);
     }
 
