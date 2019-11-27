@@ -7,7 +7,7 @@ use backend\libary\CommonFunction;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\guest\models\Teacher */
 /* @var $form yii\widgets\ActiveForm */
-$subjects = CommonFunction::getSubjects();
+$subjects = CommonFunction::getAllTeachDuty();
 ?>
 
 <div class="teacher-form">

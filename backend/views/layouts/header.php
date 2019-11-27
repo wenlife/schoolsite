@@ -4,7 +4,6 @@ use yii\helpers\Html;
 /* @var $this \yii\web\View */
 /* @var $content string */
 ?>
-
 <header class="main-header">
 
     <?= Html::a('<span class="logo-mini"><i class="fa fa-apple"></i></span><span class="logo-lg">' . Yii::$app->name . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
@@ -18,10 +17,18 @@ use yii\helpers\Html;
         <div class="navbar-custom-menu">
 
             <ul class="nav navbar-nav">
-                <li><?=Html::a('我的主页',['/site/index'])?></li>
-                <li><?=Html::a('教师管理',['/guest/teacher'])?></li>
-                 <li><?=Html::a('任教管理',['/school/teachmanage'])?></li>
-                 <li><?=Html::a('课程安排',['/school/teachcourse'])?></li>
+                <li><?=Html::a('我的主页',['/tcenter/mcenter'])?></li>
+                <?php
+                    if(Yii::$app->user->can('userPost'))
+                    {
+                        echo '<li>'.Html::a('教师管理',['/guest/teacher']).'</li>';
+                    }
+                    if(Yii::$app->user->can('schoolPost'))
+                    {
+                        echo '<li>'.Html::a('任教管理',['/school/teachmanage']).'</li>';
+                        echo '<li>'.Html::a('课程安排',['/school/teachcourse']).'</li>';
+                    }
+                ?>
                 <!-- Messages: style can be found in dropdown.less-->
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -50,7 +57,7 @@ use yii\helpers\Html;
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="img/default.jpg" class="user-image" alt="User Image">
-                        <span class="hidden-xs">攀枝花第七高级中学</span>
+                        <span class="hidden-xs">退出系统</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
@@ -59,12 +66,12 @@ use yii\helpers\Html;
                                  alt="User Image"/>
 
                             <p>
-                                攀枝花第七中学 - 高级中学
-                                <small>School since Nov. 1981</small>
+                                <?=Yii::$app->user->identity->username?>
+                                <small>攀枝花第七中学 - 高级中学 since Nov. 1981</small>
                             </p>
                         </li>
                         <!-- Menu Body -->
-                        <li class="user-body">
+<!--                         <li class="user-body">
                             <div class="col-xs-4 text-center">
                                 <a href="#">Followers</a>
                             </div>
@@ -74,7 +81,7 @@ use yii\helpers\Html;
                             <div class="col-xs-4 text-center">
                                 <a href="#">Students</a>
                             </div>
-                        </li>
+                        </li> -->
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">

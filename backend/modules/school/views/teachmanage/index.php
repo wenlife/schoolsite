@@ -26,16 +26,16 @@ $allClass = (new \yii\db\Query())->from('teach_class')->where(['department_id'=>
                ->indexby('id')->all();
 ?>
 <div class="teach-manage-index">
-    <p>
-        <?= Html::a('新建任教', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('批量导入', ['import'], ['class' => 'btn btn-primary']) ?>      
-    </p>
+
 </div>
 <div class="tab">
 <?php Pjax::begin(); ?>
 <div class="box box-success">
     <div class="box-header with-border">
-        <h3 class="box-title">教师任教表</h3>
+        <p>
+        <?= Html::a('新建任教', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('批量导入', ['import'], ['class' => 'btn btn-primary']) ?>      
+        </p>
         <?php $form = ActiveForm::begin(['id'=>'form1','action'=>'index.php?r=school/teachmanage','method'=>'get','options'=>['class'=>'form-inline']]); ?>
         <div class="form-group">
           <?php echo Html::dropDownList('yearpost',$term,$allTerm,['class'=>'form-control']);?>

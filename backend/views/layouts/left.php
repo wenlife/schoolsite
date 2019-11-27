@@ -32,11 +32,11 @@
                 'items' => [
                     //主页设置
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
-                    ['label' => '主页','icon' => 'dashboard text-green', 'url' => ['/site/index']],
+                    ['label' => '主页','icon' => 'dashboard text-green', 'url' => ['/tcenter']],
                     
                     //成绩分析系统
                     ['label' => '系统功能', 'options' => ['class' => 'header']],
-                    ['label' => '成绩分析','icon' => 'bar-chart text-red', 'url' => ['/testService/exam']],
+                    ['label' => '成绩分析','icon' => 'bar-chart text-red', 'url' => ['/testService/exam'],'visible'=>Yii::$app->user->can('analysisPost')],
                     //选课建议系统
                     //
                     ['label' => '教学安排','icon'=>'calculator text-green','items'=>[
@@ -47,13 +47,13 @@
                     ['label' => '作息','icon'=>'clock-o text-primary','url' => ['/school/daytime']],
                     ['label' => '课程数量','icon'=>'calendar text-success','url' => ['/school/teachcourselimit']],
                     ['label' => '课表','icon'=>'calendar text-success','url' => ['/school/teachcourse']],
-                    ]],
+                    ],'visible'=>Yii::$app->user->can('schoolPost')],
                     //信息技术练习
                     ['label' => '在线教学','icon'=>'bicycle','items'=>[
                         ['label' => '试题管理','icon'=>'globe', 'url' => ['/test/item']],
                         ['label' => '试卷管理','icon'=>'leaf','url' => ['/test/testpaper']],
                         ['label' => '课堂任务','icon'=>'tasks', 'url' => ['/test/task']],
-                    ]],
+                    ],'visible'=>Yii::$app->user->can('testPost')],
                     //文章系统
                     ['label' => '信息发布','icon'=>'cubes','items'=>[
                         ['label' => '内容','icon'=>'book','url' => ['/content/contentmenu']],
@@ -61,23 +61,23 @@
                         ['label' => '视频','icon'=>'play', 'url' => ['/content/videolist']],
                         ['label' => '图片','icon'=>'tint', 'url' => ['/content/picturelist']],             
                         ['label' => '栏目', 'icon'=>'tasks','url' => ['/content/infoitem']],
-                    ]],
+                    ],'visible'=>Yii::$app->user->can('contentPost')],
                     ['label' => '系统管理', 'options' => ['class' => 'header']],
                     ['label' => '前台界面','icon'=>'ambulance','items'=>[
                         ['label'=>'置顶图片','icon'=>'fire','url'=>['/interface/logo']],
                         ['label'=>'前台栏目设置','icon'=>'th','url'=>['/interface/setting']],
                         ['label'=>'学生中心通知设置','icon'=>'bell','url'=>['/interface/notice']],
-                    ]],
+                    ],'visible'=>Yii::$app->user->can('contentPost')],
                     ['label' => '系统用户','icon'=>'rocket','items'=>[
                         ['label'=>'管理员','icon'=>'user','url'=>['/guest/adminuser']],
                         ['label'=>'学生','icon'=>'user','url'=> ['/guest/user']],
                         ['label'=>'教师','icon'=>'user text-blue','url' => ['/guest/teacher']],
                        
-                    ]],
+                    ],'visible'=>Yii::$app->user->can('userPost')],
                     //开发工具
                     ['label' => '工具', 'options' => ['class' => 'header']],
-                    ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
-                    ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
+                    ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],'visible'=>Yii::$app->user->can('admin')],
+                    ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug'],'visible'=>Yii::$app->user->can('admin')],
                     [
                         'label' => 'Same tools',
                         'icon' => 'share',
@@ -85,8 +85,8 @@
                         'items' => [
                             ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],],
                             ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug'],],
-                        ],
-                    ],
+                        ],'visible'=>Yii::$app->user->can('admin')
+                    ]
                 ],
             ]
         ) ?>

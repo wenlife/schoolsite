@@ -41,11 +41,11 @@ class TeachDepartment extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'title' => 'Title',
-            'year' => 'Year',
-            'manager' => 'Manager',
-            'note' => 'Note',
+            'id' => '编号',
+            'title' => '标题',
+            'year' => '届次',
+            'manager' => '年级管理',
+            'note' => '备注',
         ];
     }
 }

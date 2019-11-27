@@ -7,20 +7,18 @@ use yii\widgets\DetailView;
 /* @var $model backend\modules\school\models\TeachDepartment */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Teach Departments', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '年级部', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="teach-department-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => '您确定要删除该数据吗?',
                 'method' => 'post',
             ],
         ]) ?>

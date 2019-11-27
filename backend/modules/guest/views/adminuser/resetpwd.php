@@ -1,28 +1,38 @@
-
-
-
-
-
 <?php
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+$this->title = "重置密码";
 
-/* @var $this yii\web\View */
-/* @var $model common\models\Adminuser */
-/* @var $form yii\widgets\ActiveForm */
 ?>
+<div class="teacher-index">
+<div class="box box-success">
+    <div class="box-header">
+        <?=Html::a('回到管理页面',['index'])?>
+
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
 
 <div class="adminuser-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= Html::textInput('pwd',null,['class=>input-large']) ?>
+    <div class="form-group">
+
+        <label>请输入新密码:</label>
+
+        <?= Html::textInput('pwd',null,['class'=>'form-control']) ?>
+    
+    </div>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton('重置密码', ['class'=>'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
+</div>
+
+</div>
 </div>

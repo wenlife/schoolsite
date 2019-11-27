@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\school\models\TeachDaytime */
 
-$this->title = 'Create Teach Daytime';
-$this->params['breadcrumbs'][] = ['label' => 'Teach Daytimes', 'url' => ['index']];
+$this->title = '新建作息表项';
+$this->params['breadcrumbs'][] = ['label' => '作息表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="teach-daytime-create">

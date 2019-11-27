@@ -11,15 +11,15 @@ $this->title = '班级管理';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="teach-class-index">
-    <p>
-    <?= Html::a('创建新班级', ['create'], ['class' => 'btn btn-success']) ?>
-    <?= Html::a('批量班级创建', ['factory'], ['class' => 'btn btn-success']) ?>
-    <?= Html::a('指标分配', ['/testService/taskline'], ['class' => 'btn btn-success']) ?>
-    </p>
+
 </div>
 <div class="box box-success">
     <div class="box-header">
-
+        <p>
+        <?= Html::a('创建新班级', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('批量班级创建', ['factory'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('指标分配', ['/testService/taskline'], ['class' => 'btn btn-success']) ?>
+        </p>
     </div>
     <!-- /.box-header -->
     <div class="box-body">

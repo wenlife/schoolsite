@@ -36,17 +36,23 @@ class TeachCourseLimit extends \yii\db\ActiveRecord
         ];
     }
 
+
+    public function getDepartment()
+    {
+        return $this->hasOne(TeachDepartment::className(),['id'=>'department_id']);
+    }
+
     /**
      * {@inheritdoc}
      */
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'department_id' => 'Department ID',
-            'course_id' => 'Course ID',
-            'course_limit' => 'Course Limit',
-            'note' => 'Note',
+            'id' => '编号',
+            'department_id' => '年级部',
+            'course_id' => '科目',
+            'course_limit' => '课程数量',
+            'note' => '备注',
         ];
     }
 }

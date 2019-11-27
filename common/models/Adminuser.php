@@ -50,6 +50,7 @@ class Adminuser extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+            ['type','string','max'=>13],
             ['email','string','max'=>100],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],

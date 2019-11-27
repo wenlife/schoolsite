@@ -7,11 +7,15 @@ use yii\grid\GridView;
 /* @var $searchModel backend\modules\school\models\DaytimeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Teach Daytimes';
+$this->title = '作息表管理';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="teach-daytime-index">
-
+<div class="box box-success">
+            <div class="box-header with-border">
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
 
     <p>
         <?= Html::a('新建作息表项', ['create'], ['class' => 'btn btn-success']) ?>
@@ -26,17 +30,19 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'department',
+            ['attribute'=>'department','value'=>'departmentname.title'], 
             'sort',
             'part',
             'title',
             'start',
             'end',
-            'note',
+           // 'note',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 
 
+</div>
+</div>
 </div>

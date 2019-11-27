@@ -41,7 +41,7 @@ echo Nav::widget([
 ]);
 $menuItems = [
 
-['label'=>'学校校历','url'=>['tcenter/cal']],
+['label'=>'管理中心','url'=>['tcenter/mcenter'],'visible'=>Yii::$app->user->can('schoolPost')],
 ];
 
 if (Yii::$app->user->isGuest) {
@@ -51,7 +51,7 @@ if (Yii::$app->user->isGuest) {
     $menuItems[] = '<li>'
         . Html::beginForm(['/site/logout'], 'post')
         . Html::submitButton(
-            'Logout (' . Yii::$app->user->identity->username . ')',
+            '<span class="fa  fa-power-off"> 退出</span> (' . Yii::$app->user->identity->username . ')',
            // ['class' => 'btn btn-link','style'=>'height:50px;']
             ['class' => 'btn btn-link','style'=>'line-height:20px;color:#fff']
         )

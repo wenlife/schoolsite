@@ -42,17 +42,22 @@ class TeachDaytime extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    
+    public function getDepartmentname()
+    {
+       return  $this->hasOne(TeachDepartment::className(),['id'=>'department']);
+    }
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'department' => 'Department',
-            'sort' => 'Sort',
-            'part' => 'Part',
-            'title' => 'Title',
-            'start' => 'Start',
-            'end' => 'End',
-            'note' => 'Note',
+            'id' => '编号',
+            'department' => '年级部',
+            'sort' => '序号',
+            'part' => '时段',
+            'title' => '标题',
+            'start' => '开始时间',
+            'end' => '结束时间',
+            'note' => '备注',
         ];
     }
 }

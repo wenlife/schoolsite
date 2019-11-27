@@ -2,6 +2,7 @@
 namespace backend\controllers;
 
 use Yii;
+use yii\web\ForbiddenHttpException;
 use backend\modules\content\forms\UploadPic;
 use backend\modules\content\models\infoitem;
 use backend\modules\content\models\Picturelist;
@@ -11,6 +12,14 @@ use backend\models\IndexForm;
 class InterfaceController extends \yii\web\Controller
 {
 	//public $layout = 'center';
+    public function init()
+    {
+        parent::init();
+       if(!Yii::$app->user->can('contentPost'))
+       {
+              throw new ForBiddenHttpException("您没有执行此操作的权限!");
+       }
+    } 
     public function actionIndex()
     {
       

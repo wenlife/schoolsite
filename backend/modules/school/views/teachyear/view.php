@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model backend\modules\guest\models\TeachYearManage */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Teach Year Manages', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '学年度', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="teach-year-manage-view">

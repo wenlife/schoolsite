@@ -9,34 +9,20 @@ use common\models\user;
 use common\models\AdminUser;
 use common\models\BackendLoginForm;
 use backend\models\SignupForm;
-use backend\modules\content\models\Information;
-use backend\modules\content\models\ContentMenu;
-use backend\modules\content\models\infoitem;
-use backend\modules\content\models\Videolist;
-use backend\modules\content\models\Video;
-use backend\modules\content\models\Picturelist;
-use backend\modules\content\models\Picture;
-use backend\modules\test\models\TestItem;
-use backend\modules\test\models\TestScore;
-use backend\modules\test\models\Task;
+//use backend\modules\content\models\Information;
+//use backend\modules\content\models\ContentMenu;
+//use backend\modules\content\models\infoitem;
+//use backend\modules\content\models\Videolist;
+//use backend\modules\content\models\Video;
+//use backend\modules\content\models\Picturelist;
+//use backend\modules\content\models\Picture;
+//use backend\modules\test\models\TestItem;
+//use backend\modules\test\models\TestScore;
+//use backend\modules\test\models\Task;
 use backend\modules\guest\models\UserTeacher;
-use backend\modules\school\models\TeachClass;
-/**
- * Site controller
- */
+//use backend\modules\school\models\TeachClass;
 class SiteController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
-    public function init()
-   {
-     if (Yii::$app->user->isGuest) 
-      {
-        //$this->layout = '/simple';
-        //return $this->redirect(['/site/login']);
-      }
-   }
     public function behaviors()
     {
         return [
@@ -44,11 +30,12 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error','signup','index'],
+                        'actions' => ['login', 'error','signup'],
                         'allow' => true,
+                        'roles'=>['?']
                     ],
                     [
-                        'actions' => ['logout','list','detail','vdetail','pdetail','center','test','myclass','resetpwd','myinfo'],
+                        'actions' => ['logout','list','detail','vdetail','pdetail','center','test','myclass','resetpwd','myinfo','index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -77,160 +64,26 @@ class SiteController extends Controller
 
     public function actionIndex()
     { 
-        if (Yii::$app->user->isGuest) 
-        {
+       // if (Yii::$app->user->isGuest) 
+       // {
             return $this->redirect(['/tcenter']);
-        }
-        $articles = ContentMenu::find()->count();
-        $students = User::find()->count();
-        $teachers = UserTeacher::find()->count();
-        $classes = TeachClass::find()->count();
-        $testItems = TestItem::find()->count();
+        //}
+        // $articles = ContentMenu::find()->count();
+        // $students = User::find()->count();
+        // $teachers = UserTeacher::find()->count();
+        // $classes = TeachClass::find()->count();
+        // $testItems = TestItem::find()->count();
 
-        $username = Yii::$app->user->identity->username;
-        $myself = UserTeacher::find()->where(['username'=>$username])->one();
+        // $username = Yii::$app->user->identity->username;
+        // $myself = UserTeacher::find()->where(['username'=>$username])->one();
  
-        return $this->render('index',[
-            'articles'=>$articles,
-            'students'=>$students,   
-            'testItems'=>$testItems,
-            'myself'=>$myself
-        ]);
+        // return $this->render('index',[
+        //    // 'articles'=>$articles,
+        //    // 'students'=>$students,   
+        //    // 'testItems'=>$testItems,
+        //     'myself'=>$myself
+        // ]);
 
-    }
-
-    public function actionTest()
-    {
-        $this->layout = 'test';
-        return $this->render('test');
-    }
-
-    
-   public function actionCenter()
-    {
-        if (Yii::$app->user->isGuest) {
-            return $this->redirect(['/tcenter']);
-        }
-        return $this->render('center');
-    }
-
-
-    public function actionMyclass()
-    {
-        $username = Yii::$app->user->identity->username;
-        $teacher = UserTeacher::find()->where(['username'=>$username])->one();
-        $classes = UserBanji::find()->where([$teacher->subject=>$teacher->id])->orderby('grade desc')->all();
-        $students = array();
-        $class='';
-        if ($classes) {
-          if ($post=Yii::$app->request->post()) {
-             $class = $post['class'];
-          }else{
-            $class = $classes[0]->id;
-          }
-          $students = User::find()->where(['class'=>$class])->all();
-
-        return $this->render('myclass',['class'=>$class,'classes'=>$classes,'students'=>$students]);
-
-        }else{
-            exit('查找您任教的班级失败！');
-        }
-
-    }
-
-    public function actionMyinfo()
-    {
-        return $this->render('myinfo');
-    }
-
-
-    public function actionResetpwd($username)
-    {
-        $user = User::findByUsername($username);
-        if ($user) {
-            $user->setPassword($user->username);
-            $user->generateAuthKey();
-            if($user->save())
-            {
-                echo "重置用户".$username.'的密码为用户名成功！';
-            }
-
-        }
-    }
-
-    public function actionList($cate)
-    {
-        $this->layout = "content";
-        $infoItem = new infoitem();
-        $item = $infoItem->find()->where(['itemid'=>$cate])->one();
-
-        if(!$item){exit('栏目不存在！');}
-    //     'itemType'=>[
-    //         0=>"综合",
-    //         1=>"文章",
-    //         2=>"视频",
-    //         3=>"图片",
-    //         4=>"轮播",
-    // ],
-        //exit(var_export($item));
-
-        $Information = new Information();
-        $videolist = new Videolist();
-        $piclist = new Picturelist();
-
-        if($item->itemtype>0)
-        {
-            switch ($item->itemtype) {
-                case '1':
-                    $contents = Information::find()->where(['infoitem'=>$cate])->all();
-                    $view = 'list';
-                    break;
-                case '2':
-                    $contents = Videolist::find()->where(['cid'=>$cate])->all();
-                    $view = 'videolist';
-                    break;
-                case '3':
-                    $contents = Picturelist::find()->where(['cid'=>$cate])->all();
-                    $view = 'piclist';
-                    break;
-
-                default:
-                    exit('请在list中设置相应类别的页面');
-                    break;
-            }
-            return $this->render($view,['article'=>$contents]);
-        }else{
-            exit('综合页面还在开发中');
-        }    
-    }
-
-
-    public function actionDetail($id)
-    {
-        $this->layout = "content";
-        return $this->render('detail',['model'=>Information::findOne($id)]);
-    }
-
-    public function actionVdetail($id,$vid=null)
-    {
-        $videoModel = new Video();
-        $videos = $videoModel->find()->where(['infoid'=>$id])->orderBy('showorder')->all();
-
-        return $this->render('vdetail', [
-            'model' => Videolist::findOne($id),
-            'videos'=>$videos,
-            'vid'=>$vid,
-        ]);
-    }
-
-    public function actionPdetail($id)
-    {
-        $picModel = new Picture();
-        $pics = $picModel->find()->where(['infoid'=>$id])->orderBy('showorder')->all();
-           return $this->render('pdetail', [
-            'model' => Picturelist::findOne($id),
-            'pictures'=>$pics,
-        ]);
     }
 
     public function actionLogin()
@@ -242,9 +95,9 @@ class SiteController extends Controller
         $model = new BackendLoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             $user = AdminUser::findByUsername($model->username);
-            if($user->type == "admin")
+            if($user->type == "ma")
             {
-               return  $this->redirect(['/tcenter']);
+               return  $this->redirect(['/tcenter/mcenter']);
             }else{
                return  $this->redirect(['/tcenter']);
             }
@@ -302,4 +155,131 @@ class SiteController extends Controller
         //return $this->goHome();
         return $this->redirect(['/tcenter']);
     }
+
+    public function actionResetpwd($username)
+    {
+        $user = User::findByUsername($username);
+        if ($user) {
+            $user->setPassword($user->username);
+            $user->generateAuthKey();
+            if($user->save())
+            {
+                echo "重置用户".$username.'的密码为用户名成功！';
+            }
+
+        }
+    }
+
+    // public function actionTest()
+    // {
+    //     $this->layout = 'test';
+    //     return $this->render('test');
+    // }
+
+    
+   // public function actionCenter()
+   //  {
+   //      return $this->render('center');
+   //  }
+
+
+    // public function actionMyclass()
+    // {
+    //     $username = Yii::$app->user->identity->username;
+    //     $teacher = UserTeacher::find()->where(['username'=>$username])->one();
+    //     $classes = UserBanji::find()->where([$teacher->subject=>$teacher->id])->orderby('grade desc')->all();
+    //     $students = array();
+    //     $class='';
+    //     if ($classes) {
+    //       if ($post=Yii::$app->request->post()) {
+    //          $class = $post['class'];
+    //       }else{
+    //         $class = $classes[0]->id;
+    //       }
+    //       $students = User::find()->where(['class'=>$class])->all();
+
+    //     return $this->render('myclass',['class'=>$class,'classes'=>$classes,'students'=>$students]);
+
+    //     }else{
+    //         exit('查找您任教的班级失败！');
+    //     }
+
+    // }
+
+    // public function actionMyinfo()
+    // {
+    //     return $this->render('myinfo');
+    // }
+
+
+
+
+    // public function actionList($cate)
+    // {
+    //     $this->layout = "content";
+    //     $infoItem = new infoitem();
+    //     $item = $infoItem->find()->where(['itemid'=>$cate])->one();
+
+    //     if(!$item){exit('栏目不存在！');}
+
+    //     $Information = new Information();
+    //     $videolist = new Videolist();
+    //     $piclist = new Picturelist();
+
+    //     if($item->itemtype>0)
+    //     {
+    //         switch ($item->itemtype) {
+    //             case '1':
+    //                 $contents = Information::find()->where(['infoitem'=>$cate])->all();
+    //                 $view = 'list';
+    //                 break;
+    //             case '2':
+    //                 $contents = Videolist::find()->where(['cid'=>$cate])->all();
+    //                 $view = 'videolist';
+    //                 break;
+    //             case '3':
+    //                 $contents = Picturelist::find()->where(['cid'=>$cate])->all();
+    //                 $view = 'piclist';
+    //                 break;
+
+    //             default:
+    //                 exit('请在list中设置相应类别的页面');
+    //                 break;
+    //         }
+    //         return $this->render($view,['article'=>$contents]);
+    //     }else{
+    //         exit('综合页面还在开发中');
+    //     }    
+    // }
+
+
+    // public function actionDetail($id)
+    // {
+    //     $this->layout = "content";
+    //     return $this->render('detail',['model'=>Information::findOne($id)]);
+    // }
+
+    // public function actionVdetail($id,$vid=null)
+    // {
+    //     $videoModel = new Video();
+    //     $videos = $videoModel->find()->where(['infoid'=>$id])->orderBy('showorder')->all();
+
+    //     return $this->render('vdetail', [
+    //         'model' => Videolist::findOne($id),
+    //         'videos'=>$videos,
+    //         'vid'=>$vid,
+    //     ]);
+    // }
+
+    // public function actionPdetail($id)
+    // {
+    //     $picModel = new Picture();
+    //     $pics = $picModel->find()->where(['infoid'=>$id])->orderBy('showorder')->all();
+    //        return $this->render('pdetail', [
+    //         'model' => Picturelist::findOne($id),
+    //         'pictures'=>$pics,
+    //     ]);
+    // }
+
+
 }

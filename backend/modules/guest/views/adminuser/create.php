@@ -6,16 +6,22 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Adminuser */
 
-$this->title = 'Create Adminuser';
+$this->title = '新建管理员用户';
 $this->params['breadcrumbs'][] = ['label' => 'Adminusers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="adminuser-create">
+<div class="box box-success">
+    <div class="box-header">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    </div>
+    <!-- /.box-header -->
+<div class="box-body">
+<div class="adminuser-create">
 
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
 
+</div>
+</div>
 </div>

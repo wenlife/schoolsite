@@ -10,24 +10,9 @@ use common\models\BackendLoginForm;
 class TcenterController extends \yii\web\Controller
 {
 	public $layout="tcenter";
-	public function actions()
-	{
-	    return [
-	        'crop'=>[
-	            'class' => 'hyii2\avatar\CropAction',
-	            'config'=>[
-	                'bigImageWidth' => '200',     //大图默认宽度
-	                'bigImageHeight' => '200',    //大图默认高度
-	                'middleImageWidth'=> '100',   //中图默认宽度
-	                'middleImageHeight'=> '100',  //中图图默认高度
-	                'smallImageWidth' => '50',    //小图默认宽度
-	                'smallImageHeight' => '50',   //小图默认高度
-	                //头像上传目录（注：目录前不能加"/"）
-	                'uploadPath' => 'uploads/avatar',
-	            ]
-	        ]
-	    ]; 
-	}
+
+
+
     public function actionIndex($year=null,$subject=null,$teacher_id=null)
     {
         //$post = Yii::$app->request->post();
@@ -88,6 +73,21 @@ class TcenterController extends \yii\web\Controller
         		'subject'=>$subject,
         		'teachers'=>(new \yii\db\Query())->select(['name','id'])->from('user_teacher')
     	               ->where(['subject'=>$subject])->indexby('id')->orderby('pinx')->column(),
+        ]);
+    }
+
+    public function actionMcenter()
+    {
+        $this->layout = 'main';
+        if (Yii::$app->user->isGuest) 
+        {
+            return $this->redirect(['/tcenter']);
+        }
+        $username = Yii::$app->user->identity->username;
+        $myself = UserTeacher::find()->where(['username'=>$username])->one();
+ 
+        return $this->render('mcenter',[
+            'myself'=>$myself
         ]);
     }
 
