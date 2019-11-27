@@ -58,7 +58,7 @@ $allClass = (new \yii\db\Query())->from('teach_class')->where(['department_id'=>
                   <th style="width: 50px">类型</th>
                   <?php
                      foreach ($allSubject as $id => $subject) {
-                         echo '<th style="width: 50px">'.$subject.'</th>';
+                         echo '<th>'.$subject.'</th>';
                      }
                   ?>
                 </tr>
