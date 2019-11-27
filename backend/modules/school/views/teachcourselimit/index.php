@@ -12,7 +12,7 @@ use backend\libary\CommonFunction;
 $this->title = '课程数量限制';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="row col-md-8">
+<div class="row col-md-12">
 <div class="box box-success">
             <div class="box-header with-border">
             </div>
