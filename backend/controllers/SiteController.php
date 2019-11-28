@@ -124,6 +124,7 @@ class SiteController extends Controller
             $teacher = $teacherModel->find()->where(['secode'=>$model->secode])->one();
             if ($teacher!=null) {
                 $model->name = $teacher->name;
+                $model->type = $teacher->type;
                 //$model->status = 10;
                 if ($user = $model->signup()) {
                      $user->status = 10;
