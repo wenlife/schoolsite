@@ -29,14 +29,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'title',
             'start_date',
             'end_date',
             'note',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+             'header'=>'操作',
+              'template'=>'{update}&nbsp&nbsp{delete}',
+            ],
         ],
     ]); ?>
 </div>

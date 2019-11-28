@@ -10,7 +10,7 @@ $this->title = '班级课表';
 //$this->params['breadcrumbs'][] = $this->title;
 $departments = (new \yii\db\Query())->select(['title','id'])->from('teach_department')->indexby('id')->column();
 $allTerm = (new \yii\db\Query())->select(['title','id'])->from('teach_year_manage')
-                                ->indexby('id')->orderby('end_date desc')->column();
+                                ->indexby('id')->orderby('start_date desc')->column();
 $term = $year?$year:key($allTerm);
 $subjects = CommonFunction::getAllSubjects();
 $week = CommonFunction::getWeekday();

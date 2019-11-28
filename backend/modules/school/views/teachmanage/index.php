@@ -12,7 +12,7 @@ $allTerm = (new \yii\db\Query())
                 ->select(['title','id'])
                 ->from('teach_year_manage')
                 ->indexby('id')
-                ->orderby('end_date desc')
+                ->orderby('start_date desc')
                 ->column();
 $term = $yearpost?$yearpost:key($allTerm);
 

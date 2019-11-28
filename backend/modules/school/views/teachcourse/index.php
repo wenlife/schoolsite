@@ -11,8 +11,8 @@ $this->title = '班级课程安排';
 $this->params['breadcrumbs'][] = $this->title;
 
 $allTerm = (new \yii\db\Query())->select(['title','id'])->from('teach_year_manage')
-                                ->indexby('id')->orderby('end_date desc')->column();
-$yearpost = ArrayHelper::getValue('post','yearpost')?ArrayHelper::getValue('post','yearpost'):key($allTerm);
+                                ->indexby('id')->orderby('start_date desc')->column();
+$yearpost = ArrayHelper::getValue($var,'yearpost')?ArrayHelper::getValue($var,'yearpost'):key($allTerm);
 
 $allDepartment = (new \yii\db\Query())->select(['title','id'])->from('teach_department')
                 ->indexby('id')->column();
@@ -93,8 +93,8 @@ $week = CommonFunction::getWeekday();
                    <?php
                     foreach ($week as $week_id => $weekday) {
                           $ifset = (new \yii\db\Query())
-                                ->from('teach_course')
-                                ->where(['class_id'=>$banji,'weekday'=>$week_id,'day_time_id'=>$daytime['id']])
+                                ->from('teach_course')->where(['year_id'=>$yearpost])
+                                ->andwhere(['class_id'=>$banji,'weekday'=>$week_id,'day_time_id'=>$daytime['id']])
                                 ->indexby('id')->one();
                           $courseName = '<span class="glyphicon glyphicon-plus-sign"></span>';
                          if($ifset)

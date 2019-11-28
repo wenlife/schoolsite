@@ -35,7 +35,10 @@ $this->params['breadcrumbs'][] = $this->title;
             }],
             'course_limit',
            // 'note',
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+             'header'=>'操作',
+              'template'=>'{update}&nbsp&nbsp{delete}',
+            ],
         ],
     ]); ?>
 </div>

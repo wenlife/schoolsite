@@ -28,7 +28,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             ['attribute'=>'department','value'=>'departmentname.title'], 
             'sort',
@@ -37,8 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'start',
             'end',
            // 'note',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+             'header'=>'操作',
+              'template'=>'{update}&nbsp&nbsp{delete}',
+            ],
         ],
     ]); ?>
 

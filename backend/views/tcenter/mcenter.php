@@ -23,32 +23,32 @@ $this->title = '';
                 <i class="fa fa-user"></i> 教师
               </a>
               <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachdepartment'])?>">
-                <i class="fa fa-institution"></i>学部
+                <i class="fa fa-institution text-success"></i>学部
               </a>
               <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachyear'])?>">
-                <i class="fa fa-calendar"></i>学期
+                <i class="fa fa-calendar text-success"></i>学期
               </a>
               <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachmanage'])?>">
                 <i class="fa fa-binoculars text-primary"></i> 任教
               </a>
               <a class="btn btn-app"  href="<?=Url::toRoute(['/school/daytime'])?>">
-                <span class="badge bg-yellow">3</span>
-                <i class="fa fa-list-alt"></i> 作息
+                <!-- <span class="badge bg-yellow">3</span> -->
+                <i class="fa fa-list-alt text-success"></i> 作息
               </a>
               <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachcourse'])?>">
-                <span class="badge bg-green">300</span>
-                <i class="fa fa-table"></i> 课程
+                <!-- <span class="badge bg-green">300</span> -->
+                <i class="fa fa-table text-primary"></i> 课程
               </a>
               <a class="btn btn-app"  href="<?=Url::toRoute(['/guest/adminuser'])?>">
-                <span class="badge bg-purple">891</span>
+                <!-- <span class="badge bg-purple">891</span> -->
                 <i class="fa fa-user-md"></i> 管理员
               </a>
               <a class="btn btn-app"  href="<?=Url::toRoute(['/guest/user'])?>">
-                <span class="badge bg-teal">67</span>
+                <!-- <span class="badge bg-teal">67</span> -->
                 <i class="fa fa-users"></i> 学生
               </a>
               <a class="btn btn-app">
-                <span class="badge bg-aqua">12</span>
+                <span class="badge bg-aqua">0</span>
                 <i class="fa fa-envelope"></i> 信息
               </a>
               <a class="btn btn-app">

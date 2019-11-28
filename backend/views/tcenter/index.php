@@ -9,7 +9,7 @@ $this->title = '教师中心';
 $this->params['breadcrumbs'][] = $this->title;
 
 $allTerm = (new \yii\db\Query())->select(['title','id'])->from('teach_year_manage')
-                                ->indexby('id')->orderby('end_date desc')->column();
+                                ->indexby('id')->orderby('start_date desc')->column();
 $term = $year?$year:key($allTerm);
 $week = CommonFunction::getWeekday();
 $allDaytime = (new \yii\db\Query())->from('teach_daytime')->orderby('sort')->all();

@@ -66,10 +66,17 @@ class TeachcourselimitController extends Controller
     {
         $model = new TeachCourseLimit();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $m = TeachCourseLimit::find()->where(['course_id'=>$model->course_id])->one();
+            if($m)
+            {
+                $m->course_limit = $model->course_limit;
+                $m->save();
+            }else{
+                $model->save();
+            }
+            return $this->redirect(['index']);
         }
-
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -87,7 +94,7 @@ class TeachcourselimitController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
