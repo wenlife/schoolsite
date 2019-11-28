@@ -8,6 +8,7 @@ use yii\bootstrap\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
+$this->title = "注册新用户";
 ?>
 
 <div class="login-box">
