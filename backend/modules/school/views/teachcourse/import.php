@@ -71,7 +71,8 @@ if(!is_null($errMSG)&&count($errMSG)>0)
       <b class="text-warning"><-以上内容可以选择修改表格重新导入或者手动录入,系统经过验证，可以重复导入</b>
     </div>
       <div class="box-footer">
-         <a class="btn btn-primary" href="<?=Url::toRoute(['index'])?>">回到管理页面</a>
+         <?=Html::a('回到管理页面',['index','flag'=>1],['class'=>'btn btn-primary'])?>
+         <?=Html::a('强制导入',['import','flag'=>1],['class'=>'btn btn-danger pull-right'])?>
       </div>
     </div>
   </div>

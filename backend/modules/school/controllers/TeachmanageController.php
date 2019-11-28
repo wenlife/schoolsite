@@ -41,7 +41,7 @@ class TeachmanageController extends Controller
      */
     public function actionIndex($yearpost=null,$department=null)
     {
-        $post = Yii::$app->request->post();
+        //$post = Yii::$app->request->post();
 
         $cuSubject = key(CommonFunction::getAllSubjects());
 
@@ -70,7 +70,7 @@ class TeachmanageController extends Controller
               $t1 = TeachManage::find()->where(['year_id'=>$term,'class_id'=>$banji,'subject'=>$subject])->one();
               if($t1)
                 $model = $t1;  
-              $model->year_id = $term;
+                $model->year_id = $term;
                 $model->class_id = $banji;
                 $model->subject = $subject;
                 $model->teacher_id = $teacher;
@@ -128,7 +128,7 @@ class TeachmanageController extends Controller
     }
 
 
-    public function actionImport()
+    public function actionImport($flag=0)
     {       
         $form = new Tm_form();  
         if($post=Yii::$app->request->post())
@@ -143,17 +143,24 @@ class TeachmanageController extends Controller
                     'headLine' => 1,
                 ]);
                 $data = $excel->getArray();
+                //需要对导入的表格进行基本的验证,并添加强制导入的选项
+                if(count(current($data))!=16&&$flag==0)
+                {
+                      $errMSG[] = '您选择的表格似乎不是任教的表格，请确认后再导入！';
+                      return $this->render('import',['model'=>$form,'errMSG'=>$errMSG]);
+                }
                 // 查找班级列表
                 $depart_year = (new \yii\db\Query())->select(['year'])->from('teach_department')->where(['id'=>$form->department])->scalar();
                 $class_list = (new \yii\db\Query())->select(['serial','id'])->from('teach_class')
                                ->where(['grade'=>$depart_year])->indexby('id')->orderby('serial')->column();
+
                 //查找该科目的老师，并组成任教数据:外层循环：学科，内层循环：班级
                 $subarr = CommonFunction::getAllTeachDuty();
                 foreach ($subarr as $sub_en_name => $sub_cn_name) {
                     $sub_teach_duty = ArrayHelper::getColumn($data,$sub_cn_name);
                     //var_export($sub_teach_duty);
                     foreach ($class_list as $class_id => $class_serial) {
-
+                        //因为是直接用getColumn获取的，所以serial-1 == id
                         $sub_teacher_name = trim(ArrayHelper::getValue($sub_teach_duty,$class_serial-1));
                         //$sub_teacher_name = $sub_teach_duty[$class_serial-1];
                         if($sub_teacher_name)//找不到名字也不做任何操作
@@ -176,15 +183,15 @@ class TeachmanageController extends Controller
                                                                      'class_id'=>$class_id,
                                                                      //'teacher_id' =>$teacher[0]->id,
                                                                      'subject'=>$sub_en_name
-                                                                 ])->one();
+                                                                    ])->one();
                                 if(!$model)
                                 {
                                     $model = new TeachManage();
                                 }
-                                $model->year_id = $form->year;
-                                $model->class_id = $class_id;
+                                $model->year_id    = $form->year;
+                                $model->class_id   = $class_id;
                                 $model->teacher_id = $teacher[0]->id;
-                                $model->subject  = $sub_en_name;
+                                $model->subject    = $sub_en_name;
                                 if(!$model->save())
                                 { 
                                     $errMSG[] = "<".$class_serial."班的任教学科<".$sub_cn_name.">保存失败！";

@@ -3,8 +3,8 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use yii\widgets\Pjax;
 use backend\libary\CommonFunction;
+use backend\modules\school\models\TeachManage;
 
 $this->title = '任教管理';
 $this->params['breadcrumbs'][] = $this->title;
@@ -18,18 +18,14 @@ $term = $yearpost?$yearpost:key($allTerm);
 
 $allDepartment = (new \yii\db\Query())->select(['title','id'])->from('teach_department')
                                       ->indexby('id')->column();
-$allSubject = CommonFunction::getAllTeachDuty();
 $department = $department?$department:key($allDepartment);
-//var_export($department);
-//$department = ArrayHelper::getValue('department');
+
+$allSubject = CommonFunction::getAllTeachDuty();
+
 $allClass = (new \yii\db\Query())->from('teach_class')->where(['department_id'=>$department])
                ->indexby('id')->all();
 ?>
 <div class="teach-manage-index">
-
-</div>
-<div class="tab">
-<?php Pjax::begin(); ?>
 <div class="box box-success">
     <div class="box-header with-border">
         <p>
@@ -72,44 +68,27 @@ $allClass = (new \yii\db\Query())->from('teach_class')->where(['department_id'=>
                    <td><?php echo ArrayHelper::getValue($classContent,'type')=='lk'?'理科':'文科'?></td>
                   <?php
                     foreach ($allSubject as $subjectid => $subject) {
-                      $ifset = (new \yii\db\Query())
-                                ->select(['teacher_id','id'])->from('teach_manage')
-                                ->where(['year_id'=>$term,'class_id'=>$classid,'subject'=>$subjectid])
-                                ->indexby('id')->one();
-                               // var_export($ifset['teacher_id']);
+                      //更改逻辑，如果查找不到，直接显示添加符号
+                      $manMSG = TeachManage::find()->where(['year_id'=>$term,'class_id'=>$classid,'subject'=>$subjectid])->one();
                       $dis_teacher_name = '<span class="glyphicon glyphicon-plus-sign"></span>';
-                      if($ifset)
-                       {   
-                          $teacherName = (new \yii\db\Query())
-                                      ->select('name')
-                                      ->from('user_teacher')
-                                      ->where(['id'=>ArrayHelper::getValue($ifset,'teacher_id')])
-                                      ->one();
-                          //var_export($teacherName);
-                          if($teacherName)
-                          { 
-                            $dis_teacher_name = ArrayHelper::getValue($teacherName,'name');
-                          }else{
-                            $dis_teacher_name = ArrayHelper::getValue($ifset,'teacher_id');
-                          }
-                        }
-                        echo  '<td><a type="button" href="#" class=""
-                                data-toggle="modal"
-                                data-term = "'.$term.'""
-                                data-subject="'.$subjectid.'" 
-                                data-banji="'.$classid.'"
-                                data-target="#exampleModal">'.$dis_teacher_name.
-                              '</a></td>';
+                      if($manMSG&&$manMSG->teacher)
+                      {
+                            $dis_teacher_name = $manMSG->teacher->name;
+                      }
+                      echo  '<td><a type="button" href="#" class="" data-toggle="modal"
+                              data-term = "'.$term.'""
+                              data-subject="'.$subjectid.'" 
+                              data-banji="'.$classid.'"
+                              data-target="#exampleModal">'.$dis_teacher_name.'</a></td>';
                     }
                   ?>
                 </tr>   
                 <?php  }?>  
-              </tbody></table>
+              </tbody>
+            </table>
             </div>
-
+    </div>
 </div>
-</div>
-<?php Pjax::end(); ?>
 </div>
 <style type="text/css">
     th,td{
@@ -121,7 +100,7 @@ $allClass = (new \yii\db\Query())->from('teach_class')->where(['department_id'=>
     <div class="modal-content">
 
         <div class="modal-body">
-            <?php $form = ActiveForm::begin(['id'=>'form2','action'=>Url::toRoute(['getteachers']),'options'=>['class'=>'form-inline']]); ?>
+            <?php $form = ActiveForm::begin(['id'=>'form2','action'=>'#','options'=>['class'=>'form-inline']]); ?>
             <div class="form-group">
               <?php echo Html::dropDownList('subject',null,CommonFunction::getAllSubjects(),
                 ['class'=>'form-control subject_choice','style'=>'width:100px','id'=>'subject']);

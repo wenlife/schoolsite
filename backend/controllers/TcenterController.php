@@ -94,7 +94,7 @@ class TcenterController extends \yii\web\Controller
     public function actionGetteacher($subject)
     {
     	$teachers =  (new \yii\db\Query())->select(['name','id'])->from('user_teacher')
-    	               ->where(['subject'=>$subject])->indexby('id')->orderby('pinx')->column();
+    	               ->where(['subject'=>$subject])->orderby('pinx desc')->indexby('id')->column();
     	return json_encode($teachers);
     }
 

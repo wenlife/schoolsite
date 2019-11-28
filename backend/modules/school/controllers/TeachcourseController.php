@@ -163,7 +163,7 @@ class TeachcourseController extends Controller
     }
 
 
-    public function actionImport()
+    public function actionImport($flag=0)
     {
         $model1 = new TeachCourse();
         //验证不能使用ar
@@ -181,6 +181,12 @@ class TeachcourseController extends Controller
                     'headLine' =>2,
                 ]);
                 $data = $excel->getArray();
+                //需要对导入的表格进行基本的验证,并添加强制导入的选项
+                if(count(current($data))!=53&&$flag==0)
+                { 
+                      $errMSG[] = '您选择的表格似乎不是课程安排的表格，请确认后再导入！';
+                      return $this->render('import',['model'=>$form,'errMSG'=>$errMSG]);
+                }
                 // 查找班级列表
                 $depart_year = (new \yii\db\Query())->select(['year'])->from('teach_department')->where(['id'=>$form->department])->scalar();
                 $class_list = (new \yii\db\Query())->select(['serial','id'])->from('teach_class')

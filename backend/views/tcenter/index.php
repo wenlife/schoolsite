@@ -109,21 +109,21 @@ $allDaytime = (new \yii\db\Query())->from('teach_daytime')->orderby('sort')->all
 <script src="js/radialIndicator.js"></script>
 <script type="text/javascript">
 
-var bg1 = radialIndicator('#indicatorContainer',{
-            barColor: '#87CEEB',
-            barWidth: 10,
-            initValue: 80,
-            roundCorner : true,
-            percentage: true
-        });
+// var bg1 = radialIndicator('#indicatorContainer',{
+//             barColor: '#87CEEB',
+//             barWidth: 10,
+//             initValue: 80,
+//             roundCorner : true,
+//             percentage: true
+//         });
 
-  $('.hover').mouseover(function(){
-    $(this).css('border','1px solid #ccc');
-    bg1.option('barColor','#ccc');
-  });
-  $('.hover').mouseout(function(){
-    $(this).css('border','none');
-  });
+//   $('.hover').mouseover(function(){
+//     $(this).css('border','1px solid #ccc');
+//     bg1.option('barColor','#ccc');
+//   });
+//   $('.hover').mouseout(function(){
+//     $(this).css('border','none');
+//   });
 
 
   // $('#indicatorContainer').radialIndicator({
