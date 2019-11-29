@@ -30,7 +30,7 @@ class SignupForm extends Model
             ['secode', 'filter', 'filter' => 'trim'],
             ['secode', 'required'],
             ['secode', 'string', 'max' => 4],
-            ['email','required']
+            ['email','required'],
             ['email', 'unique', 'targetClass' => '\common\models\Adminuser', 'message' => '邮件地址已经存在'],
             ['name', 'string', 'max' => 100],
             [['password','password_repeat'], 'required'],
