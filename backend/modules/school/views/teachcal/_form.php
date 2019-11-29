@@ -23,7 +23,7 @@ use kartik\datetime\DateTimePicker;
            'format' => 'yyyy-mm-dd hh:ii', 
            // 'startDate' => '01-Mar-2014 12:00 AM',
            'todayHighlight' => true,
-           'minView'=>"day",
+          // 'minView'=>"day",
             'todayBtn'=>1,
             'autoclose'=>1,
         ]
@@ -35,7 +35,7 @@ use kartik\datetime\DateTimePicker;
            'format' => 'yyyy-mm-dd hh:ii', 
             //'startDate' => '01-Mar-2014 12:00 AM',
            'todayHighlight' => true,
-           'minView'=>"day",
+           //'minView'=>"day",
             'todayBtn'=>1,
             'autoclose'=>1,
         ]

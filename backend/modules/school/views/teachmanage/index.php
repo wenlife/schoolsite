@@ -37,7 +37,7 @@ $allClass = (new \yii\db\Query())->from('teach_class')->where(['department_id'=>
           <?php echo Html::dropDownList('yearpost',$term,$allTerm,['class'=>'form-control']);?>
         </div>
         <div class="form-group">
-          <?php echo Html::dropDownList('department',$department,$allDepartment,['class'=>'form-control']);?>
+          <?php echo Html::dropDownList('department',$department,$allDepartment,['class'=>'form-control','id'=>'department']);?>
         </div>
         <button type="submit" class="btn btn-primary">查询</button>
         <?= Html::a('清空数据', ['delete','yearpost'=>$term,'department'=>$department], ['class' => 'btn btn-danger pull-right','onclick'=>'return confirm("确实要删除当前级部的任教信息吗？")']) ?>
@@ -162,6 +162,10 @@ $(function(){
               $("select#teacher").append("<option value="+x+">"+result[x]+"</option>");
           }
         });
+    });
+    $("select#department").on('change',
+      function(e2){ 
+          $("#form1").submit();
     });
 
     $("select#teacher").on('change',

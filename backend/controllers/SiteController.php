@@ -113,21 +113,24 @@ class SiteController extends Controller
         $errMSG = [];
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
+
             //exit(var_export($model));
             //如果已经注册
-            if(AdminUser::findByUsername($model->username)){
-                $errMSG[] = '您已经注册，如果忘记密码，可到信息中心重置！';
-                return $this->render('signup', ['model' => $model,]);
-            }
+            // if(AdminUser::findByUsername($model->username)){
+            //     $errMSG[] = '您已经注册，如果忘记密码，可到信息中心重置！';
+            //     return $this->render('signup', ['model' => $model,]);
+            // }
+            //                 exit("ss");
             //查找是否有安全码
             $teacherModel = new userTeacher();
             $teacher = $teacherModel->find()->where(['secode'=>$model->secode])->one();
             if ($teacher!=null) {
+
                 $model->name = $teacher->name;
-                $model->type = $teacher->type;
                 //$model->status = 10;
                 if ($user = $model->signup()) {
-                     $user->status = 10;
+
+                     $user->type = $teacher->type;
                      $user->save();
                      $teacher->username = $model->username;
                     if(!$teacher->save())
@@ -136,8 +139,6 @@ class SiteController extends Controller
                         return $this->render('signup', ['model' => $model,]);
                     }
                     return $this->redirect(['/site/login']);
-                }else{
-                    $errMSG[] = '注册失败！';
                 }
             }else{
                 $errMSG[] = "安全码不正确！";

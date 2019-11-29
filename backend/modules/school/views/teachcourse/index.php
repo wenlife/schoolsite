@@ -290,6 +290,10 @@ $(function(){
 })
 });
 
+$('select#classoption').on('change',function(e){
+   $("#form1").submit();
+})
+
 $("select.subject_choice").on('change',
 function(e){ 
     $("#form2").submit();

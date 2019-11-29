@@ -30,9 +30,13 @@ $this->title = "注册新用户";
                 <?= $form->field($model, 'email')->label('电子邮件') ?>
                 <ul>
                     <?php
-                         foreach ($errMSG as $km => $vm) {
-                            echo "<li>".$vm."</li>";
+                    if(isset($errMSG))
+                    {
+                        foreach ($errMSG as $km => $vm) {
+                            echo "<li class='text-danger'>".$vm."</li>";
                          }
+                    }
+
                     ?>
                 </ul>
                 <div class="form-group">
