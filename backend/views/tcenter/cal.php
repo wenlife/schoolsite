@@ -51,6 +51,7 @@ $cal = (new \yii\db\Query())->select(['title','start','end','color'])->from('tea
       //defaultDate: '2019-08-12',
       height:600,
       locale:'zh-cn',
+      displayEventTime:false,
       navLinks: true, // can click day/week names to navigate views
       businessHours: true, // display business hours
       editable: true,
