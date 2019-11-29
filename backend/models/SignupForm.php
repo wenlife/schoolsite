@@ -15,6 +15,7 @@ class SignupForm extends Model
     public $email;
     public $secode;
     public $password;
+    public $password_repeat;
 
     /**
      * @inheritdoc
@@ -31,8 +32,9 @@ class SignupForm extends Model
             ['secode', 'string', 'max' => 4],
             ['email', 'unique', 'targetClass' => '\common\models\Adminuser', 'message' => '邮件地址已经存在'],
             ['name', 'string', 'max' => 100],
-            ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            [['password','password_repeat'], 'required'],
+            [['password','password_repeat'], 'string', 'min' => 6],
+            ['password_repeat','compare','compareAttribute'=>'password']
         ];
     }
 

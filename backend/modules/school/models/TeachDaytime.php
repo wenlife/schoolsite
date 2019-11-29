@@ -51,7 +51,7 @@ class TeachDaytime extends \yii\db\ActiveRecord
     {
         return [
             'id' => '编号',
-            'department' => '年级部',
+            'department' => '年级部(暂不生效)',
             'sort' => '序号',
             'part' => '时段',
             'title' => '标题',

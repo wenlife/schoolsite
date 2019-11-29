@@ -26,6 +26,7 @@ $this->title = "注册新用户";
                 <?= $form->field($model, 'secode')->label('安全码(请联系管理员获取)') ?>
 
                 <?= $form->field($model, 'password')->passwordInput()->label('密码') ?>
+                <?= $form->field($model, 'password_repeat')->passwordInput()->label('密码确认') ?>
 
                 <?= $form->field($model, 'email')->label('电子邮件') ?>
                 <ul>

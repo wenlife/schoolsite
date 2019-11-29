@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="teach-department-index">
     <p>
         <?= Html::a('新建级部', ['create'], ['class' => 'btn btn-success']) ?>
-        <span>确保班级是当前年份的班级：(1)修改班级，修改任教数据；（2）确保班级年份和级部设置一致</span>
+        <p>请及时更新年级部的年级数据,影响到系统班级新建和查询功能</p>
     </p>
 
     <?= GridView::widget([

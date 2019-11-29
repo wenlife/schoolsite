@@ -1,18 +1,12 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
 /* @var $this yii\web\View */
 /* @var $model backend\modules\guest\models\Teacher */
-
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Teachers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="teacher-view">
-
-
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('回到首页', ['index'], ['class' => 'btn btn-primary']) ?>
