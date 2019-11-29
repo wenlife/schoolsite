@@ -39,6 +39,10 @@ $this->title = '';
                 <!-- <span class="badge bg-green">300</span> -->
                 <i class="fa fa-table text-primary"></i> 课程
               </a>
+              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachcal'])?>">
+                <!-- <span class="badge bg-green">300</span> -->
+                <i class="fa fa-calendar text-primary"></i> 校历
+              </a>
               <a class="btn btn-app"  href="<?=Url::toRoute(['/guest/adminuser'])?>">
                 <!-- <span class="badge bg-purple">891</span> -->
                 <i class="fa fa-user-md"></i> 管理员
