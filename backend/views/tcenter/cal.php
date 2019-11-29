@@ -49,6 +49,7 @@ $cal = (new \yii\db\Query())->select(['title','start','end','color'])->from('tea
         right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
       },
       //defaultDate: '2019-08-12',
+      height:700,
       locale:'zh-cn',
       navLinks: true, // can click day/week names to navigate views
       businessHours: true, // display business hours
@@ -89,5 +90,6 @@ $(function(){
 })
 
 </script>
+
 
   
