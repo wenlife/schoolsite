@@ -74,7 +74,13 @@ $class_id = $class_id?$class_id:key($classes);
                  $teacher_id = (new \yii\db\Query())->select(['teacher_id'])->from('teach_manage')->where(['year_id'=>$term,'class_id'=>$class_id,'subject'=>$sub])->scalar();
 
                 echo "<td style='text-align:center'>";
-                echo Html::a(ArrayHelper::getValue(CommonFunction::getAllSubjects(),$sub.""),['tcenter/index','teacher_id'=>$teacher_id]);
+                if($teacher_id)
+                {
+                    echo Html::a(ArrayHelper::getValue(CommonFunction::getAllSubjects(),$sub.""),['tcenter/index','teacher_id'=>$teacher_id]);
+                }else{
+                    echo ArrayHelper::getValue(CommonFunction::getAllSubjects(),$sub."");
+                }
+
                 //echo ArrayHelper::getValue(CommonFunction::getAllSubjects(),$sub."");
                 echo "</td>";
               }
