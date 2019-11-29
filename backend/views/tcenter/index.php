@@ -19,7 +19,7 @@ $allDaytime = (new \yii\db\Query())->from('teach_daytime')->orderby('sort')->all
         <!-- /.col -->
         <div class="col-md-9">
           <div class="tab">
-              <div class="box box-success">
+              <div class="box box-primary">
                   <div class="box-header with-border">
                       <?php 
                       $form = ActiveForm::begin(['id'=>'form1','method'=>'get','action'=>Url::toRoute(['index']),'options'=>['class'=>'form-inline']]); ?>
@@ -48,8 +48,7 @@ $allDaytime = (new \yii\db\Query())->from('teach_daytime')->orderby('sort')->all
                       <?php ActiveForm::end(); ?>
                   </div>
                   <div class="box-body table-responsive no-padding">
-                    
-                        <table class="table table-bordered  table-hover">
+                        <table class="table table-hover">
                           <thead>  
                           <tr>
                             <th>节次</th>
@@ -61,7 +60,7 @@ $allDaytime = (new \yii\db\Query())->from('teach_daytime')->orderby('sort')->all
                               foreach ($allDaytime as $time_id => $daytime) {
                                   if($time_id>=2 &&($allDaytime[$time_id-1]['part']!=$allDaytime[$time_id]['part']))
                                   {
-                                      echo "<tr style='border-top:2px solid #ccc'>";
+                                      echo "<tr style='border-top:2px solid'>";
                                   }else{
                                        echo "<tr>";
                                   }
@@ -104,48 +103,16 @@ $allDaytime = (new \yii\db\Query())->from('teach_daytime')->orderby('sort')->all
         <!-- /.col -->
       </div>
 
-
-<script src="js/jquery-1.8.3.min.js"></script>
-<script src="js/radialIndicator.js"></script>
-<script type="text/javascript">
-
-// var bg1 = radialIndicator('#indicatorContainer',{
-//             barColor: '#87CEEB',
-//             barWidth: 10,
-//             initValue: 80,
-//             roundCorner : true,
-//             percentage: true
-//         });
-
-//   $('.hover').mouseover(function(){
-//     $(this).css('border','1px solid #ccc');
-//     bg1.option('barColor','#ccc');
-//   });
-//   $('.hover').mouseout(function(){
-//     $(this).css('border','none');
-//   });
-
-
-  // $('#indicatorContainer').radialIndicator({
-  //               barColor: '#87CEEB',
-  //               barWidth: 10,
-  //               initValue: 80,
-  //               roundCorner : true,
-  //               percentage: true
-  //           });
-    $('#indicatorContainer1').radialIndicator({
-                barColor: '#3fc',
-                barWidth: 10,
-                initValue: 40,
-                roundCorner : true,
-                percentage: true
-            });
-        $('#indicatorContainer2').radialIndicator({
-                barColor: 'red',
-                barWidth: 10,
-                initValue: 40,
-                roundCorner : true,
-                percentage: true
-            });
-</script>
+<style type="text/css">
+ table,td,th{
+     /*边框合并*/
+     border-collapse: collapse;
+     border: 1px solid #337ab7;
+     text-align: center;
+ }
+table th{
+  background-color: #337ab7;
+  color:#fff;
+}
+</style>
 

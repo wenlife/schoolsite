@@ -51,7 +51,7 @@ $class_id = $class_id?$class_id:key($classes);
       </div>
       <div class="box-body table-responsive no-padding">
         
-             <table class="table table-bordered  table-hover">
+             <table class="table  table-hover">
               <thead>  
               <tr>
                 <th>节次</th>
@@ -63,7 +63,7 @@ $class_id = $class_id?$class_id:key($classes);
                   foreach ($allDaytime as $time_id => $daytime) {
                       if($time_id>=2 &&($allDaytime[$time_id-1]['part']!=$allDaytime[$time_id]['part']))
                       {
-                          echo "<tr style='border-top:2px solid #ccc'>";
+                          echo "<tr style='border-top:2px solid'>";
                       }else{
                            echo "<tr>";
                       }
@@ -123,4 +123,15 @@ $class_id = $class_id?$class_id:key($classes);
 </div>
   <!-- /.col -->
 </div>
-
+<style type="text/css">
+ table,td,th{
+     /*边框合并*/
+     border-collapse: collapse;
+     border: 1px solid #337ab7;
+     text-align: center;
+ }
+table th{
+  background-color: #337ab7;
+  color:#fff;
+}
+</style>
