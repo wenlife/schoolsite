@@ -118,7 +118,6 @@ class TeachcourseController extends Controller
                 }else{
                     $teacher_id = "";
                 }
-
                 return  json_encode(['teacher_id'=>$teacher_id,'yearpost'=>$year,'subject'=>$subject]);           //$teacher_id;
                 //return 'success';
             }else{

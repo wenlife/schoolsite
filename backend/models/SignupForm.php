@@ -24,18 +24,19 @@ class SignupForm extends Model
     {
         return [
             ['username', 'filter', 'filter' => 'trim'],
-            ['username', 'required'],
+            ['username', 'required','message'=>'用户名不能为空!'],
             ['username', 'unique', 'targetClass' => '\common\models\Adminuser', 'message' => '用户名已经存在'],
-            ['username', 'string', 'min' => 2, 'max' => 255],
+            ['username', 'string', 'min' => 2, 'max' => 255,'tooShort' => '用户名必须在2-255长度之间！'],
             ['secode', 'filter', 'filter' => 'trim'],
-            ['secode', 'required'],
-            ['secode', 'string', 'max' => 4],
-            ['email','required'],
+            ['secode', 'required','message'=>'安全码不能为空！'],
+            ['secode', 'string', 'max' => 4,'tooLong' => '安全码长度最高为4位！'],
+            ['email','email', 'message' => '邮件格式不正确'],
+            ['email','required', 'message' => '邮件地址不能为空'],
             ['email', 'unique', 'targetClass' => '\common\models\Adminuser', 'message' => '邮件地址已经存在'],
             ['name', 'string', 'max' => 100],
-            [['password','password_repeat'], 'required'],
-            [['password','password_repeat'], 'string', 'min' => 6],
-            ['password_repeat','compare','compareAttribute'=>'password']
+            [['password','password_repeat'], 'required','message' => '请确认您输入的密码！'],
+            [['password','password_repeat'], 'string', 'min' => 6,'tooShort' => '密码长度至少为六位！'],
+            ['password_repeat','compare','compareAttribute'=>'password','message'=>'两次输入的密码不相同！']
         ];
     }
 

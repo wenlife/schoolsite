@@ -13,22 +13,22 @@ $this->title = "注册新用户";
 
 <div class="login-box">
     <div class="login-logo">
-        <a href="#"><b>信息技术</b>系统注册</a>
+        <a href="#"><b>教师用户</b>系统注册</a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">填入获得的信息以注册</p>
+        <p class="login-box-msg">请按照要求填入信息以注册</p>
 
               <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true])->label('用户名') ?>
+                <?= $form->field($model, 'username')->textInput(['autofocus' => true,'placeholder'=>'请输入2-255个字符'])->label('用户名') ?>
 
-                <?= $form->field($model, 'secode')->label('安全码(请联系管理员获取)') ?>
+                <?= $form->field($model, 'secode')->textInput(['placeholder'=>'请输入从管理员处获得的4位安全码'])->label('安全码') ?>
 
-                <?= $form->field($model, 'password')->passwordInput()->label('密码') ?>
-                <?= $form->field($model, 'password_repeat')->passwordInput()->label('密码确认') ?>
+                <?= $form->field($model, 'password')->passwordInput(['placeholder'=>'密码至少6位数'])->label('密码') ?>
+                <?= $form->field($model, 'password_repeat')->passwordInput(['placeholder'=>'请再次输入密码'])->label('密码确认') ?>
 
-                <?= $form->field($model, 'email')->label('电子邮件') ?>
+                <?= $form->field($model, 'email')->textInput(['placeholder'=>'请输入邮箱地址以保持联系'])->label('电子邮件') ?>
                 <ul>
                     <?php
                     if(isset($errMSG))

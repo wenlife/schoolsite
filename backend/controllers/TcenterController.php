@@ -11,8 +11,6 @@ class TcenterController extends \yii\web\Controller
 {
 	public $layout="tcenter";
 
-
-
     public function actionIndex($year=null,$subject=null,$teacher_id=null)
     {
         //$post = Yii::$app->request->post();
