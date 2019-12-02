@@ -35,7 +35,7 @@ class SiteController extends Controller
                         'roles'=>['?']
                     ],
                     [
-                        'actions' => ['logout','list','detail','vdetail','pdetail','center','test','myclass','resetpwd','myinfo','index'],
+                        'actions' => ['logout','list','detail','vdetail','pdetail','center','test','myclass','resetpwd','myinfo','index','error'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -171,6 +171,7 @@ class SiteController extends Controller
 
         }
     }
+
 
     // public function actionTest()
     // {
