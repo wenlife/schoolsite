@@ -13,6 +13,8 @@ return [
     'name'=>'七中内网',
     'bootstrap' => ['log'],
     'language' =>'zh-CN',
+    'timeZone' => 'Asia/Shanghai',
+    'defaultRoute' => 'tcenter',
     'modules' => [
        'content' => [
             'class' => 'backend\modules\content\Module',
@@ -63,6 +65,9 @@ return [
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
+        ],
+        'assetManager' => [
+            'appendTimestamp' => true,
         ],
         /*
         'urlManager' => [

@@ -39,6 +39,12 @@ class UserTeacher extends \yii\db\ActiveRecord
         ];
     }
 
+
+    public function getSubjectTeacherArray($subject)
+    {
+        return $this->find()->select(['name','id'])->where(['subject'=>$subject])->indexby('id')->orderby('pinx ASC')->column();
+    }
+
     
 
     /**

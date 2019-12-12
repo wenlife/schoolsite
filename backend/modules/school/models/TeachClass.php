@@ -44,6 +44,15 @@ class TeachClass extends \yii\db\ActiveRecord
     }
 
 
+    public function getClassArray($department_id)
+    {
+        return $this->find()->select(['title','id'])
+                          ->filterwhere(['department_id'=>$department_id])
+                          ->indexby('id')
+                          ->column();
+    }
+
+
     public function getTaskline()
     {
        return  $this->hasOne(Taskline::className(),['grade'=>'grade','banji'=>'serial']);
@@ -53,7 +62,7 @@ class TeachClass extends \yii\db\ActiveRecord
     {
         return $this->hasOne(TeachDepartment::className(),['id'=>'department_id']);
     }
-
+    
     /**
      * {@inheritdoc}
      */

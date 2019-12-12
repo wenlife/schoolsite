@@ -42,6 +42,7 @@ class TeachDaytime extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+
     
     public function getDepartmentname()
     {

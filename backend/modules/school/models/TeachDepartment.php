@@ -35,6 +35,11 @@ class TeachDepartment extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getDepartmentArray()
+    {
+        return $this->find()->select(['title','id'])->indexby('id')->column();
+    }
+
     /**
      * {@inheritdoc}
      */

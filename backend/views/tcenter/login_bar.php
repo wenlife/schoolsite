@@ -1,6 +1,8 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use common\models\BackendLoginForm;
+$model = new BackendLoginForm();
 ?>
 <div class="box box-primary">
   <div class="box-body box-profile">

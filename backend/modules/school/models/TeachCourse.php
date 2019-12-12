@@ -3,7 +3,10 @@
 namespace backend\modules\school\models;
 
 use Yii;
-
+use yii\helpers\ArrayHelper;
+use backend\libary\CommonFunction;
+use backend\modules\school\models\TeachManage;
+use backend\modules\school\models\TeachDaytime;
 /**
  * This is the model class for table "teach_course".
  *
@@ -37,6 +40,32 @@ class TeachCourse extends \yii\db\ActiveRecord
            [['subject_id', 'subject2_id'], 'string', 'max' => 11],
            [['note'], 'string', 'max' => 100],
         ];
+    }
+
+    public function getWeekCourse($term,$class_id)
+    {
+      $allDaytime = TeachDaytime::find()->orderby('sort')->indexby('sort')->all();
+      $week       = CommonFunction::getWeekday();
+      $subjects   = CommonFunction::getAllSubjects();
+      $subs = $this->find()->where(['year_id'=>$term,
+                                 'class_id'=>$class_id])->indexby(function($row){
+                                    return $row['day_time_id'].'-'.$row['weekday'];
+                                 })->all();
+      $teachers = TeachManage::find()->select(['teacher_id','subject'])->where(['year_id'=>$term,
+                                                'class_id'=>$class_id])->indexby('subject')->column();
+      foreach ($allDaytime as $time_id=>$daytime) {
+        foreach ($week as $week_id => $weekday) { 
+            //注意：此处的daytime的index值是用sort的值，不是id值
+            $sub = ArrayHelper::getValue($subs,$daytime->id.'-'.$week_id);
+            if($sub)
+            {
+                $weekCourse[$time_id][$week_id] = ['sub'=>ArrayHelper::getValue($subjects,$sub->subject_id),
+                                                   't_id'=>ArrayHelper::getValue($teachers,$sub->subject_id)];
+            }
+            
+        }
+      }
+      return $weekCourse;
     }
 
     /**
