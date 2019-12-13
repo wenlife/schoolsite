@@ -1,13 +1,13 @@
 <?php
-
 namespace backend\modules\school\controllers;
 
 use Yii;
-use backend\modules\school\models\TeachCal;
-use backend\modules\school\models\TeachcalSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\modules\school\models\TeachCal;
+use backend\modules\school\models\TeachcalSearch;
+
 
 /**
  * TeachcalController implements the CRUD actions for TeachCal model.

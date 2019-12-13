@@ -1,14 +1,14 @@
 <?php
-
 namespace backend\modules\school\controllers;
 
 use Yii;
-use backend\modules\school\models\TeachClass;
-use backend\modules\school\models\TeachClassSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use backend\modules\school\forms\ClassGenerate;
+use backend\modules\school\models\TeachClass;
+use backend\modules\school\models\TeachClassSearch;
+use backend\modules\school\models\teachDepartment;
 /**
  * TeachclassController implements the CRUD actions for TeachClass model.
  */
@@ -41,6 +41,7 @@ class TeachclassController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'departments'=> (new teachDepartment())->getDepartmentArray(),
         ]);
     }
 
@@ -87,57 +88,44 @@ class TeachclassController extends Controller
 
     public function actionFactory()
     {
-        $errMSG = null;
-        if($post = Yii::$app->request->post())
+        $errMSG =null;
+        $model = new ClassGenerate();
+        if($model->load(Yii::$app->request->post()))
         {
-            $department = $post['department'];
-            $start = $post['start'];
-            $end = $post['end'];
-            if(is_numeric($start)&&is_numeric($end)&&($start<=$end))
-            {
-                if(is_numeric($department))
-                {
-                    $grade = (new \yii\db\Query())->select(['year'])->from('teach_department')->where(['id'=>$department])->indexby('year')->scalar();
-                    if($grade)
-                    {
-                        for($i=$start;$i<=$end;$i++)
-                        {
-                            $model = TeachClass::find()->where(['department_id'=>$department,
-                                                                'grade'=>$grade,'serial'=>$i])->one();
-                            if($model)
-                            {
-                                $errMSG.= '<li>'.$grade.'届'.$i.'班已经存在！</li>';
-                                continue;
-                            }
-                            $model = new TeachClass();
-                            $model->title = $grade.'届'.$i.'班';
-                            $model->grade = $grade;
-                            $model->department_id = $department;
-                            $model->serial = $i;
-                            $model->school = "市七中";
-                            $model->type = 'lk';
-                            if(!$model->save()){
-                                 $errMSG.= '<li>'.$i.'班生成失败！</li>';
-                            }
-                        }
-                    }else{
-                        $errMSG.='<li>年级部无法在数据库中找到！<li>';
-                    }
-                }else{
-                    $errMSG .= '<li>年级部选择错误！</li>';
-                }
 
+            $department = TeachDepartment::findOne($model->department);
+            if($department)
+            {
+                $grade = $department->year;
+                for($i=$model->start;$i<=$model->end;$i++)
+                {
+                    $ctitle = $grade.'届'.$i.'班';
+                    $tmodel = TeachClass::find()->where(['department_id'=>$model->department,
+                                                        'grade'=>$grade,'serial'=>$i])->one();
+                    if($tmodel)
+                    {
+                        $errMSG.= '  '.$ctitle.'已经存在！';
+                        //$model->addError('<li>'.$grade.'届'.$i.'班已经存在！</li>');
+                        continue;
+                    }
+                    $tmodel = new TeachClass();
+                    $tmodel->attributes = ['title'=>$ctitle,'grade'=>$grade,'department_id'=>$department->id,'serial'=>$i,'school'=>"市七中",'type'=>'lk'];
+                    if(!$tmodel->save()){
+                        //var_export($tmodel->getErrors());
+                         $errMSG.= '  '.$i.'班生成失败！';
+                    }
+                }
             }else{
-                $errMSG = '<li>班级序号顺序选择错误，请重新开始！</li>';
+                $errMSG='年级部无法在数据库中找到！';
             }
 
-            if($errMSG == null)
-                return $this->redirect(['index']);
+        if($errMSG == null)
+           return $this->redirect(['index']);
+        else
+           Yii::$app->session->setFlash('error',$errMSG);
         }
-
-
-        return $this->render('factory',['errMSG'=>$errMSG]);
-
+        $departments = (new teachDepartment())->getDepartmentArray();
+        return $this->render('factory',['model'=>$model,'departments'=>$departments,'errMSG'=>$errMSG]);
     }
 
     /**

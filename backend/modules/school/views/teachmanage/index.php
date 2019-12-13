@@ -1,29 +1,15 @@
 <?php
+use yii\web\View;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use backend\libary\CommonFunction;
-use backend\modules\school\models\TeachManage;
 
 $this->title = '任教管理';
 $this->params['breadcrumbs'][] = $this->title;
-$allTerm = (new \yii\db\Query())
-                ->select(['title','id'])
-                ->from('teach_year_manage')
-                ->indexby('id')
-                ->orderby('start_date desc')
-                ->column();
-$term = $yearpost?$yearpost:key($allTerm);
-
-$allDepartment = (new \yii\db\Query())->select(['title','id'])->from('teach_department')
-                                      ->indexby('id')->column();
-$department = $department?$department:key($allDepartment);
-
 $allSubject = CommonFunction::getAllTeachDuty();
 
-$allClass = (new \yii\db\Query())->from('teach_class')->where(['department_id'=>$department])
-               ->indexby('id')->all();
 ?>
 <div class="teach-manage-index">
 <div class="box box-success">
@@ -34,31 +20,26 @@ $allClass = (new \yii\db\Query())->from('teach_class')->where(['department_id'=>
         </p>
         <?php $form = ActiveForm::begin(['id'=>'form1','action'=>'index.php?r=school/teachmanage','method'=>'get','options'=>['class'=>'form-inline']]); ?>
         <div class="form-group">
-          <?php echo Html::dropDownList('yearpost',$term,$allTerm,['class'=>'form-control']);?>
+          <?php echo Html::dropDownList('term',$term,$allTerm,['class'=>'form-control']);?>
         </div>
         <div class="form-group">
           <?php echo Html::dropDownList('department',$department,$allDepartment,['class'=>'form-control','id'=>'department']);?>
         </div>
         <button type="submit" class="btn btn-primary">查询</button>
-        <?= Html::a('清空数据', ['delete','yearpost'=>$term,'department'=>$department], ['class' => 'btn btn-danger pull-right','onclick'=>'return confirm("确实要删除当前级部的任教信息吗？")']) ?>
+        <?= Html::a('清空数据', ['delete','term'=>$term,'department'=>$department], ['class' => 'btn btn-danger pull-right','onclick'=>'return confirm("确实要删除当前级部的任教信息吗？")']) ?>
         <?php ActiveForm::end(); ?>
     </div>
     <!-- /.box-header -->
     <div class="box-body no-padding">
             <div class="box-body">
-              <table class="table table-bordered">
+              <table class="my table table-bordered">
                 <tbody>
                 <tr>
                   <th style="width: 10px">#</th>
                   <th style="width: 100px">班级列表</th>
                   <th style="width: 50px">类型</th>
-                  <?php
-                     foreach ($allSubject as $id => $subject) {
-                         echo '<th>'.$subject.'</th>';
-                     }
-                  ?>
+                  <?php foreach ($allSubject as $id => $subject) { echo '<th>'.$subject.'</th>';}?>
                 </tr>
-                
                 <?php
                     foreach ($allClass as $classid => $classContent) {
                 ?>
@@ -69,8 +50,8 @@ $allClass = (new \yii\db\Query())->from('teach_class')->where(['department_id'=>
                   <?php
                     foreach ($allSubject as $subjectid => $subject) {
                       //更改逻辑，如果查找不到，直接显示添加符号
-                      $manMSG = TeachManage::find()->where(['year_id'=>$term,'class_id'=>$classid,'subject'=>$subjectid])->one();
                       $dis_teacher_name = '<span class="glyphicon glyphicon-plus-sign"></span>';
+                      $manMSG = ArrayHelper::getValue($allTeach,$classid.'-'.$subjectid);
                       if($manMSG&&$manMSG->teacher)
                       {
                             $dis_teacher_name = $manMSG->teacher->name;
@@ -90,11 +71,7 @@ $allClass = (new \yii\db\Query())->from('teach_class')->where(['department_id'=>
     </div>
 </div>
 </div>
-<style type="text/css">
-    th,td{
-        text-align: center;
-    }
-</style>
+
 <div class="modal fade" id="exampleModal" class="mymodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
@@ -120,15 +97,15 @@ $allClass = (new \yii\db\Query())->from('teach_class')->where(['department_id'=>
     </div>
   </div>
 </div>
-<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-<script type="text/javascript">
-$(function(){
+<?php
+$this->registerJs(<<<JS
+  $(function(){
     $('#exampleModal').on('show.bs.modal', function (event) {
       //模态窗口居中显示
       var modal = $(this)
-      var $modal_dialog = modal.find('.modal-dialog');
+      var modal_dialog = modal.find('.modal-dialog');
       modal.css('display', 'block');
-      $modal_dialog.css({'margin-top': Math.max(0, ($(window).height() - $modal_dialog.height()) / 2)-150 });
+      modal_dialog.css({'margin-top': Math.max(0, ($(window).height() - modal_dialog.height()) / 2)-150 });
       //模态窗口数据填充
       var button = $(event.relatedTarget) // Button that triggered the modal
       var recipient = button.data('banji') // Extract info from data-* attributes
@@ -173,5 +150,5 @@ $(function(){
           $("#form2").submit();
         });
     });
-
-</script>
+JS,View::POS_LOAD)
+?>

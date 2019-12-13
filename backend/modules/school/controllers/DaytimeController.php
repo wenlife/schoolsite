@@ -1,14 +1,12 @@
 <?php
-
 namespace backend\modules\school\controllers;
 
 use Yii;
-use backend\modules\school\models\TeachDaytime;
-use backend\modules\school\models\DaytimeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use backend\modules\school\models\TeachDaytime;
+use backend\modules\school\models\DaytimeSearch;
 /**
  * DaytimeController implements the CRUD actions for TeachDaytime model.
  */

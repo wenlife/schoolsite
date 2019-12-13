@@ -18,7 +18,7 @@ $department = (new \yii\db\Query())->select(['title','id'])->from('teach_departm
 <div class="col-md-6">
 <div class="box box-primary">
 <div class="box-header with-border">
-  <h3 class="box-title">导入任教信息<small>  注意：只能分学年和年级导入</small></h3>
+  <h3 class="box-title">导入任教信息</h3>
 </div>
 <!-- /.box-header -->
 <!-- form start -->
@@ -34,6 +34,12 @@ $department = (new \yii\db\Query())->select(['title','id'])->from('teach_departm
       <?= $form->field($model, 'imageFile')->fileInput()->label('教师名单') ?>
       <p class="help-block"><a href="example/teach_import.xls" download="任教导入模板.xls">任教信息例表下载</a></p>
     </div>
+    <p class="help-block">注意事项</p>
+    <ul>
+      <li class="text-danger">必须分学部和年级导入</li>
+      <li class="text-danger">请使用模板修改再导入</li>
+      <li class="text-danger">如果同学科与两个<b>名字相同的人</b>，请注意明确区分，否则会出现意想不到的错误</li>
+    </ul>
   </div>
   <div class="box-footer">
     <button type="submit" class="btn btn-primary">导入数据</button>

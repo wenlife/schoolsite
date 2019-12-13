@@ -1,19 +1,16 @@
 <?php
-
 namespace backend\modules\guest\controllers;
-
 use Yii;
+//use PHPExcel; 
+use yii\web\Controller;
+use yii\web\UploadedFile;
+use yii\web\NotFoundHttpException;
+use yii\db\Exception;
+use yii\filters\VerbFilter;
 use common\models\User;
 use common\models\UserSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use  yii\db\Exception;
 use backend\modules\school\models\TeachClass;
-use PHPExcel;
 use backend\modules\guest\forms\UploadOnly;
-use yii\web\UploadedFile;
-
 /**
  * UserController implements the CRUD actions for User model.
  */
@@ -120,81 +117,6 @@ class UserController extends Controller
                 exit(var_export($e));
             }
             return $this->redirect(['index']);  
-        }
-        return $this->render('import',['model'=>$model,'class'=>$classes]);
-    }
-
-
-    public function actionImport1()
-    {
-
-        $model = new UploadOnly();
-        $classes = UserBanji::find()->orderby('serial')->all();
-        //exit(var_export($classes));
-
-        if($post=Yii::$app->request->post())
-        {
-            //exit(var_export($post));
-            $model->load($post);
-            //exit($model->class);
-            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            if ($url = $model->upload()) {
-               
-            }
-
-            $objReader = new \PHPExcel_Reader_Excel5();
-            $objPHPExcel = $objReader->load($url);
-
-            $objWorksheet = $objPHPExcel->getSheet(0);
-            $highestRow = $objWorksheet->getHighestRow();//最大行数，为数字
-            $highestColumn = $objWorksheet->getHighestColumn();//最大列数 为字母
-            $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn); //将字母变为数字
-
-            
-           
-            $tableData = [];
-           //  for($row = 2;$row<=$highestRow;$row++){
-           //      for($col=0;$col< $highestColumnIndex;$col++){
-           //          $tableData[$row][$col] = $objWorksheet->getCellByColumnAndRow($col,$row)->getValue();
-           //      }
-           //  }
-           //  exit(var_dump($tableData));
-           //  echo  $highestRow;
-           // exit($highestRow);
-            $conn = Yii::$app->db->beginTransaction();
-            try{           
-              // $students= array();
-                $user = new User();
-                for($row = 2;$row<=$highestRow;$row++){
-                    $userModel = clone $user;
-                    //$student = array();
-                    //$row =2;  
-                    $studentid = $objWorksheet->getCellByColumnAndRow(0,$row)->getValue();
-                    $userModel->username = $studentid;
-                    $userModel->setPassword($studentid);
-                    $userModel->status = 10;
-                    $userModel->generateAuthKey();
-                    $userModel->name = $objWorksheet->getCellByColumnAndRow(1,$row)->getValue();
-                    $userModel->gender = $objWorksheet->getCellByColumnAndRow(2,$row)->getValue()=='男'?1:2;
-                    $userModel->class = $model->class;
-                    $userModel->type = 1;
-                    //var_export($userModel);
-                    //var_export($userModel->getErrors());
-                    //$student = [$userModel->username,$userModel->password_hash,$userModel->status,$userModel->name,$userModel->gender,$userModel->class,$userModel->type];
-                    //$students[] = $student;
-                    if (!$userModel->save()) {
-                        throw new Exception('insert error'); 
-                        //exit(var_export($userModel->getErros()));
-                    }
-                }
-                //exit(var_export($students));
-                $conn->commit();
-            }catch(excetion $e){
-                $conn->rollback();
-                exit(var_export($e));
-            }
-            return $this->redirect(['index']);
-            
         }
         return $this->render('import',['model'=>$model,'class'=>$classes]);
     }

@@ -61,8 +61,11 @@ nav ul li:hover{
 	
 }
 
-.my .media img{
+table.my .media img{
 	height:100px;
 	width:100px;	
+}
+table.my th,table.my td{
+        text-align: center;
 }
 

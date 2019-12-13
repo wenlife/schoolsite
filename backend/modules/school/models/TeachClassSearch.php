@@ -47,6 +47,7 @@ class TeachClassSearch extends TeachClass
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => ['pageSize' => 28,]
         ]);
 
         $this->load($params);

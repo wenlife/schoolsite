@@ -6,15 +6,17 @@ use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use ciniran\excel\ReadExcel;
 use backend\libary\CommonFunction;
-use backend\modules\school\forms\Teach;
+//use backend\modules\school\forms\Teach;
+use backend\modules\school\forms\Tm_form;
 use backend\modules\school\models\TeachYearManage;
 use backend\modules\school\models\TeachClass;
 use backend\modules\school\models\TeachManage;
+use backend\modules\school\models\TeachDepartment;
 use backend\modules\school\models\TeachmanageSearch;
 use backend\modules\guest\models\UserTeacher;
-use ciniran\excel\ReadExcel;
-use backend\modules\school\forms\Tm_form;
+
 /**
  * TeachmanageController implements the CRUD actions for TeachManage model.
  */
@@ -39,31 +41,43 @@ class TeachmanageController extends Controller
      * Lists all TeachManage models.
      * @return mixed
      */
-    public function actionIndex($yearpost=null,$department=null)
+    public function actionIndex($term=null,$department=null)
     {
-        //$post = Yii::$app->request->post();
-
         $cuSubject = key(CommonFunction::getAllSubjects());
+        $teachers = (new UserTeacher())->getSubjectTeacherArray($cuSubject);
+        $allTerm = (new TeachYearManage())->getYearArray();
+        $term = $term?$term:key($allTerm);
+        $allDepartment = (new TeachDepartment())->getDepartmentArray();
+        $department = $department?$department:key($allDepartment);
+        $allClass = TeachClass::find()->where(['department_id'=>$department])->indexby('id')->all();
 
-        $teachers = (new \yii\db\Query())->select(['name','id'])->from('user_teacher')->where(['subject'=>$cuSubject])->indexby('id')->column();
-
+        $classes = (new \yii\db\Query())->select(['id'])->from('teach_class')
+                                        ->where(['department_id'=>$department]);
+        $allTeach = TeachManage::find()->where(['year_id'=>$term,'class_id'=>$classes])
+                                       ->indexby(function($row){
+                                                  return $row['class_id'].'-'.$row['subject'];
+                                                })->with('teacher')->all();
         return $this->render('index', [
-            //'var' =>$post,
-            'yearpost'=>$yearpost,
             'department'=>$department,
-            'teachers'=>$teachers
+            'teachers'=>$teachers,
+            'allTerm'=>$allTerm,
+            'term' =>$term,
+            'allDepartment'=>$allDepartment,
+            'department'=>$department,
+            'allClass'=>$allClass,
+            'allTeach'=>$allTeach
         ]);
     }
 
 
     public function actionSetmanage()
     {
-      $post = Yii::$app->request->post();
-      if($post){
-          $term    = ArrayHelper::getValue($post,'term');
-          $banji   = ArrayHelper::getValue($post,'banji');
-          $subject = ArrayHelper::getValue($post,'subject');
-          $teacher = ArrayHelper::getValue($post,'teacher');
+      $request = Yii::$app->request;
+      if($request->isPost){
+          $term    = $request->post('term');//ArrayHelper::getValue($post,'term');
+          $banji   = $request->post('banji');//ArrayHelper::getValue($post,'banji');
+          $subject = $request->post('subject');//ArrayHelper::getValue($post,'subject');
+          $teacher = $request->post('teacher');//ArrayHelper::getValue($post,'teacher');
           if($term&&$banji&&$subject&&$teacher)
           {
               $model = new TeachManage();
@@ -86,10 +100,8 @@ class TeachmanageController extends Controller
       }else{
         return 'getError';
       }
-
       return 'unknownError';
     }
-
     /**
      * Displays a single TeachManage model.
      * @param integer $id
@@ -105,7 +117,7 @@ class TeachmanageController extends Controller
 
     public function actionGetteachers($subject)
     {
-        $teachers = (new \yii\db\Query())->select(['name','id'])->from('user_teacher')->where(['subject'=>$subject])->indexby('id')->column();
+        $teachers = (new UserTeacher())->getSubjectTeacherArray($subject);
         return json_encode($teachers);
     }
 
@@ -114,34 +126,32 @@ class TeachmanageController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
-        $model = new TeachManage();
+    // public function actionCreate()
+    // {
+    //     $model = new TeachManage();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+    //     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    //         return $this->redirect(['view', 'id' => $model->id]);
+    //     }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
+    //     return $this->render('create', [
+    //         'model' => $model,
+    //     ]);
+    // }
 
 
     public function actionImport($flag=0)
     {       
-        $form = new Tm_form();  
-        if($post=Yii::$app->request->post())
+        $form = new Tm_form(); 
+        // var_export((new UserTeacher())->getAllTeacherIndexbyName());
+        // exit();
+        if($form->load(Yii::$app->request->post()))
         {
             $errMSG = array();
-            $form->load($post);
+            //$form->load($post);
             $form->imageFile = UploadedFile::getInstance($form, 'imageFile');
             if ($url = $form->upload()) {
-                $excel = new ReadExcel([
-                    'path' => $url,
-                    'head' => true,
-                    'headLine' => 1,
-                ]);
+                $excel = new ReadExcel(['path' => $url,'head' => true,'headLine' => 1,]);
                 $data = $excel->getArray();
                 //需要对导入的表格进行基本的验证,并添加强制导入的选项
                 if(count(current($data))!=16&&$flag==0)
@@ -150,10 +160,13 @@ class TeachmanageController extends Controller
                       return $this->render('import',['model'=>$form,'errMSG'=>$errMSG]);
                 }
                 // 查找班级列表
-                $depart_year = (new \yii\db\Query())->select(['year'])->from('teach_department')->where(['id'=>$form->department])->scalar();
+                $depart_year = (new TeachDepartment())->getDepartmentYear($form->department);
                 $class_list = (new \yii\db\Query())->select(['serial','id'])->from('teach_class')
                                ->where(['grade'=>$depart_year])->indexby('id')->orderby('serial')->column();
-
+                //var_export($data);
+                $data = (new UserTeacher())->translateNametoId($data);
+                //var_export((new UserTeacher())->translateNametoId($data));
+                //exit();
                 //查找该科目的老师，并组成任教数据:外层循环：学科，内层循环：班级
                 $subarr = CommonFunction::getAllTeachDuty();
                 foreach ($subarr as $sub_en_name => $sub_cn_name) {
@@ -203,6 +216,7 @@ class TeachmanageController extends Controller
                     }
                 }
             }
+            unlink($url);
             if(count($errMSG)>0)
             {
                 return $this->render('import',['model'=>$form,'errMSG'=>$errMSG]);
@@ -227,7 +241,7 @@ class TeachmanageController extends Controller
 
     public function actionAdd($subject,$term,$banji)
     {
-        if(yii::$app->request->post())
+        if(Yii::$app->request->post())
         {
             $post = yii::$app->request->post();
             //var_export($post);
@@ -243,13 +257,8 @@ class TeachmanageController extends Controller
             $model->save();
             return $this->redirect(['index']);
         }
-        $subjectTeacher = (new \yii\db\Query())
-                      ->select(['name','id'])
-                      ->from('user_teacher')
-                      ->where(['subject'=>$subject])
-                      ->indexby('id')
-                      ->orderby('pinx')
-                      ->column();
+        $subjectTeacher = (new UserTeacher())->getSubjectTeacherArray($subject);
+
         return $this->render('add',['subjectteacher'=>$subjectTeacher,'term'=>$term,'banji'=>$banji]);
     }
 
@@ -282,14 +291,14 @@ class TeachmanageController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($yearpost,$department)
+    public function actionDelete($term,$department)
     {
 
-        if(is_numeric($yearpost)&&is_numeric($department))
+        if(is_numeric($term)&&is_numeric($department))
         {
             $grade = (new \yii\db\Query())->select(['year'])->from('teach_department')->where(['id'=>$department])->indexby('year')->scalar();
             $classArr = (new \yii\db\Query())->select(['id'])->from('teach_class')->where(['grade'=>$grade])->indexby('id')->column();
-            $models = TeachManage::find()->where(['year_id'=>$yearpost])->andWhere(['in','class_id',$classArr])->all();
+            $models = TeachManage::find()->where(['year_id'=>$term])->andWhere(['in','class_id',$classArr])->all();
             foreach ($models as $model) {
               $model->delete();
             }

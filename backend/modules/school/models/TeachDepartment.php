@@ -40,6 +40,15 @@ class TeachDepartment extends \yii\db\ActiveRecord
         return $this->find()->select(['title','id'])->indexby('id')->column();
     }
 
+    public function getDepartmentYear($id)
+    {
+        $model = $this->findOne($id);
+        if($model)
+            return $model->year;
+        else
+            return null;
+    }
+
     /**
      * {@inheritdoc}
      */

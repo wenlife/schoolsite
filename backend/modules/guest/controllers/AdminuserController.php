@@ -17,13 +17,6 @@ use common\models\AuthAssignment;
 class AdminuserController extends Controller
 {
 
-    // public function init()
-    // {
-    //    if(!Yii::$app->user->can('userPost'))
-    //    {
-    //           throw new ForBiddenHttpException("您没有执行此操作的权限!");
-    //    }
-    // }
 
     public function behaviors()
     {
@@ -103,11 +96,11 @@ class AdminuserController extends Controller
     {
         $model = $this->findModel($id);
         if (Yii::$app->request->post()) {
-            $Post = Yii::$app->request->post();
-            $model->setPassword($Post['pwd']);
+            $pwd = Yii::$app->request->post('pwd');
+            $model->setPassword($pwd);
             $model->generateAuthKey();
             $model->save();
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('resetpwd', [
                 'model' => $model,

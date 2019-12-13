@@ -1,17 +1,15 @@
 <?php
 namespace backend\modules\guest\controllers;
-
 use Yii;
-use backend\modules\guest\models\UserTeacher;
-use backend\modules\guest\models\UserTeacherSearch;
+use yii\web\UploadedFile;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use backend\modules\guest\forms\teacherUpload;
 use ciniran\excel\ReadExcel;
-use yii\web\UploadedFile;
+use backend\modules\guest\forms\teacherUpload;
 use backend\libary\CommonFunction;
-
+use backend\modules\guest\models\UserTeacher;
+use backend\modules\guest\models\UserTeacherSearch;
 /**
  * TeacherController implements the CRUD actions for UserTeacher model.
  */
@@ -75,9 +73,10 @@ class TeacherController extends Controller
         }
     }
 
-
+    //不常用的方法，一般只用一次
     public function actionImport()
     {
+       throw new NotFoundHttpException('导入教师功暂不再开通！');
        
        $form = new teacherUpload();
        
@@ -145,23 +144,23 @@ class TeacherController extends Controller
         }
     }
 
-    public function actionSetlogin($id)
-    {
-       $model = $this->findModel($id);
+    // public function actionSetlogin($id)
+    // {
+    //    $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+    //     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    //         return $this->redirect(['view', 'id' => $model->id]);
+    //     } else {
 
-            if (!$model->secode) {
-                 $model->secode = rand(1000,9999);
-            }
+    //         if (!$model->secode) {
+    //              $model->secode = rand(1000,9999);
+    //         }
              
-            return $this->render('setlogin', [
-                'model' => $model,
-            ]);
-        }
-    }
+    //         return $this->render('setlogin', [
+    //             'model' => $model,
+    //         ]);
+    //     }
+    // }
 
     public function actionSecode()
     {
