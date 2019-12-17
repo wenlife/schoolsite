@@ -65,16 +65,8 @@ class TeachcourseController extends Controller
            $tcourseArr = TeachCourse::getTeacherWeekCourse($term,$subject,$teacher_id); 
         }
 
-        $courseCount = TeachCourse::find()
-                        ->select(["count('id') as num",'subject_id'])
-                        ->where(['year_id'=>$term,'class_id'=>$banji])
-                        ->indexby('subject_id')
-                        ->groupby('subject_id')->column();
-        $courseLimit = TeachCourseLimit::find()
-                        ->select(['course_limit','course_id'])
-                        ->where(['department_id'=>$department])
-                        ->indexby('course_id')
-                        ->column();
+        $courseCount = TeachCourse::getClassCourseCount($banji);
+        $courseLimit = TeachCourseLimit::getLimitArray($department);
 
         return $this->render('index', [
             'allTerm'=>$allTerm,

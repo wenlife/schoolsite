@@ -36,6 +36,15 @@ class TeachCourseLimit extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function getLimitArray($department)
+    {
+        return static::find()
+                ->select(['course_limit','course_id'])
+                ->where(['department_id'=>$department])
+                ->indexby('course_id')
+                ->column();
+    }
+
 
     public function getDepartment()
     {

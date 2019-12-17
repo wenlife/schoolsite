@@ -154,7 +154,7 @@ $allSubject = CommonFunction::getAllSubjects();
 	             	{
 	                	echo $banji->title;
 	             	}else{
-	                	echo $banji;
+	                	echo "<span class='text-danger'>".$banji.'</span>';
 	             	}
 	            	echo "</td>";
             	}
