@@ -42,12 +42,12 @@ class TeachCourse extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getWeekCourse($term,$class_id)
+    public static function getWeekCourse($term,$class_id)
     {
       $allDaytime = TeachDaytime::find()->orderby('sort')->indexby('sort')->all();
       $week       = CommonFunction::getWeekday();
       $subjects   = CommonFunction::getAllSubjects();
-      $subs = $this->find()->where(['year_id'=>$term,
+      $subs = static::find()->where(['year_id'=>$term,
                                  'class_id'=>$class_id])->indexby(function($row){
                                     return $row['day_time_id'].'-'.$row['weekday'];
                                  })->all();

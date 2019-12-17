@@ -35,9 +35,9 @@ class TeachDepartment extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getDepartmentArray()
+    public static function getDepartmentArray()
     {
-        return $this->find()->select(['title','id'])->indexby('id')->column();
+        return static::find()->select(['title','id'])->indexby('id')->column();
     }
 
     public function getDepartmentYear($id)

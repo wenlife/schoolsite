@@ -47,55 +47,55 @@ class TeachManage extends \yii\db\ActiveRecord
         return $this->hasOne(UserTeacher::className(),['id'=>'teacher_id']);
     }
 
-    //获取教师表的全部教师
-    public function getTeachers()
-    {
-        $teachers = UserTeacher::find()->orderBy('pinx')->all();
-        $re = array();
-        foreach ($teachers as $key => $teacher) {
-           $re[$teacher->id] = substr($teacher->pinx,0,1).'-'.$teacher->name;
-        }
+    //获取教师表的全部教师,不应该出现在这里
+    // public function getTeachers()
+    // {
+    //     $teachers = UserTeacher::find()->orderBy('pinx')->all();
+    //     $re = array();
+    //     foreach ($teachers as $key => $teacher) {
+    //        $re[$teacher->id] = substr($teacher->pinx,0,1).'-'.$teacher->name;
+    //     }
 
-        return $re;//ArrayHelper::map($teachers,'id','name');
-    }
+    //     return $re;//ArrayHelper::map($teachers,'id','name');
+    // }
 
-    public function getTeachersGroupBySubject()
-    {
-        //$subjects = ['yw'=>'语文'];
-        foreach (CommonFunction::getSubjects() as $key => $subject) {
-            $teachers = UserTeacher::find()->where(['subject'=>$key])->orderBy('pinx')->all();
-            $te = array();
-            foreach ($teachers as $key2 => $teacher) {
-               $te[$teacher->id] = substr($teacher->pinx,0,1).'-'.$teacher->name;
-            }
+    // public function getTeachersGroupBySubject()
+    // {
+    //     //$subjects = ['yw'=>'语文'];
+    //     foreach (CommonFunction::getSubjects() as $key => $subject) {
+    //         $teachers = UserTeacher::find()->where(['subject'=>$key])->orderBy('pinx')->all();
+    //         $te = array();
+    //         foreach ($teachers as $key2 => $teacher) {
+    //            $te[$teacher->id] = substr($teacher->pinx,0,1).'-'.$teacher->name;
+    //         }
 
-            $re[$key] = $te;//ArrayHelper::map($teachers,'id','name');
-        }
+    //         $re[$key] = $te;//ArrayHelper::map($teachers,'id','name');
+    //     }
         
-        return $re;
-    } 
+    //     return $re;
+    // } 
     //获取对应学年信息
     public function getYear()
     {
         return $this->hasOne(TeachYearManage::className(),['id'=>'year_id']);
     }
     //获取全部学年
-    public function getYears()
-    {
-        $years = TeachYearManage::find()->orderBy('start_date')->all();
-        return ArrayHelper::map($years,'id','title');
-    }
+    // public function getYears()
+    // {
+    //     $years = TeachYearManage::find()->orderBy('start_date')->all();
+    //     return ArrayHelper::map($years,'id','title');
+    // }
 
     public function getTeachclass()
     {
         return $this->hasOne(TeachClass::className(),['id'=>'class_id']);
     }
 
-    public function getTeachclasses()
-    {
-        $classes = TeachClass::find()->all();
-        return ArrayHelper::map($classes,'id','title');
-    }
+    // public function getTeachclasses()
+    // {
+    //     $classes = TeachClass::find()->all();
+    //     return ArrayHelper::map($classes,'id','title');
+    // }
 
 
     /**

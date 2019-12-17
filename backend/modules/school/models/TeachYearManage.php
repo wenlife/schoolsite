@@ -37,9 +37,9 @@ class TeachYearManage extends \yii\db\ActiveRecord
     }
 
 
-    public function getYearArray()
+    public static function getYearArray()
     {
-        return $this->find()->select(['title','id'])->orderby('start_date DESC')->indexby('id')->column();
+        return static::find()->select(['title','id'])->orderby('start_date DESC')->indexby('id')->column();
     }
 
     /**

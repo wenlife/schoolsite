@@ -44,10 +44,10 @@ class TeachmanageController extends Controller
     public function actionIndex($term=null,$department=null)
     {
         $cuSubject = key(CommonFunction::getAllSubjects());
-        $teachers = (new UserTeacher())->getSubjectTeacherArray($cuSubject);
-        $allTerm = (new TeachYearManage())->getYearArray();
+        $teachers = UserTeacher::getSubjectTeacherArray($cuSubject);
+        $allTerm = TeachYearManage::getYearArray();
         $term = $term?$term:key($allTerm);
-        $allDepartment = (new TeachDepartment())->getDepartmentArray();
+        $allDepartment = TeachDepartment::getDepartmentArray();
         $department = $department?$department:key($allDepartment);
         $allClass = TeachClass::find()->where(['department_id'=>$department])->indexby('id')->all();
 
@@ -117,7 +117,7 @@ class TeachmanageController extends Controller
 
     public function actionGetteachers($subject)
     {
-        $teachers = (new UserTeacher())->getSubjectTeacherArray($subject);
+        $teachers = UserTeacher::getSubjectTeacherArray($subject);
         return json_encode($teachers);
     }
 
@@ -159,82 +159,56 @@ class TeachmanageController extends Controller
                       $errMSG[] = '您选择的表格似乎不是任教的表格，请确认后再导入！';
                       return $this->render('import',['model'=>$form,'errMSG'=>$errMSG]);
                 }
-                // 查找班级列表
-                $depart_year = (new TeachDepartment())->getDepartmentYear($form->department);
-                $class_list = (new \yii\db\Query())->select(['serial','id'])->from('teach_class')
-                               ->where(['grade'=>$depart_year])->indexby('id')->orderby('serial')->column();
-                //var_export($data);
-                $data = (new UserTeacher())->translateNametoId($data);
-                //var_export((new UserTeacher())->translateNametoId($data));
-                //exit();
-                //查找该科目的老师，并组成任教数据:外层循环：学科，内层循环：班级
+                // 查找班级列表,注意获取的不同，暂时不做修改
+                 $depart_year = (new TeachDepartment())->getDepartmentYear($form->department);
+                 $class_list = (new \yii\db\Query())->select(['serial','id'])->from('teach_class')
+                                ->where(['grade'=>$depart_year])->indexby('id')->orderby('serial')->column();
+                //$class_list = (new TeachClass())->getClassArray($form->department);
+                //转换教师数据
+                $data = UserTeacher::translateNametoId($data);
+                $insertData = array();
+                //合并错误信息
+                if($err = ArrayHelper::getValue($data,'error'))
+                     $errMSG =  array_merge($errMSG,$err);
+                //循环导入任教信息
                 $subarr = CommonFunction::getAllTeachDuty();
-                foreach ($subarr as $sub_en_name => $sub_cn_name) {
-                    $sub_teach_duty = ArrayHelper::getColumn($data,$sub_cn_name);
-                    //var_export($sub_teach_duty);
-                    foreach ($class_list as $class_id => $class_serial) {
-                        //因为是直接用getColumn获取的，所以serial-1 == id
-                        $sub_teacher_name = trim(ArrayHelper::getValue($sub_teach_duty,$class_serial-1));
-                        //$sub_teacher_name = $sub_teach_duty[$class_serial-1];
-                        if($sub_teacher_name)//找不到名字也不做任何操作
-                        {
-                            //$teacher = array();
-                            if($sub_en_name =='bzr')
-                            {
-                                $teacher = UserTeacher::find()->where(['name'=>$sub_teacher_name])->all();
-                            }else{
-                                $teacher = UserTeacher::find()->where(['subject'=>$sub_en_name,'name'=>$sub_teacher_name])->all();
-                            }
-                            if(count($teacher)>1||count($teacher)<1)
-                            {
-                                //如果有同名或者无名教师，则跳过
-                                $errMSG[] = "教师姓名<".$sub_teacher_name.">在设置<".$class_serial.">班的学科<".$sub_cn_name.">时找到".count($teacher)."个人，跳过本步骤";
-                                continue;
-                            }else{
-                                //可以重复导入
-                                $model = TeachManage::find()->where(['year_id'=>$form->year,
-                                                                     'class_id'=>$class_id,
-                                                                     //'teacher_id' =>$teacher[0]->id,
-                                                                     'subject'=>$sub_en_name
-                                                                    ])->one();
-                                if(!$model)
-                                {
-                                    $model = new TeachManage();
-                                }
-                                $model->year_id    = $form->year;
-                                $model->class_id   = $class_id;
-                                $model->teacher_id = $teacher[0]->id;
-                                $model->subject    = $sub_en_name;
-                                if(!$model->save())
-                                { 
-                                    $errMSG[] = "<".$class_serial."班的任教学科<".$sub_cn_name.">保存失败！";
-                                }
-                            }
-                        }else{
-                            //$errMSG[] = $class_serial."班的".$sub_cn_name."老师的名字<".$sub_teacher_name."在表中没有设置！";
-                        }
-                    }
+                foreach ($class_list as $class_id => $class_serial){
+                   $teach_man = ArrayHelper::getValue($data,$class_serial);
+                   foreach ($teach_man as $sub_en => $teacher_id) {
+                      $model = TeachManage::find()->where(['year_id'=>$form->year,
+                                                           'class_id'=>$class_id,
+                                                           'subject'=>$sub_en])->one();
+                      if($model&&$model->teacher_id != $teacher_id)
+                      {
+                           unset($teach_man[$sub_en]);
+                           $model->teacher_id = $teacher_id;
+                           if(!$model->save())
+                              $errMSG[] = "<".$class_serial."班>的<".ArrayHelper::getValue($subarr,$sub_en).">任教修改失败！";
+                      }
+                      if(!$model)
+                      {
+                          array_push($insertData,['year_id'=>$form->year,'class_id'=>$class_id,
+                                                  'teacher_id'=>$teacher_id,'subject'=>$sub_en]);
+                      }
+                   }
                 }
-            }
-            unlink($url);
+                if(count($insertData)>0)
+                {
+                  Yii::$app->db->createCommand()
+                          ->batchInsert('teach_manage',['year_id','class_id','teacher_id','subject'],$insertData)
+                          ->execute();
+                   // var_export($insertData);
+                  //  exit();
+                }
+              unlink($url);
+            }    
             if(count($errMSG)>0)
             {
                 return $this->render('import',['model'=>$form,'errMSG'=>$errMSG]);
             }else{
                 return $this->redirect(['index']);
-            }
-        
+            }  
         }
-
-
-        // $path = 'user.xlsx';
-        // $excel = new ReadExcel([
-        //     'path' => $path,
-        //     'head' => true,
-        //     'headLine' => 1,
-        // ]);
-        // $data = $excel->getArray();
-        // //var_export($data);
         return $this->render('import',['model'=>$form,'errMSG'=>null]);
     }
 
@@ -257,12 +231,10 @@ class TeachmanageController extends Controller
             $model->save();
             return $this->redirect(['index']);
         }
-        $subjectTeacher = (new UserTeacher())->getSubjectTeacherArray($subject);
+        $subjectTeacher = UserTeacher::getSubjectTeacherArray($subject);
 
         return $this->render('add',['subjectteacher'=>$subjectTeacher,'term'=>$term,'banji'=>$banji]);
     }
-
-
 
     /**
      * Updates an existing TeachManage model.
@@ -274,14 +246,10 @@ class TeachmanageController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index', 'id' => $model->id]);
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return $this->render('update', ['model' => $model]);
     }
 
     /**
@@ -293,17 +261,13 @@ class TeachmanageController extends Controller
      */
     public function actionDelete($term,$department)
     {
-
         if(is_numeric($term)&&is_numeric($department))
         {
-            $grade = (new \yii\db\Query())->select(['year'])->from('teach_department')->where(['id'=>$department])->indexby('year')->scalar();
-            $classArr = (new \yii\db\Query())->select(['id'])->from('teach_class')->where(['grade'=>$grade])->indexby('id')->column();
-            $models = TeachManage::find()->where(['year_id'=>$term])->andWhere(['in','class_id',$classArr])->all();
-            foreach ($models as $model) {
-              $model->delete();
-            }
+            $grade = (new TeachDepartment())->getDepartmentYear($department);
+            $classArr = (new \yii\db\Query())->select(['id'])->from('teach_class')->where(['grade'=>$grade])->indexby('id');
+            TeachManage::deleteAll(['year_id'=>$term,'class_id'=>$classArr]);
         }
-        return $this->redirect(['index']);
+        return $this->redirect(['index','term'=>$term,'department'=>$department]);
     }
 
     /**
@@ -318,7 +282,6 @@ class TeachmanageController extends Controller
         if (($model = TeachManage::findOne($id)) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

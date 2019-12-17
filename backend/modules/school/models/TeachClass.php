@@ -44,12 +44,12 @@ class TeachClass extends \yii\db\ActiveRecord
     }
 
 
-    public function getClassArray($department_id)
+    public static function getClassArray($department_id)
     {
         $dp = TeachDepartment::findOne($department_id);
         if($dp)
         {
-            return $this->find()->select(['title','id'])
+            return static::find()->select(['title','id'])
                   ->filterwhere(['grade'=>$dp->year])
                   ->indexby('id')
                   ->column();

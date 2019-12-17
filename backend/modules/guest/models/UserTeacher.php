@@ -41,36 +41,48 @@ class UserTeacher extends \yii\db\ActiveRecord
     }
 
 
-    public function getSubjectTeacherArray($subject)
+    public static function getSubjectTeacherArray($subject)
     {
-        return $this->find()->select(['name','id'])->where(['subject'=>$subject])->indexby('id')->orderby('pinx ASC')->column();
+        return static::find()->select(['name','id'])->where(['subject'=>$subject])->indexby('id')->orderby('pinx ASC')->column();
     }
 
-    public function getAllTeacherIndexbyName()
+    public static function getAllTeacherIndexbyName()
     {
-        $model =  $this->find()->select(['id','name','subject'])->asArray(true)->all();
+        $model =  static::find()->select(['id','name','subject'])->asArray(true)->all();
         return ArrayHelper::index($model,'subject','name');
     }
 
     //该方法仅供导入数据的时候使用
     /*@data 二维数组 第一层为数字键，第二层为 科目=>姓名   */
-    public function translateNametoId(array $data)
+    public static function translateNametoId(array $data)
     {
         $teachDuty = CommonFunction::getAllTeachDuty();
-        $allTeacher = $this->getAllTeacherIndexbyName();
+        $allTeacher = static::getAllTeacherIndexbyName();
         $translatedData = array();
         foreach ($data as $key1 => $classData) {
             $temp = array();
             foreach ($teachDuty as $duty_en => $duty_cn) {
                 $tname = trim(ArrayHelper::getValue($classData,$duty_cn));
+                //当前科目设置为空，直接进入下一步
+                if(!$tname) continue;
                 if($duty_en == 'bzr')
                 {
-                    $tarr = ArrayHelper::getValue($allTeacher,$tname);
-                    //如果找到的不是一个人，则跳过设置步骤
-                    if(count($tarr)!=1)
-                        $tarr = [];
-                    else
-                       $tarr = current($tarr);
+                    if($tarr = ArrayHelper::getValue($allTeacher,$tname))
+                    {
+                        //如果找到的不是一个人，则跳过设置步骤
+                        if(count($tarr)!=1){
+                           // $tarr = [];
+                            $translatedData['error'][] ='设置'.($key1+1).'班的'.$duty_cn.'时，教师：'.$tname.'在系统中找到的人数超过1个，跳过设置!';
+                            continue;
+                        }else{
+                           $tarr = current($tarr);
+                        }
+                    }else{
+                        //$tarr = [];
+                        $translatedData['error'][] = $tname.'在系统中不存在!';
+                        continue;
+                    }
+
                 }
                 else{
                     $tarr = ArrayHelper::getValue($allTeacher,$tname.'.'.$duty_en);

@@ -25,7 +25,6 @@ class TeachDaytime extends \yii\db\ActiveRecord
     {
         return 'teach_daytime';
     }
-
     /**
      * {@inheritdoc}
      */
@@ -39,11 +38,14 @@ class TeachDaytime extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function getDepartmentDaytime($department)
+    {
+        return static::find()->where(['department'=>$department])->orderby('sort')->indexby('sort')->all();
+    }
+
     /**
      * {@inheritdoc}
-     */
-
-    
+     */   
     public function getDepartmentname()
     {
        return  $this->hasOne(TeachDepartment::className(),['id'=>'department']);
@@ -52,7 +54,7 @@ class TeachDaytime extends \yii\db\ActiveRecord
     {
         return [
             'id' => '编号',
-            'department' => '年级部(暂不生效)',
+            'department' => '年级部',
             'sort' => '序号',
             'part' => '时段',
             'title' => '标题',

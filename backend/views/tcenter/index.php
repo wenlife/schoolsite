@@ -54,8 +54,11 @@ $week = CommonFunction::getWeekday();
           </thead>
           <tbody id="table-body">
           <?php
+          //var_export($allDaytime);
+          //exit();
             foreach ($allDaytime as $time_id => $daytime) {
-                if($time_id>=2 &&($allDaytime[$time_id-1]['part']!=$allDaytime[$time_id]['part']))
+               // if($time_id>=2 &&($allDaytime[$time_id-1]['part']!=$daytime['part']))
+               if($time_id>=2 &&(ArrayHelper::getValue($allDaytime,($time_id-1).'.part')!=$daytime['part']))
                 {
                     echo "<tr style='border-top:2px solid'>";
                 }else{

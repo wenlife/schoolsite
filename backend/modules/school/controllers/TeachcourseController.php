@@ -1,21 +1,23 @@
 <?php
-
 namespace backend\modules\school\controllers;
 
 use Yii;
-use backend\modules\school\models\TeachCourse;
-use backend\modules\school\models\TeachManage;
-use backend\modules\guest\models\UserTeacher;
-use backend\modules\school\models\TeachcourseSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
-use backend\modules\school\forms\Tm_form;
 use ciniran\excel\ReadExcel;
 use backend\libary\CommonFunction;
-
+use backend\modules\school\forms\Tm_form;
+use backend\modules\school\models\TeachClass;
+use backend\modules\school\models\TeachDaytime;
+use backend\modules\school\models\TeachCourse;
+use backend\modules\school\models\TeachManage;
+use backend\modules\school\models\TeachYearManage;
+use backend\modules\school\models\TeachDepartment;
+use backend\modules\guest\models\UserTeacher;
+use backend\modules\school\models\TeachcourseSearch;
 /**
  * TeachcourseController implements the CRUD actions for TeachCourse model.
  */
@@ -24,63 +26,70 @@ class TeachcourseController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                   // 'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+    // public function behaviors()
+    // {
+    //     return [
+    //         'verbs' => [
+    //             'class' => VerbFilter::className(),
+    //             'actions' => [
+    //                // 'delete' => ['POST'],
+    //             ],
+    //         ],
+    //     ];
+    // }
 
     /**
      * Lists all TeachCourse models.
      * @return mixed
      */
-    public function actionIndex($yearpost=null,$department=null,$banji=null,$teacher=null,$subject=null)
+    public function actionIndex($term=null,$department=null,$banji=null,$teacher_id=null,$subject=null)
     {
+        //准备参数
         $courseArr = array();
         $name = null;
-        if($teacher!=null&&$subject!=null&&$yearpost!=null)
+        $allTerm = TeachYearManage::getYearArray();
+        $term = $term?$term:key($allTerm);
+        $departments = TeachDepartment::getDepartmentArray();
+        $department = $department?$department:key($departments);
+        $allClass = TeachClass::getClassArray($department);
+        $banji = $banji?$banji:key($allClass);
+        $allDaytime = TeachDaytime::getDepartmentDaytime($department);
+
+        if($teacher_id!=null&&$subject!=null&&$term!=null)
         {
-            $teacher_id =  $teacher;
-            $teacher = TeachManage::find()->where(['teacher_id'=>$teacher_id])->one();
-
-            $name = UserTeacher::find()->where(['id'=>$teacher_id])->one()->name;
-            
-            $allTeachClass = TeachManage::find()->select(['class_id','id'])->where(['teacher_id'=>$teacher_id])->indexby('class_id')->column();
-            $allCourse = TeachCourse::find()->select(['id','class_id','weekday','day_time_id'])->where(['year_id'=>$yearpost,'subject_id'=>$subject])->andWhere(['in','class_id',$allTeachClass])->all();
-            
+           $teacher = TeachManage::findOne(['teacher_id'=>$teacher_id]);
+           $name    = UserTeacher::findOne($teacher_id)->name;  
+           $allTeachClass = TeachManage::find()->select(['class_id'])->where(['teacher_id'=>$teacher_id]);
+           $allCourse=TeachCourse::findAll(['year_id'=>$term,'subject_id'=>$subject,'class_id'=>$allTeachClass]); 
             foreach ($allCourse as $key => $course) {
-
                 if(isset($courseArr[$course->weekday][$course->day_time_id]))
                 {
                     $courseArr[$course->weekday][$course->day_time_id] = $courseArr[$course->weekday][$course->day_time_id].'/'.$course->banji->title;
                 }else{
                     $courseArr[$course->weekday][$course->day_time_id] = $course->banji->title;
                 }
-                
             }
         }
         //$post = Yii::$app->request->post();
         //var_export($post);
         return $this->render('index', [
-            'var' =>['yearpost'=>$yearpost,'department'=>$department,'banji'=>$banji],
+            'allTerm'=>$allTerm,
+            'term'=>$term,
+            'departments'=>$departments,
+            'department'=>$department,
+            'allClass'=>$allClass,
+            'banji'=>$banji,
             'courseArr'=>$courseArr,
-            'teacherName'=>$name,
-            'subject'=>$subject
+            'teacherName'=>$name,//=========
+            'subject'=>$subject,
+            'allDaytime'=>$allDaytime
         ]);
     }
 
     //负责返回顶部自动生成的选择框
     public function actionGetclass($department)
     {
-        //$class = (new \yii\db\Query())->select(['title','id'])->from('teach_class')->indexby('id')->column();
-        return json_encode((new \yii\db\Query())->select(['title','id'])->from('teach_class')->where(['department_id'=>$department])->indexby('id')->orderby('serial')->column());
-       //return  Html::dropDownList('banji',null,$class,['class'=>'form-control']);
+        return json_encode(TeachClass::getClassArray($department));
     }
 
     public function actionSetcourse()
@@ -118,7 +127,7 @@ class TeachcourseController extends Controller
                 }else{
                     $teacher_id = "";
                 }
-                return  json_encode(['teacher_id'=>$teacher_id,'yearpost'=>$year,'subject'=>$subject]);           //$teacher_id;
+                return  json_encode(['teacher_id'=>$teacher_id,'term'=>$year,'subject'=>$subject]);           //$teacher_id;
                 //return 'success';
             }else{
                 //return 'SaveError';

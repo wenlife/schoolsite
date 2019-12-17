@@ -20,7 +20,7 @@ class TcenterController extends \yii\web\Controller
 
         $model     = new BackendLoginForm();
         $courseArr = array();
-        $allTerm = (new TeachYearManage())->getYearArray();
+        $allTerm = TeachYearManage::getYearArray();
         $term = $term?$term:key($allTerm);
         // if(!$term)
         // $term = (new \yii\db\Query())->select(['id'])->from('teach_year_manage')->orderby('start_date desc')->indexby('id')->scalar();
@@ -47,7 +47,8 @@ class TcenterController extends \yii\web\Controller
         if($teacher_id&&$subject&&$term)
         {
             $allTClass = (new \yii\db\Query())->select(['class_id'])->from('teach_manage')->where(['teacher_id'=>$teacher_id]);
-            $allCourse = TeachCourse::find()->where(['year_id'=>$term,'subject_id'=>$subject])->andWhere(['class_id'=>$allTClass])->all();
+            $allCourse = TeachCourse::find()
+                         ->where(['year_id'=>$term,'subject_id'=>$subject,'class_id'=>$allTClass])->all();
 	        
 	        foreach ($allCourse as $key => $course) {
 
@@ -60,7 +61,14 @@ class TcenterController extends \yii\web\Controller
 	            }
 	            
 	        }
+                    //查找DEPARTMENT,以找到的第一个班级为准
+            $tclass = TeachClass::findOne($allTClass->scalar());
         }
+
+        if(isset($tclass))
+            $department = $tclass->department_id;
+        else
+            $department = 1;
 
         return $this->render('index',
         	[
@@ -70,8 +78,8 @@ class TcenterController extends \yii\web\Controller
         		'subject'=>$subject,
                 'allTerm'=>$allTerm,
                 'term'=>$term,
-                'allDaytime'=> TeachDaytime::find()->orderby('sort')->indexby('sort')->all(),
-                'teachers'=>(new UserTeacher())->getSubjectTeacherArray($subject),
+                'allDaytime'=> TeachDaytime::getDepartmentDaytime($department),
+                'teachers'=>UserTeacher::getSubjectTeacherArray($subject),
         ]);
     }
 
@@ -100,16 +108,16 @@ class TcenterController extends \yii\web\Controller
     {
         $model = new BackendLoginForm();
         //部门信息
-        $departments = (new TeachDepartment())->getDepartmentArray();
+        $departments = TeachDepartment::getDepartmentArray();
         $department  = $department?$department:key($departments);
         //班级信息
-        $classes     = (new TeachClass())->getClassArray($department);
+        $classes     = TeachClass::getClassArray($department);
         $class_id    =  $class_id?$class_id:key($classes);
         //学年信息
-        $allTerm     = (new TeachYearManage())->getYearArray();
+        $allTerm     = TeachYearManage::getYearArray();
         $term   =   $term?$term:key($allTerm);
         //任教和课程
-        $weekCourse = (new TeachCourse())->getWeekCourse($term,$class_id);
+        $weekCourse = TeachCourse::getWeekCourse($term,$class_id);
         $allTeach=TeachManage::find()->where(['year_id'=>$term,'class_id'=>$class_id])->indexby('subject')->all();
         return $this->render('bcourse',[
             'model' => $model,
@@ -117,7 +125,7 @@ class TcenterController extends \yii\web\Controller
             'departments'=> $departments,
             'allTerm'=> $allTerm,
             'term'   => $term,
-            'allDaytime'=> TeachDaytime::find()->orderby('sort')->indexby('sort')->all(),
+            'allDaytime'=> TeachDaytime::getDepartmentDaytime($department),
             'classes' => $classes,
             'class_id'=> $class_id,
             'weekCourse'=>$weekCourse,
@@ -127,13 +135,13 @@ class TcenterController extends \yii\web\Controller
 
     public function actionGetteacher($subject)
     {
-        $teachers =  (new UserTeacher())->getSubjectTeacherArray($subject);
+        $teachers =  UserTeacher::getSubjectTeacherArray($subject);
         return json_encode($teachers);
     }
 
     public function actionGetclass($department)
     {
-        return json_encode((new TeachClass())->getClassArray($department));
+        return json_encode(TeachClass::getClassArray($department));
     }
 
 }
