@@ -13,6 +13,7 @@ use backend\modules\school\forms\Tm_form;
 use backend\modules\school\models\TeachClass;
 use backend\modules\school\models\TeachDaytime;
 use backend\modules\school\models\TeachCourse;
+use backend\modules\school\models\TeachCourseLimit;
 use backend\modules\school\models\TeachManage;
 use backend\modules\school\models\TeachYearManage;
 use backend\modules\school\models\TeachDepartment;
@@ -45,7 +46,7 @@ class TeachcourseController extends Controller
     public function actionIndex($term=null,$department=null,$banji=null,$teacher_id=null,$subject=null)
     {
         //准备参数
-        $courseArr = array();
+        $courseArr = $tcourseArr = array();
         $name = null;
         $allTerm = TeachYearManage::getYearArray();
         $term = $term?$term:key($allTerm);
@@ -54,24 +55,27 @@ class TeachcourseController extends Controller
         $allClass = TeachClass::getClassArray($department);
         $banji = $banji?$banji:key($allClass);
         $allDaytime = TeachDaytime::getDepartmentDaytime($department);
+        //获取班级课表数据
+        $courseArr = TeachCourse::getClassWeekCourse($term,$banji);
 
         if($teacher_id!=null&&$subject!=null&&$term!=null)
         {
-           $teacher = TeachManage::findOne(['teacher_id'=>$teacher_id]);
-           $name    = UserTeacher::findOne($teacher_id)->name;  
-           $allTeachClass = TeachManage::find()->select(['class_id'])->where(['teacher_id'=>$teacher_id]);
-           $allCourse=TeachCourse::findAll(['year_id'=>$term,'subject_id'=>$subject,'class_id'=>$allTeachClass]); 
-            foreach ($allCourse as $key => $course) {
-                if(isset($courseArr[$course->weekday][$course->day_time_id]))
-                {
-                    $courseArr[$course->weekday][$course->day_time_id] = $courseArr[$course->weekday][$course->day_time_id].'/'.$course->banji->title;
-                }else{
-                    $courseArr[$course->weekday][$course->day_time_id] = $course->banji->title;
-                }
-            }
+           //$teacher = TeachManage::findOne(['teacher_id'=>$teacher_id]);
+           $name    = UserTeacher::findOne($teacher_id)->name; 
+           $tcourseArr = TeachCourse::getTeacherWeekCourse($term,$subject,$teacher_id); 
         }
-        //$post = Yii::$app->request->post();
-        //var_export($post);
+
+        $courseCount = TeachCourse::find()
+                        ->select(["count('id') as num",'subject_id'])
+                        ->where(['year_id'=>$term,'class_id'=>$banji])
+                        ->indexby('subject_id')
+                        ->groupby('subject_id')->column();
+        $courseLimit = TeachCourseLimit::find()
+                        ->select(['course_limit','course_id'])
+                        ->where(['department_id'=>$department])
+                        ->indexby('course_id')
+                        ->column();
+
         return $this->render('index', [
             'allTerm'=>$allTerm,
             'term'=>$term,
@@ -80,9 +84,12 @@ class TeachcourseController extends Controller
             'allClass'=>$allClass,
             'banji'=>$banji,
             'courseArr'=>$courseArr,
+            'tcourseArr'=>$tcourseArr,
             'teacherName'=>$name,//=========
             'subject'=>$subject,
-            'allDaytime'=>$allDaytime
+            'allDaytime'=>$allDaytime,
+            'courseCount'=>$courseCount,
+            'courseLimit'=>$courseLimit
         ]);
     }
 
@@ -100,10 +107,11 @@ class TeachcourseController extends Controller
         $weekday = ArrayHelper::getValue($post,'weekday');
         $daytime = ArrayHelper::getValue($post,'daytime');
         $subject = ArrayHelper::getValue($post,'subject');
+
         if($year&&$banji&&$weekday&&$daytime)
         {
-            $model = TeachCourse::find()->where(['year_id'=>$year,'class_id' => $banji,'weekday' => $weekday,
-                                                 'day_time_id' => $daytime,])->one();
+            $model = TeachCourse::findOne(['year_id'=>$year,'class_id' => $banji,'weekday' => $weekday,
+                                                 'day_time_id' => $daytime,]);
             if(!$model){
               $model = new TeachCourse();
               $model->year_id = $year;
@@ -116,19 +124,12 @@ class TeachcourseController extends Controller
             {
                 //返回当前任课教师的课程表
                 $teacherMSG =  TeachManage::find()->where(['class_id'=>$banji,'subject'=>$subject])->one();
-                // $allTeachClass = TeachManage::find()->select(['class_id','id'])->where(['teacher_id'=>$teacher_id])->indexby('class_id')->column();
-                // $allCourse = TeachCourse::find()->select(['id','class_id','weekday','day_time_id'])->where(['year_id'=>$year,'subject_id'=>$subject])->andWhere(['in','class_id',$allTeachClass])->all();
-                // $courseArr = array();
-                // foreach ($allCourse as $key => $course) {
-                //     $courseArr[$course->weekday][$course->day_time_id] = $course->banji->title;
-                // }
                 if($teacherMSG){
                     $teacher_id = $teacherMSG->teacher_id;
                 }else{
                     $teacher_id = "";
                 }
-                return  json_encode(['teacher_id'=>$teacher_id,'term'=>$year,'subject'=>$subject]);           //$teacher_id;
-                //return 'success';
+                return  json_encode(['teacher_id'=>$teacher_id,'term'=>$year,'subject'=>$subject]);           //
             }else{
                 //return 'SaveError';
                 return var_export($model);
@@ -145,159 +146,134 @@ class TeachcourseController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
+    // public function actionView($id)
+    // {
+    //     return $this->render('view', [
+    //         'model' => $this->findModel($id),
+    //     ]);
+    // }
 
-    /**
-     * Creates a new TeachCourse model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new TeachCourse();
+    // /**
+    //  * Creates a new TeachCourse model.
+    //  * If creation is successful, the browser will be redirected to the 'view' page.
+    //  * @return mixed
+    //  */
+    // public function actionCreate()
+    // {
+    //     $model = new TeachCourse();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+    //     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    //         return $this->redirect(['view', 'id' => $model->id]);
+    //     }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
+    //     return $this->render('create', [
+    //         'model' => $model,
+    //     ]);
+    // }
 
 
     public function actionImport($flag=0)
     {
-        $model1 = new TeachCourse();
-        //验证不能使用ar
         $form = new Tm_form();
-        $errMSG = null;
+        $errMSG = array();
         if($post=Yii::$app->request->post())
         {
             $errMSG = array();
             $form->load($post);
+
             $form->imageFile = UploadedFile::getInstance($form, 'imageFile');
-            if ($url = $form->upload()) {
-                $excel = new ReadExcel([
-                    'path' => $url,
-                    'head' => true,
-                    'headLine' =>2,
-                ]);
+            if($url = $form->upload()) {
+                $excel = new ReadExcel(['path' => $url,'head' => true,'headLine' =>2,]);
                 $data = $excel->getArray();
                 //需要对导入的表格进行基本的验证,并添加强制导入的选项
                 if(count(current($data))!=53&&$flag==0)
                 { 
-                      $errMSG[] = '您选择的表格似乎不是课程安排的表格，请确认后再导入！';
-                      return $this->render('import',['model'=>$form,'errMSG'=>$errMSG]);
+                    $errMSG[] = '您选择的表格似乎不是课程安排的表格，请确认后再导入！';
+                    return $this->render('import',['model'=>$form,'errMSG'=>$errMSG]);
                 }
                 // 查找班级列表
-                $depart_year = (new \yii\db\Query())->select(['year'])->from('teach_department')->where(['id'=>$form->department])->scalar();
-                $class_list = (new \yii\db\Query())->select(['serial','id'])->from('teach_class')
-                               ->where(['grade'=>$depart_year])->indexby('id')->orderby('serial')->column();
-                $daytime_list = (new \yii\db\Query())->select(['sort','id'])->from('teach_daytime')->indexby('id')->orderby('sort')->column();
-            }
-
-            $weekday = CommonFunction::getWeekday();
-            $i = 0;
-            
-            //$query1 = TeachCourse::find()->where(['year_id'=>$form->year])->all();
-            //var_export($query1);
-            //exit();
-
-            foreach ($weekday as $weekday_id => $weekday_title) {
-                foreach ($daytime_list as $daytime_id => $daytime_serial) {
-                    if($daytime_serial == 0)
-                        continue;
+                $class_list = TeachClass::getClassSerialArray($form->department);
+                $daytime_list = TeachDaytime::getDepartmentDaytime($form->department);
+                //执行数据转换
+                $data = CommonFunction::translateSubjects($data);
+                $weekday = CommonFunction::getWeekday();
+                //var_export($data);
+                //exit();
+                //更改逻辑： 全部删除，重新导入
+                $val = TeachCourse::deleteDepartmentCourse($form->year,$form->department);
+                //带记忆的搜索数组；
+                $teacherArray = array();//缓存teacherID
+                $searchArray = array();//缓存任教课表设置
+                foreach ($weekday as $weekday_id => $weekday_title) {
+                  foreach ($daytime_list as $daytime_id => $daytime_model) {
+                    $daytime_serial = $daytime_model->sort;
+                    // if($daytime_serial == 0)
+                    //     continue;
                     $val = ''.($weekday_id+$daytime_serial/100).''; //组装出标题
-                    //echo "(".$val.")";
-                    $daytime_id_all_class_course = ArrayHelper::getColumn($data,$val);
-                    $query1 = TeachCourse::find()->where(['year_id'=>$form->year,'weekday'=>$weekday_id,'day_time_id'=>$daytime_id])->all();
-                    //var_export($daytime_id_all_class_course);
-                    foreach ($class_list as $class_id => $class_serial) {
-                        //录入数据，查找是否有该课程数据
-                        $model = clone $model1;
-                        //搜索耗时过高！！！！！！！！！！！！！！！！
-
-                        foreach ($query1 as $q1 => $v1) {
-                            if(($v1->class_id == $class_id)&&($v1->weekday == $weekday_id)&&($v1->day_time_id==$daytime_id)){
-                                $model = $v1; 
-                                break;    
-                            }
-                             $i++;
-                        } 
-
-                        $subArr = array_flip(CommonFunction::getAllSubjects());
-                        $sub1 = ArrayHelper::getValue($daytime_id_all_class_course,$class_serial);
-                        // if(!$sub1)
-                        // {
-                        //     $errMSG[] = $weekday_title.$class_serial."班，第".$daytime_serial."节导入数据无法从数据表中找到！";
-                        // }
-
-                        $sub = ArrayHelper::getValue($subArr,$sub1);
-                        if(!$sub)
-                        {
-                             $errMSG[] = $weekday_title.$class_serial."班，第".$daytime_serial."节的课程".$sub1."名字无法被转换为系统名字！";
-                             continue;//科目无法转换，跳过
-                        }
-                        if($model->subject_id == $sub)
-                            continue;//已经存在，跳过
+                    $daytime_id_all_class_course = ArrayHelper::getColumn($data,$val);//获取列数据
+                    //分班级进行存储
+                     foreach ($class_list as $class_id => $class_serial) {
+                        //$class_serial-1 = data[0];找到班级对应的课程安排
+                        $sub = ArrayHelper::getValue($daytime_id_all_class_course,$class_serial-1);
+                        if(!$sub)//跳过空课程
+                            continue;
+                        $model = new TeachCourse();
                         $model->year_id = $form->year;
                         $model->class_id = $class_id;
                         $model->weekday = $weekday_id."";
-                        $model->day_time_id = $daytime_id;
+                        $model->day_time_id = $daytime_model->id;
                         $model->subject_id = $sub;
                         //var_export($model);
+                        //
                         if($model->save())
-                        { 
-
-                            //校验是否有同时上两个班的老师，可以存储，必须提示标红
-                            $teacher_id = (new \yii\db\Query())->select(['teacher_id'])->from('teach_manage')->where([
-                                'class_id'=>$class_id,'year_id'=>$form->year,'subject'=>$sub])->indexby('teacher_id')->scalar();
-                            //echo $teacher_id;
-
-
-                            $classArr = (new \yii\db\Query())->select(['class_id'])->from('teach_manage')
-                                    ->where(['year_id'=>$form->year,'teacher_id'=>$teacher_id,'subject'=>$sub])
-                                    ->indexby('class_id')->column();
-                            //var_export($classArr);
-
-                            $single_teach_course = (new \yii\db\Query())->select(['class_id'])->from('teach_course')
-                                    ->where([
-                                        'year_id'=>$form->year,
-                                        'weekday'=>$weekday_id,
-                                        'day_time_id'=>$daytime_id,
-                                        'subject_id'=>$sub
-                                     ])->andWhere(['in','class_id',$classArr])->count();
-                            //echo $weekday_id.'-'.$daytime_id;
-                            //var_export($single_teach_course);
-                            //exit();
-                            if($single_teach_course>1)
-                                $errMSG[] = "<p class='text-danger'>".$weekday_title.$class_serial."班，第".$daytime_serial."节的教师出现同一时间的重复课程！</p>";
+                        {
+                            //验证是否有重复的课程
+                            //跳过活动课;
+                            if($sub == 'hd')continue; 
+                            //校验是否有同时上两个班的老师，可以存储，必须提示标红，使用记忆化搜索
+                            $teacher_id = ArrayHelper::getValue($teacherArray,$class_id.'.'.$sub);
+                            if(!$teacher_id)
+                            {
+                                $teacher_id = (new \yii\db\Query())
+                                ->select(['teacher_id'])
+                                ->from('teach_manage')
+                                ->where(['class_id'=>$class_id,'year_id'=>$form->year,'subject'=>$sub])
+                                ->scalar();
+                                $teacherArray[$class_id][$sub] = $teacher_id;
+                            }
+                            
+                            if($teacher_id)
+                            {
+                                $searchString = $weekday_id.'.'.$daytime_model->id.'.'.$teacher_id;
+                                $ifset = ArrayHelper::getValue($searchArray,$searchString);
+                                 if($ifset){
+                                    $errMSG[] = "<p class='text-danger'><".$weekday_title.'><'.$class_serial."班><第".$daytime_serial."节>的教师出现同一时间的重复课程！</p>";
+                                 }else{
+                                    $searchArray[$weekday_id][$daytime_model->id][$teacher_id] = true;
+                                 }
+                            }
                             
                         }else{
-                            $errMSG[] = $weekday_title.$class_serial."班，第".$daytime_serial."节导入数据出现错误：".serialize($model->getErrors());
+                            $errMSG[] = $weekday_title.'<'.$class_serial."班>,<第".$daytime_serial."节>导入数据出现错误：".serialize($model->getErrors());
                         }
                     }
+                  }
                 }
-            }
-            //unset($query1);
-            //echo "运行查询了".$i."次";
+
+
+        }
+        //var_export($searchArray);
+        //exit();
             if(count($errMSG)>0)
             {
                 return $this->render('import',['model'=>$form,'errMSG'=>$errMSG]);
             }else{
                 return $this->redirect(['index']);
             }
-             
         }
-        
         return $this->render('import',['model'=>$form,'errMSG'=>$errMSG]);
     }
+
 
     /**
      * Updates an existing TeachCourse model.
@@ -306,18 +282,18 @@ class TeachcourseController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
+    // public function actionUpdate($id)
+    // {
+    //     $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+    //     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    //         return $this->redirect(['view', 'id' => $model->id]);
+    //     }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
+    //     return $this->render('update', [
+    //         'model' => $model,
+    //     ]);
+    // }
 
     /**
      * Deletes an existing TeachCourse model.
@@ -330,12 +306,7 @@ class TeachcourseController extends Controller
     {
         if(is_numeric($year)&&is_numeric($department))
         {
-            $grade = (new \yii\db\Query())->select(['year'])->from('teach_department')->where(['id'=>$department])->indexby('year')->scalar();
-            $classArr = (new \yii\db\Query())->select(['id'])->from('teach_class')->where(['grade'=>$grade])->indexby('id')->column();
-            $models = TeachCourse::find()->where(['year_id'=>$year])->andWhere(['in','class_id',$classArr])->all();
-            foreach ($models as $model) {
-              $model->delete();
-            }
+            TeachCourse::deleteDepartmentCourse($year,$department);   
         }       
 
         return $this->redirect(['index']);

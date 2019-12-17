@@ -43,7 +43,10 @@ class TeachClass extends \yii\db\ActiveRecord
         ];
     }
 
-
+    /**
+     * @var department_id 部门Id
+     * @return array [id=>title] 
+     */
     public static function getClassArray($department_id)
     {
         $dp = TeachDepartment::findOne($department_id);
@@ -57,6 +60,23 @@ class TeachClass extends \yii\db\ActiveRecord
             return null;
         }
 
+    }
+    /**
+     * @var  deparmment_id [<部门id>]
+     * @return  array  [<[id=>serial]>]
+     */
+    public static function getClassSerialArray($department_id)
+    {
+        $dp = TeachDepartment::findOne($department_id);
+        if($dp)
+        {
+            return static::find()->select(['serial','id'])
+                  ->filterwhere(['grade'=>$dp->year])
+                  ->indexby('id')
+                  ->column();
+        }else{
+            return null;
+        }
     }
 
 

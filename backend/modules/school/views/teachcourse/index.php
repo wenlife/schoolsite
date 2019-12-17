@@ -8,9 +8,8 @@ use yii\widgets\ActiveForm;
 use backend\libary\CommonFunction;
 $this->title = '班级课程安排';
 $this->params['breadcrumbs'][] = $this->title;
-//$allSubject = CommonFunction::getAllTeachDuty();
-$allSubject = CommonFunction::getAllSubjects();
 $week = CommonFunction::getWeekday();
+$allSubject = CommonFunction::getAllSubjects();
 ?>
 <div class="teach-manage-index">
   <p>
@@ -73,21 +72,13 @@ $week = CommonFunction::getWeekday();
                   }
               echo "<td>".ArrayHelper::getValue($daytime,'sort')."</td>";
               echo "<td>".ArrayHelper::getValue($daytime,'title')."</td>";
-              foreach ($week as $week_id => $weekday) {  
-                    $ifset = (new \yii\db\Query())
-                          ->from('teach_course')->where(['year_id'=>$term])
-                          ->andwhere(['class_id'=>$banji,'weekday'=>$week_id,'day_time_id'=>$daytime['id']])
-                          ->indexby('id')->one();
+              foreach ($week as $week_id => $weekday) { 
                     $courseName = '<span class="glyphicon glyphicon-plus-sign"></span>';
-                   if($ifset)
-                    {   
-                      $getcourseName = ArrayHelper::getValue($allSubject,ArrayHelper::getValue($ifset,'subject_id'));
-                      if($courseName)
-                      {  
-                          $courseName = $getcourseName;
-                      }
-                    }
-                    echo '<td><a type="button" href="#" class="" data-toggle="modal"
+                    $name = ArrayHelper::getValue($courseArr,$time_id.'.'.$week_id.'.sub');
+                    if($name)
+                    	$courseName = $name;
+                    echo '<td><a type="button" href="#" class="" 
+                             data-toggle="modal"
                              data-year = "'.$term.'""
                              data-banji="'.$banji.'" 
                              data-weekday="'.$week_id.'"
@@ -105,56 +96,32 @@ $week = CommonFunction::getWeekday();
 </div>
 <div class="col-md-5">
 <div class="box box-success">
-    <div class="box-header with-border">
-        <h3 class="box-title" >当前课表统计信息</h3>
-    </div>
-    <!-- /.box-header -->
+    <div class="box-header with-border"><h3 class="box-title" >当前课表统计信息</h3></div>
     <div class="box-body no-padding">
-            <div class="box-body">
-              <table class="my table table-bordered">
-              <thead>
-                <tr>
-              <?php 
-                 //$nameArr = CommonFunction::getAllSubjects();
-                 $courseCount = (new \yii\db\Query())
-                                ->select(["count('id') as num",'subject_id'])
-                                ->from('teach_course')
-                                ->where(['year_id'=>$term,'class_id'=>$banji])
-                                ->indexby('subject_id')
-                                ->groupby('subject_id')->column();
-                $courseLimit = (new \yii\db\Query())
-                                ->select(['course_limit','course_id'])
-                                ->from('teach_course_limit')
-                                ->where(['department_id'=>$department])
-                                ->indexby('course_id')
-                                ->column();
-
-                foreach ($courseCount as $course_title => $course_num) {
-                    echo "<th>".ArrayHelper::getValue($allSubject,$course_title)."</th>";
-                }
-
-              ?>
-              </tr>
-              </thead>
-                <tbody>
-                <tr>
-                  <?php
-                  foreach ($courseCount as $course_title => $course_num) {
-                    $courseThis = ArrayHelper::getValue($courseLimit,$course_title)?ArrayHelper::getValue($courseLimit,$course_title):20;
-                      if($courseThis<$course_num){
-                        echo "<script>alert('".ArrayHelper::getValue($allSubject,$course_title)."课程总是超过了限制@！')</script>";
-                        echo '<td style="color:red">';
-                      }else if($courseThis == $course_num){
-                        echo '<td class="text-success">';
-                      }else{
-                        echo '<td class="text-primary">';
-                      }
-                      echo $course_num."</td>";
-                  }
-                  ?>
-                </tr>
-              </tbody></table>
-            </div>
+	<div class="box-body">
+	  <table class="my table table-bordered">
+	  <thead>
+	    <tr><?php foreach ($allSubject as $c_en => $c_cn) {echo "<th>".$c_cn."</th>";}?></tr>
+	  </thead>
+	    <tbody>
+	    <tr>
+	      <?php
+            foreach ($allSubject as $c_en => $c_cn) {
+            	$sub_course_num = ArrayHelper::getValue($courseCount,$c_en,0);
+            	$sub_course_limit = ArrayHelper::getValue($courseLimit,$c_en,0);
+                if($sub_course_num>$sub_course_limit){
+	              //echo "<script>alert('".$c_cn."课程总是超过了限制@！')</script>";
+	              echo '<td style="color:red">';
+	            }else{
+	              echo "<td>";
+	            }
+            	echo $sub_course_num.'/'.$sub_course_limit."</td>";
+            }
+	      ?>
+	    </tr>
+	  </tbody>
+	 </table>
+	</div>
 
 </div>
 </div>
@@ -168,30 +135,32 @@ $week = CommonFunction::getWeekday();
         <div class="box-body no-padding" style="font-size:10px">
           <table class="my table table-bordered">
             <thead>  
-            <tr>
-              <th>节次</th>
-              <?php  foreach ($week as $id => $weekday) {echo '<th>'.$weekday.'</th>';}?>
-            </tr>
+            <tr><th>节次</th><?php foreach ($week as $id => $weekday) {echo '<th>'.$weekday.'</th>';}?></tr>
             </thead>
             <tbody id="table-body">
-           <?php
-                foreach ($allDaytime as $time_id => $daytime) {
-                    if($time_id>=2 &&($allDaytime[$time_id-1]['part']!=$allDaytime[$time_id]['part']))
-                    {
-                        echo "<tr style='border-top:2px solid #ccc'>";
-                    }else{
-                         echo "<tr>";
-                    }
-            ?>        
-            <td><?=ArrayHelper::getValue($daytime,'title')?></td>
-            <?php foreach ($week as $week_id => $weekday) { 
-                //var_export($courseArr);
-               echo '<td>'.(isset($courseArr[$week_id][$daytime['id']]) ? $courseArr[$week_id][$daytime['id']] : null).'</td>';
-               //echo '<td>'.$week_id.$daytime['id'].'</td>';
+            <?php
+            foreach ($allDaytime as $time_id => $daytime) {
+                if($time_id>=2 &&($allDaytime[$time_id-1]['part']!=$allDaytime[$time_id]['part']))
+                {
+                   echo "<tr style='border-top:2px solid #ccc'>";
+                }else{
+                    echo "<tr>";
+                }
+                echo "<td>".ArrayHelper::getValue($daytime,'title')."</td>";
+                foreach ($week as $week_id => $weekday) { 
+                	$banji = ArrayHelper::getValue($tcourseArr,$week_id.'.'.$daytime['id']);
+	            	echo "<td>";
+	            	if($banji&&!is_string($banji))
+	             	{
+	                	echo $banji->title;
+	             	}else{
+	                	echo $banji;
+	             	}
+	            	echo "</td>";
+            	}
+            	echo "</tr>";
             }
             ?>
-            </tr>   
-            <?php }?>   
           </tbody>
         </table>
       </div>
@@ -202,7 +171,6 @@ $week = CommonFunction::getWeekday();
 
 </div>
 </div>
-
 
 <div class="modal fade" id="exampleModal" class="mymodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
   <div class="modal-dialog modal-sm" role="document">

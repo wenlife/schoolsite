@@ -1,7 +1,8 @@
 <?php
 namespace backend\libary;
 use Yii;
-use PHPExcel;
+//use PHPExcel;
+use yii\helpers\ArrayHelper;
 
 class CommonFunction{
 
@@ -40,6 +41,23 @@ class CommonFunction{
 		    'xx'=>'信息','tj'=>'通用','hd'=>'活动'
 		];
 		return $subjects;
+	}
+
+	static function translateSubjects($data)
+	{
+		$subjects = array_flip(static::getAllSubjects());
+		$translated = array();
+		foreach ($data as $courses) {
+			$temp = [];
+			foreach ($courses as $title => $course) {
+				if($c_en = ArrayHelper::getValue($subjects,trim($course)))
+				{
+					$temp[$title] = $c_en;
+				}        
+			}
+            count($temp)>0?array_push($translated,$temp):0;
+		}
+		return $translated;
 	}
 
 	static function getWeekday()

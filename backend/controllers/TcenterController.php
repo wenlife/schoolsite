@@ -22,8 +22,6 @@ class TcenterController extends \yii\web\Controller
         $courseArr = array();
         $allTerm = TeachYearManage::getYearArray();
         $term = $term?$term:key($allTerm);
-        // if(!$term)
-        // $term = (new \yii\db\Query())->select(['id'])->from('teach_year_manage')->orderby('start_date desc')->indexby('id')->scalar();
 
         if(!$teacher_id)
         {
@@ -43,28 +41,15 @@ class TcenterController extends \yii\web\Controller
             $subject = $teacher->subject;
             $teacher_id = $teacher->id;
         }
-        
+        $courseArr = [];
         if($teacher_id&&$subject&&$term)
         {
             $allTClass = (new \yii\db\Query())->select(['class_id'])->from('teach_manage')->where(['teacher_id'=>$teacher_id]);
-            $allCourse = TeachCourse::find()
-                         ->where(['year_id'=>$term,'subject_id'=>$subject,'class_id'=>$allTClass])->all();
-	        
-	        foreach ($allCourse as $key => $course) {
-
-	            if(isset($courseArr[$course->weekday][$course->day_time_id]))
-	            {
-                    //显示同一时间被设置的重复课程
-	                $courseArr[$course->weekday][$course->day_time_id] = $courseArr[$course->weekday][$course->day_time_id].'/'.$course->banji->title;
-	            }else{
-	                $courseArr[$course->weekday][$course->day_time_id] = $course->banji;
-	            }
-	            
-	        }
-                    //查找DEPARTMENT,以找到的第一个班级为准
+            $courseArr = TeachCourse::getTeacherWeekCourse($term,$subject,$teacher_id); 
+            //查找DEPARTMENT,以找到的第一个班级为准
             $tclass = TeachClass::findOne($allTClass->scalar());
         }
-
+        
         if(isset($tclass))
             $department = $tclass->department_id;
         else
@@ -117,7 +102,7 @@ class TcenterController extends \yii\web\Controller
         $allTerm     = TeachYearManage::getYearArray();
         $term   =   $term?$term:key($allTerm);
         //任教和课程
-        $weekCourse = TeachCourse::getWeekCourse($term,$class_id);
+        $weekCourse = TeachCourse::getClassWeekCourse($term,$class_id);
         $allTeach=TeachManage::find()->where(['year_id'=>$term,'class_id'=>$class_id])->indexby('subject')->all();
         return $this->render('bcourse',[
             'model' => $model,

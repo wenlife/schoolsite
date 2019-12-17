@@ -6,6 +6,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use backend\libary\CommonFunction;
 use backend\modules\school\models\TeachManage;
+use backend\modules\school\models\TeachClass;
 use backend\modules\school\models\TeachDaytime;
 /**
  * This is the model class for table "teach_course".
@@ -42,9 +43,10 @@ class TeachCourse extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function getWeekCourse($term,$class_id)
+    public static function getClassWeekCourse($term,$class_id)
     {
-      $allDaytime = TeachDaytime::find()->orderby('sort')->indexby('sort')->all();
+      $class = TeachClass::findOne($class_id);
+      $allDaytime = TeachDaytime::getDepartmentDaytime($class?$class->department:1);
       $week       = CommonFunction::getWeekday();
       $subjects   = CommonFunction::getAllSubjects();
       $subs = static::find()->where(['year_id'=>$term,
@@ -53,10 +55,13 @@ class TeachCourse extends \yii\db\ActiveRecord
                                  })->all();
       $teachers = TeachManage::find()->select(['teacher_id','subject'])->where(['year_id'=>$term,
                                                 'class_id'=>$class_id])->indexby('subject')->column();
+      $weekCourse = [];
+      //exit(var_export($subs));
       foreach ($allDaytime as $time_id=>$daytime) {
         foreach ($week as $week_id => $weekday) { 
             //注意：此处的daytime的index值是用sort的值，不是id值
             $sub = ArrayHelper::getValue($subs,$daytime->id.'-'.$week_id);
+
             if($sub)
             {
                 $weekCourse[$time_id][$week_id] = ['sub'=>ArrayHelper::getValue($subjects,$sub->subject_id),
@@ -66,6 +71,38 @@ class TeachCourse extends \yii\db\ActiveRecord
         }
       }
       return $weekCourse;
+    }
+
+
+    public static function getTeacherWeekCourse($term,$subject,$teacher_id)
+    {
+      $allTClass = (new \yii\db\Query())->select(['class_id'])->from('teach_manage')
+                                        ->where(['teacher_id'=>$teacher_id]);
+      $allCourse = static::find()
+                         ->where(['year_id'=>$term,'subject_id'=>$subject,'class_id'=>$allTClass])->all();
+      $courseArr = []; 
+      foreach ($allCourse as $key => $course) {
+          $ifset = ArrayHelper::getValue($courseArr,$course->weekday.'.'.$course->day_time_id);
+          if($ifset)
+          {
+            if(is_string($ifset))
+              $courseArr[$course->weekday][$course->day_time_id]= $ifset.'/'.$course->banji->title;
+            else
+              $courseArr[$course->weekday][$course->day_time_id]= $ifset->title.'/'.$course->banji->title;
+          }else{
+            $courseArr[$course->weekday][$course->day_time_id] = $course->banji;
+          }
+          
+      }
+      return $courseArr;
+    }
+
+    public static function deleteDepartmentCourse($year,$department)
+    {
+      $grade = (new \yii\db\Query())->select(['year'])->from('teach_department')->where(['id'=>$department])->scalar(); 
+      $allClass = (new \yii\db\Query())->select(['id'])->from('teach_class')->where(['grade'=>$grade]);
+      return static::deleteAll(['year_id'=>$year,'class_id'=>$allClass]);
+
     }
 
     /**

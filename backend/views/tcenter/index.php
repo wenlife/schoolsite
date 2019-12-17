@@ -54,34 +54,29 @@ $week = CommonFunction::getWeekday();
           </thead>
           <tbody id="table-body">
           <?php
-          //var_export($allDaytime);
-          //exit();
             foreach ($allDaytime as $time_id => $daytime) {
-               // if($time_id>=2 &&($allDaytime[$time_id-1]['part']!=$daytime['part']))
                if($time_id>=2 &&(ArrayHelper::getValue($allDaytime,($time_id-1).'.part')!=$daytime['part']))
                 {
                     echo "<tr style='border-top:2px solid'>";
                 }else{
                      echo "<tr>";
                 }
-          ?>        
-          <td><?=ArrayHelper::getValue($daytime,'title')?></td>
-          <?php foreach ($week as $week_id => $weekday) { 
-            // var_export($courseArr);
-            // exit();
-            $banji = ArrayHelper::getValue($courseArr,$week_id.'.'.$daytime['id']);
-            echo "<td>";
-            if($banji&&!is_string($banji))
-             {
-                echo '<a href="index.php?r=tcenter/bcourse&class_id='.$banji->id.'">'.$banji->title."</a>";
-             }else{
-                echo $banji;
-             }
-            echo "</td>";
-          }
-          ?>
-          </tr>   
-          <?php }?>   
+                echo "<td>".ArrayHelper::getValue($daytime,'title')."</td>";
+              foreach ($week as $week_id => $weekday) { 
+
+                $banji = ArrayHelper::getValue($courseArr,$week_id.'.'.$daytime['id']);
+                echo "<td>";
+                if($banji&&!is_string($banji))
+                 {
+                    echo '<a href="index.php?r=tcenter/bcourse&class_id='.$banji->id.'">'.$banji->title."</a>";
+                 }else{
+                    echo $banji;
+                 }
+                echo "</td>";
+              }
+              echo "</tr>";
+            }
+          ?> 
         </tbody>
       </table>
   </div>
