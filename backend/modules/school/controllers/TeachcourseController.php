@@ -260,7 +260,7 @@ class TeachcourseController extends Controller
                   }
                 }
 
-
+            unlink($url);
         }
         //var_export($searchArray);
         //exit();
