@@ -2,10 +2,11 @@
 
 namespace backend\modules\school\models;
 use Yii;
+use yii\helpers\ArrayHelper;
 use backend\modules\guest\models\UserTeacher;
 use backend\modules\school\models\TeachYearManage;
 use backend\modules\school\models\TeachClass;
-use yii\helpers\ArrayHelper;
+use backend\modules\school\models\TeachDepartment;
 use backend\libary\CommonFunction;
 
 /**
@@ -74,6 +75,13 @@ class TeachManage extends \yii\db\ActiveRecord
         
     //     return $re;
     // } 
+    public static function deleteDepartmentTeach($term,$department)
+    {
+        $grade = (new TeachDepartment())->getDepartmentYear($department);
+        $classArr = (new \yii\db\Query())->select(['id'])->from('teach_class')
+                                         ->where(['grade'=>$grade])->indexby('id');
+        return TeachManage::deleteAll(['year_id'=>$term,'class_id'=>$classArr]);
+    }
     //获取对应学年信息
     public function getYear()
     {

@@ -40,7 +40,7 @@ class TeachCourseLimit extends \yii\db\ActiveRecord
     {
         return static::find()
                 ->select(['course_limit','course_id'])
-                ->where(['department_id'=>$department])
+               // ->where(['department_id'=>$department])
                 ->indexby('course_id')
                 ->column();
     }

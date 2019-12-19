@@ -189,13 +189,16 @@ class TeachcourseController extends Controller
                 //执行数据转换
                 $data = CommonFunction::translateSubjects($data);
                 $weekday = CommonFunction::getWeekday();
+                $subjects = CommonFunction::getAllSubjects();
                 //var_export($data);
                 //exit();
                 //更改逻辑： 全部删除，重新导入
                 $val = TeachCourse::deleteDepartmentCourse($form->year,$form->department);
                 //带记忆的搜索数组；
+                $courseLimitArray = TeachCourseLimit::getLimitArray($form->department);
                 $teacherArray = array();//缓存teacherID
                 $searchArray = array();//缓存任教课表设置
+                $compareArray = array();//缓存课程数量
                 foreach ($weekday as $weekday_id => $weekday_title) {
                   foreach ($daytime_list as $daytime_id => $daytime_model) {
                     $daytime_serial = $daytime_model->sort;
@@ -216,7 +219,6 @@ class TeachcourseController extends Controller
                         $model->day_time_id = $daytime_model->id;
                         $model->subject_id = $sub;
                         //var_export($model);
-                        //
                         if($model->save())
                         {
                             //验证是否有重复的课程
@@ -244,6 +246,8 @@ class TeachcourseController extends Controller
                                     $searchArray[$weekday_id][$daytime_model->id][$teacher_id] = true;
                                  }
                             }
+
+
                             
                         }else{
                             $errMSG[] = $weekday_title.'<'.$class_serial."班>,<第".$daytime_serial."节>导入数据出现错误：".serialize($model->getErrors());
@@ -251,6 +255,23 @@ class TeachcourseController extends Controller
                     }
                   }
                 }
+            //判断该课程数量是否超标
+            foreach ($class_list as $class_id => $class_serial) {
+                foreach ($subjects as $sub => $title) {
+                    if(ArrayHelper::getValue($compareArray,$class_serial.'.'.$sub))
+                    {
+                        $compareArray[$class_serial][$sub] +=1;
+                    }else{
+                        $compareArray[$class_serial][$sub] = 1;
+                    }
+                    if($compareArray[$class_serial][$sub] > ArrayHelper::getValue($courseLimitArray,$sub))
+                    {
+                        $errMSG[] = $class_serial.'班的'.ArrayHelper::getValue($subjects,$sub).'课程数超限！';
+                    }   
+                }
+
+            }
+
 
             unlink($url);
         }

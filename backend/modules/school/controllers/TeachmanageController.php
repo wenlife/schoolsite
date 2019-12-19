@@ -172,24 +172,29 @@ class TeachmanageController extends Controller
                      $errMSG =  array_merge($errMSG,$err);
                 //循环导入任教信息
                 $subarr = CommonFunction::getAllTeachDuty();
+                //修改：删除所有内容再导入
+                TeachManage::deleteDepartmentTeach($form->year,$form->department);
+
                 foreach ($class_list as $class_id => $class_serial){
                    $teach_man = ArrayHelper::getValue($data,$class_serial);
-                   foreach ($teach_man as $sub_en => $teacher_id) {
-                      $model = TeachManage::find()->where(['year_id'=>$form->year,
-                                                           'class_id'=>$class_id,
-                                                           'subject'=>$sub_en])->one();
-                      if($model&&$model->teacher_id != $teacher_id)
-                      {
-                           unset($teach_man[$sub_en]);
-                           $model->teacher_id = $teacher_id;
-                           if(!$model->save())
-                              $errMSG[] = "<".$class_serial."班>的<".ArrayHelper::getValue($subarr,$sub_en).">任教修改失败！";
-                      }
-                      if(!$model)
-                      {
-                          array_push($insertData,['year_id'=>$form->year,'class_id'=>$class_id,
-                                                  'teacher_id'=>$teacher_id,'subject'=>$sub_en]);
-                      }
+                   foreach ($teach_man as $sub_en => $teacher_id) { 
+                      // $model = TeachManage::find()->where(['year_id'=>$form->year,
+                      //                                      'class_id'=>$class_id,
+                      //                                      'subject'=>$sub_en])->one();
+                      // if($model&&$model->teacher_id != $teacher_id)
+                      // {
+                      //      unset($teach_man[$sub_en]);
+                      //      $model->teacher_id = $teacher_id;
+                      //      if(!$model->save())
+                      //         $errMSG[] = "<".$class_serial."班>的<".ArrayHelper::getValue($subarr,$sub_en).">任教修改失败！";
+                      // }
+                      // if(!$model)
+                      // {
+                      //     array_push($insertData,['year_id'=>$form->year,'class_id'=>$class_id,
+                      //                             'teacher_id'=>$teacher_id,'subject'=>$sub_en]);
+                      // }
+                      array_push($insertData,['year_id'=>$form->year,'class_id'=>$class_id,
+                                                   'teacher_id'=>$teacher_id,'subject'=>$sub_en]);
                    }
                 }
                 if(count($insertData)>0)
@@ -263,9 +268,10 @@ class TeachmanageController extends Controller
     {
         if(is_numeric($term)&&is_numeric($department))
         {
-            $grade = (new TeachDepartment())->getDepartmentYear($department);
-            $classArr = (new \yii\db\Query())->select(['id'])->from('teach_class')->where(['grade'=>$grade])->indexby('id');
-            TeachManage::deleteAll(['year_id'=>$term,'class_id'=>$classArr]);
+            // $grade = (new TeachDepartment())->getDepartmentYear($department);
+            // $classArr = (new \yii\db\Query())->select(['id'])->from('teach_class')->where(['grade'=>$grade])->indexby('id');
+            // TeachManage::deleteAll(['year_id'=>$term,'class_id'=>$classArr]);
+            TeachManage::deleteDepartmentTeach($term,$department);
         }
         return $this->redirect(['index','term'=>$term,'department'=>$department]);
     }
