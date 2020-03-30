@@ -14,7 +14,7 @@ $model = new BackendLoginForm();
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <?= $form->field($model, 'password')->label(false)->passwordInput(['maxlength' => true,'class'=>'form-control','placeholder'=>"用户名"]) ?>
+        <?= $form->field($model, 'password')->label(false)->passwordInput(['maxlength' => true,'class'=>'form-control','placeholder'=>"密码"]) ?>
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">

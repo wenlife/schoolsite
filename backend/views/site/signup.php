@@ -14,9 +14,15 @@ $this->title = "注册新用户";
 <div class="login-box">
     <div class="login-logo">
         <a href="#"><b>教师用户</b>系统注册</a>
+
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
+        <p>在注册系统之后，每次登陆系统都会直接显示自己的课表和相关事件，安全码请看附件：</p>
+        <p>如不能注册，请联系管理人员解决</p>
+
+           <a href="index.php?r=site/secode">点击查看安全码</a></p>
+        
         <p class="login-box-msg">请按照要求填入信息以注册</p>
 
               <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>

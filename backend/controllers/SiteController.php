@@ -6,6 +6,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use common\models\user;
+use common\models\userTeacher;
 use common\models\AdminUser;
 use common\models\BackendLoginForm;
 use backend\models\SignupForm;
@@ -19,7 +20,6 @@ use backend\models\SignupForm;
 //use backend\modules\test\models\TestItem;
 //use backend\modules\test\models\TestScore;
 //use backend\modules\test\models\Task;
-use backend\modules\guest\models\UserTeacher;
 //use backend\modules\school\models\TeachClass;
 class SiteController extends Controller
 {
@@ -30,7 +30,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error','signup','index'],
+                        'actions' => ['login', 'error','signup','index','secode'],
                         'allow' => true,
                         'roles'=>['?']
                     ],
@@ -171,6 +171,15 @@ class SiteController extends Controller
             }
 
         }
+    }
+
+    public function actionSecode()
+    {
+        $this->layout = false;
+        $secodeArr = UserTeacher::find()->select(['name','subject','secode'])->all();
+        //var_export($secodeArr);
+
+        return $this->render('secode',['secode'=>$secodeArr]);
     }
 
 
