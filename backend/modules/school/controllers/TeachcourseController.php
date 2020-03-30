@@ -65,7 +65,7 @@ class TeachcourseController extends Controller
            $tcourseArr = TeachCourse::getTeacherWeekCourse($term,$subject,$teacher_id); 
         }
 
-        $courseCount = TeachCourse::getClassCourseCount($banji);
+        $courseCount = TeachCourse::getClassCourseCount($banji,$term);
         $courseLimit = TeachCourseLimit::getLimitArray($department);
 
         return $this->render('index', [

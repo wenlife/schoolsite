@@ -44,10 +44,10 @@ class TeachCourse extends \yii\db\ActiveRecord
     }
 
 
-    public static function getClassCourseCount($class_id)
+    public static function getClassCourseCount($class_id,$term)
     {
         return static::find()->select(["count('id') as num",'subject_id'])
-                        ->where(['class_id'=>$class_id])
+                        ->where(['class_id'=>$class_id,'year_id'=>$term])
                         ->indexby('subject_id')
                         ->groupby('subject_id')->column();
 
