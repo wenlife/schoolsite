@@ -14,7 +14,7 @@ $allSubject = CommonFunction::getAllSubjects();
 <div class="teach-manage-index">
   <p>
   <?= Html::a('导入课程', ['import'], ['class' => 'btn btn-success']) ?>
-  <?= Html::a('清空年级任教数据', ['delete','year'=>$term,'department'=>$department], 
+  <?= Html::a('清空年级课程数据', ['delete','year'=>$term,'department'=>$department], 
                                  ['class' => 'btn btn-danger pull-right','onclick'=>'return confirm("您确定要删出当前年级的全部课程安排吗？")']) ?>
   </p>
 </div>
