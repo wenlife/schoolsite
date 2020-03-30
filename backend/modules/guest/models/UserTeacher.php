@@ -43,7 +43,7 @@ class UserTeacher extends \yii\db\ActiveRecord
 
     public static function getSubjectTeacherArray($subject)
     {
-        return static::find()->select(['name','id'])->where(['subject'=>$subject])->indexby('id')->orderby('pinx ASC')->column();
+        return static::find()->select(['name','id','pinx'])->where(['subject'=>$subject])->indexby('id')->orderby('pinx')->column();
     }
 
     public static function getAllTeacherIndexbyName()

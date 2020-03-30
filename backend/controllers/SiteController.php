@@ -6,7 +6,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use common\models\user;
-use common\models\userTeacher;
+use backend\modules\guest\models\UserTeacher;
 use common\models\AdminUser;
 use common\models\BackendLoginForm;
 use backend\models\SignupForm;
