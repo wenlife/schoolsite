@@ -67,7 +67,10 @@ class TeachcourselimitController extends Controller
         $model = new TeachCourseLimit();
 
         if ($model->load(Yii::$app->request->post())) {
-            $m = TeachCourseLimit::find()->where(['course_id'=>$model->course_id])->one();
+            $m = TeachCourseLimit::find()->where([
+                'course_id'=>$model->course_id,
+                'department_id'=>$model->department_id
+            ])->one();
             if($m)
             {
                 $m->course_limit = $model->course_limit;

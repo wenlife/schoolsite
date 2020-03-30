@@ -40,7 +40,7 @@ class TeachcourselimitSearch extends TeachCourseLimit
      */
     public function search($params)
     {
-        $query = TeachCourseLimit::find();
+        $query = TeachCourseLimit::find()->orderby('department_id, course_id');
 
         // add conditions that should always apply here
 

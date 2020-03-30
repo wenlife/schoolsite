@@ -11,7 +11,7 @@ use yii\helpers\ArrayHelper;
 $this->title = '任教导入';
 $this->params['breadcrumbs'][] = $this->title;
 
-$year = (new \yii\db\Query())->select(['title','id'])->from('teach_year_manage')->indexby('id')->column();
+$year = (new \yii\db\Query())->select(['title','id'])->from('teach_year_manage')->indexby('id')->orderby('end_date desc')->column();
 $department = (new \yii\db\Query())->select(['title','id'])->from('teach_department')->indexby('id')->column();
 ?>
 <div class="row">

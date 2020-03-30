@@ -108,13 +108,21 @@ $allSubject = CommonFunction::getAllSubjects();
 	      <?php
             foreach ($allSubject as $c_en => $c_cn) {
             	$sub_course_num = ArrayHelper::getValue($courseCount,$c_en,0);
-            	$sub_course_limit = ArrayHelper::getValue($courseLimit,$c_en,0);
+              if(isset($courseLimit[$c_en][0]))
+              {
+                $sub_course_limit = ArrayHelper::getValue($courseLimit,$c_en,0);
+                //$sub_course_limit = ArrayHelper::getValue($courseLimit,$c_en,0);
                 if($sub_course_num>$sub_course_limit){
-	              //echo "<script>alert('".$c_cn."课程总是超过了限制@！')</script>";
-	              echo '<td style="color:red">';
-	            }else{
-	              echo "<td>";
-	            }
+                //echo "<script>alert('".$c_cn."课程总是超过了限制@！')</script>";
+                echo '<td style="color:red">';
+                }else{
+                  echo "<td>";
+                }
+              }else{
+                $sub_course_limit = 'N';
+                echo '<td style="color:red">';
+
+              }
             	echo $sub_course_num.'/'.$sub_course_limit."</td>";
             }
 	      ?>
