@@ -112,7 +112,7 @@ $allSubject = CommonFunction::getAllSubjects();
               {
                 $sub_course_limit = ArrayHelper::getValue($courseLimit,$c_en,0);
                 //$sub_course_limit = ArrayHelper::getValue($courseLimit,$c_en,0);
-                if($sub_course_num>$sub_course_limit){
+                if($sub_course_num != $sub_course_limit){
                 //echo "<script>alert('".$c_cn."课程总是超过了限制@！')</script>";
                 echo '<td style="color:red">';
                 }else{
