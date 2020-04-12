@@ -87,7 +87,7 @@ class TeachCourse extends \yii\db\ActiveRecord
     public static function getTeacherWeekCourse($term,$subject,$teacher_id)
     {
       $allTClass = (new \yii\db\Query())->select(['class_id'])->from('teach_manage')
-                                        ->where(['teacher_id'=>$teacher_id]);
+                                        ->where(['teacher_id'=>$teacher_id,'year_id'=>$term]);
       $allCourse = static::find()
                          ->where(['year_id'=>$term,'subject_id'=>$subject,'class_id'=>$allTClass])->all();
       $courseArr = []; 
