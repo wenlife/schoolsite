@@ -44,7 +44,7 @@ class TcenterController extends \yii\web\Controller
         $courseArr = [];
         if($teacher_id&&$subject&&$term)
         {
-            $allTClass = (new \yii\db\Query())->select(['class_id'])->from('teach_manage')->where(['teacher_id'=>$teacher_id]);
+            $allTClass = (new \yii\db\Query())->select(['class_id'])->from('teach_manage')->where(['teacher_id'=>$teacher_id,'year_id'=>$term]);
             $courseArr = TeachCourse::getTeacherWeekCourse($term,$subject,$teacher_id); 
             //查找DEPARTMENT,以找到的第一个班级为准
             $tclass = TeachClass::findOne($allTClass->scalar());

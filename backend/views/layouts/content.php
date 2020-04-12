@@ -37,7 +37,7 @@ use dmstr\widgets\Alert;
 
 <footer class="main-footer">
     <div class="text-center">
-        <strong>攀枝花第七高级中学校</strong> 信息技术中心 All rightsreserved.
+        <strong>攀枝花市第七高级中学校</strong>  信息技术中心 All rights reserved.
     </div>
 
 </footer>
