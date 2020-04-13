@@ -9,6 +9,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
+use yii\bootstrap\Alert;
 use backend\libary\CommonFunction;
 $this->title = '教师中心';
 $this->params['breadcrumbs'][] = $this->title;
@@ -18,6 +19,13 @@ $week = CommonFunction::getWeekday();
       //       echo $key1."-".$key2."-".$value2->title."<br>";
       //    }
       // }
+
+echo Alert::widget([
+  'options' => [
+      'class' => 'alert-info',
+  ],
+  'body' => '各位老师，由于本网站尚在测试完善当中，安全性亦不符合主管部门的要求。因此本网站目前只能从学校内部网络访问，在完成后续工作后将尽快接入互联网，敬请期待！',
+]);
 ?>
 <div class="row">
 <div class="col-md-9">
