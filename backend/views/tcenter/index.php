@@ -13,6 +13,11 @@ use backend\libary\CommonFunction;
 $this->title = '教师中心';
 $this->params['breadcrumbs'][] = $this->title;
 $week = CommonFunction::getWeekday();
+      // foreach ($courseArr as $key1 => $value1) {
+      //    foreach ($value1 as $key2 => $value2) {
+      //       echo $key1."-".$key2."-".$value2->title."<br>";
+      //    }
+      // }
 ?>
 <div class="row">
 <div class="col-md-9">
@@ -64,7 +69,7 @@ $week = CommonFunction::getWeekday();
                 echo "<td>".ArrayHelper::getValue($daytime,'title')."</td>";
               foreach ($week as $week_id => $weekday) { 
 
-                $banji = ArrayHelper::getValue($courseArr,$week_id.'.'.$daytime['id']);
+                $banji = ArrayHelper::getValue($courseArr,$week_id.'.'.$daytime['sort']);
                 echo "<td>";
                 if($banji&&!is_string($banji))
                  {
