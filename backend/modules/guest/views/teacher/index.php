@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'pinx',
             ['attribute'=>'subject','value'=>function($model){
-                $subjects = CommonFunction::getSubjects();
+                $subjects = CommonFunction::getAllTeachDuty();
                 return $subjects[$model->subject];
             }],
             ['attribute'=>'type','value'=>function($model){
