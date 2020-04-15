@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use backend\libary\CommonFunction;
+use backend\modules\guest\models\UserTeacher;
 use backend\modules\school\models\TeachManage;
 $this->title = '班级课表';
 $this->params['breadcrumbs'][] = $this->title;
@@ -68,6 +69,12 @@ $week = CommonFunction::getWeekday();
           $course = ArrayHelper::getValue($weekCourse,$time_id.'.'.$week_id);
           $teacher_id = ArrayHelper::getValue($course,'t_id');
           $sub = ArrayHelper::getValue($course,'sub');
+          if($daytime->part == '晚上')
+          {
+             $tea = UserTeacher::findOne($teacher_id);
+             if($tea)
+               $sub = $tea->name;
+          }
           echo "<td>";
           echo $teacher_id?Html::a($sub,['tcenter/index','teacher_id'=>$teacher_id]):$sub;
           echo "</td>";
@@ -81,33 +88,32 @@ $week = CommonFunction::getWeekday();
 </div>
 </div>
 </div>
-<div class="col-md-3">
-  <div class="box box-primary">
-    <div class="box-header with-border">
-      <h3 class="box-title">班级任教</h3>
-    </div>
-    <div class="box-body">
-      <ul class="products-list product-list-in-box">
-        <?php  
-          foreach (CommonFunction::getAllTeachDuty() as $csx => $cname) {
-            if(!array_key_exists($csx,$allTeach))
-              continue;
-             $teach = ArrayHelper::getValue($allTeach,$csx); 
-             echo '<li class="item">';
-             echo '<div class="product-img">
-                   <img src="img/default-50x50.gif" alt="Product Image">
-                   </div>
-                   <div class="product-info">';
-             echo Html::a($cname,['tcenter/index','teacher_id'=>$teach->teacher_id],['class'=>"product-title"]);
-             echo '<span class="product-description">';
-             echo $teach->teacher->name;
-             echo "</span></div></li>";    
-          }
-        ?>
-      </ul>           
-    </div>
-  </div>
-</div>
+          <div class="col-md-3">
+          <div class="box box-primary ">
+            <div class="box-header with-border">
+              <h3 class="box-title">班级任教</h3>
+            </div>
+            <div class="box-body fix-height">
+              <ul class="products-list product-list-in-box ">
+                <?php  
+                  foreach (CommonFunction::getAllTeachDuty() as $csx => $cname) {
+                    if(!array_key_exists($csx,$allTeach))
+                      continue;
+                     $teach = ArrayHelper::getValue($allTeach,$csx); 
+                     echo '<li class="item">';
+                     echo '<div class="product-img">';
+                     echo     '<img src="img/default-50x50.gif" alt="Product Image">';
+                     echo     '</div><div class="product-info">';
+                     echo Html::a($cname,['tcenter/index','teacher_id'=>$teach->teacher_id],['class'=>"product-title"]);
+                     echo '<span class="product-description">';
+                     echo $teach->teacher->name;
+                     echo "</span></div></li>";    
+                  }
+                ?>
+              </ul>           
+            </div>
+          </div>
+          </div>
 </div>
 <?php
 $this->registerJs(<<<JS
@@ -137,4 +143,9 @@ table th{
   background-color: #337ab7;
   color:#fff;
 }
+.product-img .product-info{
+  width:30px;
+  height: 30px;
+}
+
 </style>
