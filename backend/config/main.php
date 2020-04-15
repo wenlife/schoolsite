@@ -16,25 +16,25 @@ return [
     'timeZone' => 'Asia/Shanghai',
     'defaultRoute' => 'tcenter',
     'modules' => [
-       'content' => [
-            'class' => 'backend\modules\content\Module',
-        ],
-        'test' => [
-            'class' => 'backend\modules\test\Module',
-        ],
+       // 'content' => [
+       //      'class' => 'backend\modules\content\Module',
+       //  ],
+        // 'test' => [
+        //     'class' => 'backend\modules\test\Module',
+        // ],
         'guest' => [
             'class' => 'backend\modules\guest\Module',
         ],
-        'testService' => [
-            'class' => 'backend\modules\testService\Module',
-        ],
+        // 'testService' => [
+        //     'class' => 'backend\modules\testService\Module',
+        // ],
         'school' => [
             'class' => 'backend\modules\school\Module',
         ],
-        'guidance' => [
+        // 'guidance' => [
 
-            'class' => 'backend\modules\guidance\Module',
-        ],
+        //     'class' => 'backend\modules\guidance\Module',
+        // ],
 
     ],
     'components' => [
