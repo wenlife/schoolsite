@@ -76,7 +76,7 @@ echo Alert::widget([
                 }
                 $setime = ArrayHelper::getValue($daytime,'start')."-".ArrayHelper::getValue($daytime,'end');
 
-                echo "<td><small title='".$setime."'>".ArrayHelper::getValue($daytime,'title')."</small></td>";
+                echo "<td><small style='cursor:pointer' title='".$setime."'>".ArrayHelper::getValue($daytime,'title')."</small></td>";
               foreach ($week as $week_id => $weekday) { 
 
                 $banji = ArrayHelper::getValue($courseArr,$week_id.'.'.$daytime['sort']);
