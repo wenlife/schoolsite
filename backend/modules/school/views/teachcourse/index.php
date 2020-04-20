@@ -181,22 +181,28 @@ $allSubject = CommonFunction::getAllSubjects();
 </div>
 
 <div class="modal fade" id="exampleModal" class="mymodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
 
         <div class="modal-body">
             <?php $form = ActiveForm::begin(['id'=>'form2','action'=>Url::toRoute(['setcourse']),'options'=>['class'=>'form-inline']]); ?>
-            <div class="form-group">
+
+            <div class="input-group">
+              <div class="input-group-addon"><input type="checkbox" id="double" title="设置轮换科目"></div>
               <?php echo Html::dropDownList('subject',null,CommonFunction::getAllSubjects(),
                 ['class'=>'form-control subject_choice','style'=>'width:200px']);?>
-            </div> 
+              <?php echo Html::dropDownList('subject2',null,CommonFunction::getAllSubjects(),
+                ['class'=>'form-control subject_choice2','style'=>'width:200px']);?>
+            </div>
              <div class="form-group">
                 <input name="year" type="text" id='year' class="form-control hide" id="recipient-name">
                 <input name="banji" type="text" id='banji' class="form-control hide" id="recipient-name">
                 <input name="weekday" type="text" id='weekday' class="form-control hide" id="recipient-name">
                 <input name="daytime" type="text" id='daytime' class="form-control hide" id="recipient-name">
             </div> 
-            <button type="submit" class="btn btn-success">提交</button>
+             <div class="form-group">
+              <button type="submit" class="btn btn-success">提交</button>
+             </div>
             <?php ActiveForm::end(); ?>
         </div>
     </div>
@@ -232,8 +238,15 @@ $(function(){
             document.location.href = thisURL;
           }
         });
-})
+    })
 });
+$('select.subject_choice2').hide();
+$('input#double').change(function(){
+   if(this.checked){
+      
+   }
+   $('select.subject_choice2').toggle();
+})
 
 $('select#classoption').on('change',function(e){
    $("#form1").submit();
