@@ -98,8 +98,13 @@ class TeachcourseController extends Controller
         $banji   = ArrayHelper::getValue($post,'banji');
         $weekday = ArrayHelper::getValue($post,'weekday');
         $daytime = ArrayHelper::getValue($post,'daytime');
+        $turn = ArrayHelper::getValue($post,'turn');
         $subject = ArrayHelper::getValue($post,'subject');
-
+        $subject2 = ArrayHelper::getValue($post,'subject2');
+        // if($turn)
+        // {
+        //     return $turn."--".$subject2;
+        // }
         if($year&&$banji&&$weekday&&$daytime)
         {
             $model = TeachCourse::findOne(['year_id'=>$year,'class_id' => $banji,'weekday' => $weekday,
@@ -111,20 +116,38 @@ class TeachcourseController extends Controller
               $model->weekday = $weekday;
               $model->day_time_id = $daytime;
             }
-            $model->subject_id = $subject;
+            if($turn)
+            {
+                $model->subject2_id = $subject2;
+            }else{
+                $model->subject_id = $subject;
+            }
+            
             if($model->save())
             {
                 //返回当前任课教师的课程表
-                $teacherMSG =  TeachManage::find()->where(['class_id'=>$banji,'subject'=>$subject])->one();
+                if($turn)
+                {
+                    $teacherMSG =  TeachManage::find()->where(['class_id'=>$banji,'subject'=>$subject2])->one();
+                }else{
+                    $teacherMSG =  TeachManage::find()->where(['class_id'=>$banji,'subject'=>$subject])->one();
+                }
+                
                 if($teacherMSG){
                     $teacher_id = $teacherMSG->teacher_id;
                 }else{
                     $teacher_id = "";
                 }
-                return  json_encode(['teacher_id'=>$teacher_id,'term'=>$year,'subject'=>$subject]);           //
+                if($turn)
+                {
+                    return  json_encode(['teacher_id'=>$teacher_id,'term'=>$year,'subject'=>$subject2]); 
+                }else{
+                    return  json_encode(['teacher_id'=>$teacher_id,'term'=>$year,'subject'=>$subject]); 
+                }
+                          //
             }else{
-                //return 'SaveError';
-                return var_export($model);
+                return 'SaveError';
+                //return var_export($model);
             } 
         }else{
             return 'SaveError';

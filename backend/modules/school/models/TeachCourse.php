@@ -35,7 +35,7 @@ class TeachCourse extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-           [['year_id', 'class_id', 'weekday', 'day_time_id', 'subject_id'], 'required'],
+           [['year_id', 'class_id', 'weekday', 'day_time_id'], 'required'],
            [['year_id', 'class_id', 'day_time_id'], 'integer'],
            [['weekday'], 'string', 'max' => 50],
            [['subject_id', 'subject2_id'], 'string', 'max' => 11],
@@ -74,8 +74,17 @@ class TeachCourse extends \yii\db\ActiveRecord
 
             if($sub)
             {
-                $weekCourse[$time_id][$week_id] = ['sub'=>ArrayHelper::getValue($subjects,$sub->subject_id),
-                                                   't_id'=>ArrayHelper::getValue($teachers,$sub->subject_id)];
+                $arrm1 = ['sub'=>ArrayHelper::getValue($subjects,$sub->subject_id),
+                          't_id'=>ArrayHelper::getValue($teachers,$sub->subject_id)];
+                 $arrm2 = [];
+                if($sub->subject2_id)
+                {
+                  $arrm2 = ['sub2'=>ArrayHelper::getValue($subjects,$sub->subject2_id),
+                            't2_id'=>ArrayHelper::getValue($teachers,$sub->subject2_id)];
+                }
+
+                $weekCourse[$time_id][$week_id] = array_merge($arrm1,$arrm2);
+
             }
             
         }
@@ -99,6 +108,10 @@ class TeachCourse extends \yii\db\ActiveRecord
       //var_export($allTClass->all());
       $allCourse = static::find()
                          ->where(['year_id'=>$term,'subject_id'=>$subject,'class_id'=>$allTClass])->all();
+      //查询双周课表
+      $allCourse2 = static::find()
+                         ->where(['year_id'=>$term,'subject2_id'=>$subject,'class_id'=>$allTClass])
+                         ->indexby(function($row){return $row['weekday'].'-'.$row['day_time_id'];})->all();
       // foreach ($allCourse as $key => $value) {
       //   echo $value->weekday."-".$value->day_time_id."-".$value->subject_id."<br>";
       // }
@@ -115,6 +128,7 @@ class TeachCourse extends \yii\db\ActiveRecord
           //   $courseArr[$course->weekday][$course->day_time_id] = $course->banji;
           // }
           // 临时将daytime的键改成sort值，便于同时兼任多个年级的老师显示课表
+          // 修改计划：就按sort值，所有年级共享一个顺序，但有不同的时间
          
           $daytime = TeachDaytime::findOne($course->day_time_id);
           
@@ -129,10 +143,40 @@ class TeachCourse extends \yii\db\ActiveRecord
               $courseArr[$course->weekday][$sort]= $ifset.'/'.$course->banji->title;
             else
               $courseArr[$course->weekday][$sort]= $ifset->title.'/'.$course->banji->title;
+
           }else{
             $courseArr[$course->weekday][$sort] = $course->banji;
           }
-          
+
+          if($course->subject2_id)
+          {
+              $stitle = $courseArr[$course->weekday][$sort];
+              if(is_string($stitle))
+              {
+                  $stitle .='单周';
+              }else{
+                  $stitle = $stitle->title.'(单周)';
+              }
+              $courseArr[$course->weekday][$sort] = $stitle;
+          }
+      }
+
+      foreach ($allCourse2 as $key2 => $course2) {
+         $daytime = TeachDaytime::findOne($course2->day_time_id);
+        if(!$daytime)
+            continue;
+          else
+            $sort = $daytime->sort;
+         $ifset = ArrayHelper::getValue($courseArr,$course2->weekday.'.'.$sort);
+          if($ifset)
+          {
+            if(is_string($ifset))
+              $courseArr[$course2->weekday][$sort]= $ifset.'/'.$course2->banji->title."(双周)";
+            else
+              $courseArr[$course2->weekday][$sort]= $ifset->title.'/'.$course2->banji->title."(双周)";
+          }else{
+            $courseArr[$course2->weekday][$sort] = $course2->banji->title."(双周)";
+          }
       }
 
       return $courseArr;

@@ -28,21 +28,11 @@ $week = CommonFunction::getWeekday();
 </div>
 <div class="form-group">
  <?=Html::dropDownList('department',$department,$departments,['class'=>'form-control','id'=>'department']);
- //  'onChange'=>'
- //        $("select#classoption").empty();
- //        url = "index.php?r=tcenter/getclass&department="+$(this).val();           
- //        $.post(url,null,function(data){
- //          var result = JSON.parse(data);
- //          for(var x in result)
- //          {
- //              $("select#classoption").append("<option value="+x+">"+result[x]+"</option>");
- //          }
- //        });
- // '
 ?>
 </div>
 <div class="form-group">
- <?=Html::dropDownList('class_id',$class_id,$classes,['class'=>'form-control','id'=>'classoption']);?>
+ <?=Html::dropDownList('class_id',$class_id,$classes,['class'=>'form-control','id'=>'classoption',
+    'onChange'=>'$("#form1").submit()']);?>
 </div>
 <button type="submit" class="btn btn-primary">查询</button>
  <?php ActiveForm::end(); ?>
@@ -67,16 +57,27 @@ $week = CommonFunction::getWeekday();
 
         foreach ($week as $week_id => $weekday) { 
           $course = ArrayHelper::getValue($weekCourse,$time_id.'.'.$week_id);
+          $sub  = ArrayHelper::getValue($course,'sub');
+          $sub2 = ArrayHelper::getValue($course,'sub2');
           $teacher_id = ArrayHelper::getValue($course,'t_id');
-          $sub = ArrayHelper::getValue($course,'sub');
+          $teacher2_id = ArrayHelper::getValue($course,'t2_id');
+
           if($daytime->part == '晚上')
           {
              $tea = UserTeacher::findOne($teacher_id);
-             if($tea)
-               $sub = $tea->name;
+             $tea2 = UserTeacher::findOne($teacher2_id);
+             $sub = $tea?$tea->name:$tea;
+             $sub2 = $tea2?$tea2->name:$tea2;
+          }
+
+          $stitle = $teacher_id?Html::a($sub,['tcenter/index','teacher_id'=>$teacher_id]):$sub;
+          if($teacher2_id)
+          {
+             $stitle = $stitle == ''?'空':$stitle;
+             $stitle = '<small>'.$stitle.'/'.Html::a($sub2,['tcenter/index','teacher_id'=>$teacher2_id]).'</small>';
           }
           echo "<td>";
-          echo $teacher_id?Html::a($sub,['tcenter/index','teacher_id'=>$teacher_id]):$sub;
+          echo $stitle;
           echo "</td>";
       }
       echo "</tr>";
@@ -88,32 +89,32 @@ $week = CommonFunction::getWeekday();
 </div>
 </div>
 </div>
-          <div class="col-md-3">
-          <div class="box box-primary ">
-            <div class="box-header with-border">
-              <h3 class="box-title">班级任教</h3>
-            </div>
-            <div class="box-body fix-height">
-              <ul class="products-list product-list-in-box ">
-                <?php  
-                  foreach (CommonFunction::getAllTeachDuty() as $csx => $cname) {
-                    if(!array_key_exists($csx,$allTeach))
-                      continue;
-                     $teach = ArrayHelper::getValue($allTeach,$csx); 
-                     echo '<li class="item">';
-                     echo '<div class="product-img">';
-                     echo     '<img src="img/default-50x50.gif" alt="Product Image">';
-                     echo     '</div><div class="product-info">';
-                     echo Html::a($cname,['tcenter/index','teacher_id'=>$teach->teacher_id],['class'=>"product-title"]);
-                     echo '<span class="product-description">';
-                     echo $teach->teacher->name;
-                     echo "</span></div></li>";    
-                  }
-                ?>
-              </ul>           
-            </div>
-          </div>
-          </div>
+    <div class="col-md-3">
+    <div class="box box-primary ">
+      <div class="box-header with-border">
+        <h3 class="box-title">班级任教</h3>
+      </div>
+      <div class="box-body fix-height">
+        <ul class="products-list product-list-in-box ">
+          <?php  
+            foreach (CommonFunction::getAllTeachDuty() as $csx => $cname) {
+              if(!array_key_exists($csx,$allTeach))
+                continue;
+               $teach = ArrayHelper::getValue($allTeach,$csx); 
+               echo '<li class="item">';
+               echo '<div class="product-img">';
+               echo     '<img src="img/default-50x50.gif" alt="Product Image">';
+               echo     '</div><div class="product-info">';
+               echo Html::a($cname,['tcenter/index','teacher_id'=>$teach->teacher_id],['class'=>"product-title"]);
+               echo '<span class="product-description">';
+               echo $teach->teacher->name;
+               echo "</span></div></li>";    
+            }
+          ?>
+        </ul>           
+      </div>
+    </div>
+    </div>
 </div>
 <?php
 $this->registerJs(<<<JS

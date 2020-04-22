@@ -45,7 +45,7 @@ $allSubject = CommonFunction::getAllSubjects();
             ']);?>
         </div>
         <div class="form-group">
-          <?php echo Html::dropDownList('banji',$banji,$allClass,['class'=>'form-control','id'=>'classoption','style'=>"width:120px"]);?>
+          <?php echo Html::dropDownList('banji',$banji,$allClass,['class'=>'form-control autosubmit','id'=>'classoption','style'=>"width:120px"]);?>
         </div>
         <button type="submit" class="btn btn-primary">查询</button>
         <?php ActiveForm::end(); ?>
@@ -75,6 +75,7 @@ $allSubject = CommonFunction::getAllSubjects();
               foreach ($week as $week_id => $weekday) { 
                     $courseName = '<span class="glyphicon glyphicon-plus-sign"></span>';
                     $name = ArrayHelper::getValue($courseArr,$time_id.'.'.$week_id.'.sub');
+                    $name2 = ArrayHelper::getValue($courseArr,$time_id.'.'.$week_id.'.sub2');
                     if($name)
                     	$courseName = $name;
                     echo '<td><a type="button" href="#" class="" 
@@ -83,7 +84,13 @@ $allSubject = CommonFunction::getAllSubjects();
                              data-banji="'.$banji.'" 
                              data-weekday="'.$week_id.'"
                              data-daytime="'.$daytime['id'].'"
-                             data-target="#exampleModal">'.$courseName.'</a></td>';
+                             data-target="#exampleModal">';
+                      if($name2){
+                        echo '<small>'.$courseName.'/'.$name2.'</small>';
+                      }else{
+                        echo $courseName;
+                      }
+                      echo '</a></td>';
               }
               echo "</tr>";
              }?>  
@@ -188,7 +195,7 @@ $allSubject = CommonFunction::getAllSubjects();
             <?php $form = ActiveForm::begin(['id'=>'form2','action'=>Url::toRoute(['setcourse']),'options'=>['class'=>'form-inline']]); ?>
 
             <div class="input-group">
-              <div class="input-group-addon"><input type="checkbox" id="double" title="设置轮换科目"></div>
+              <div class="input-group-addon"><input type="checkbox" name="turn" id="double" title="设置轮换科目"></div>
               <?php echo Html::dropDownList('subject',null,CommonFunction::getAllSubjects(),
                 ['class'=>'form-control subject_choice','style'=>'width:200px']);?>
               <?php echo Html::dropDownList('subject2',null,CommonFunction::getAllSubjects(),
@@ -201,7 +208,7 @@ $allSubject = CommonFunction::getAllSubjects();
                 <input name="daytime" type="text" id='daytime' class="form-control hide" id="recipient-name">
             </div> 
              <div class="form-group">
-              <button type="submit" class="btn btn-success">提交</button>
+              <button type="submit" class="btn sb btn-success">提交</button>
              </div>
             <?php ActiveForm::end(); ?>
         </div>
@@ -234,29 +241,38 @@ $(function(){
             data = JSON.parse(data);
             var thisURL = document.location.href;
             thisURL = thisURL.split("&");
-            thisURL = thisURL[0]+'&teacher_id='+data['teacher_id']+'&term='+data['term']+'&subject='+data['subject']+'&banji='+recipient+'&department='+$department;
+
+            if($('input#double').is(':checked')){
+               thisURL = thisURL[0]+'&teacher_id='+data['teacher_id']+'&term='+data['term']+'&subject='+data['subject']+'&banji='+recipient+'&department='+$department;
+            }else{
+                thisURL = thisURL[0]+'&teacher_id='+data['teacher_id']+'&term='+data['term']+'&subject='+data['subject']+'&banji='+recipient+'&department='+$department;
+            }
             document.location.href = thisURL;
           }
         });
     })
-});
-$('select.subject_choice2').hide();
-$('input#double').change(function(){
-   if(this.checked){
-      
-   }
-   $('select.subject_choice2').toggle();
-})
-
-$('select#classoption').on('change',function(e){
-   $("#form1").submit();
-})
-
-$("select.subject_choice").on('change',
-function(e){ 
-    $("#form2").submit();
   });
-});
+  $('select.subject_choice2').hide();
+  $('input#double').change(function(){
+     if(this.checked){
+        $('button.sb').text('设置双周课程');
+     }else{
+        $('button.sb').text('提交');
+     }
+     $('select.subject_choice2').toggle();
+     $('select.subject_choice').toggle();
+  })
 
+  $('select#classoption').on('change',function(e){
+     $("#form1").submit();
+  })
+
+  $(".modal select").on('change',
+  function(e){ 
+      $("#form2").submit();
+  });
+
+
+});
 JS,View::POS_LOAD);
 ?>

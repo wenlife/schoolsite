@@ -55,7 +55,8 @@ echo Alert::widget([
         ']);?>
       </div>
       <div class="form-group">
-        <?php echo Html::dropDownList('teacher_id',$teacher_id,$teachers,['class'=>'form-control','id'=>'teacheroption']);?>
+        <?php echo Html::dropDownList('teacher_id',$teacher_id,$teachers,['class'=>'form-control','id'=>'teacheroption',
+         'onChange'=>'$("#form1").submit();']);?>
       </div>
       <button type="submit" class="btn btn-primary">查询</button>
       <?php ActiveForm::end(); ?>
