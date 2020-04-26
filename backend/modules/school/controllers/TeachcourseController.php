@@ -85,6 +85,49 @@ class TeachcourseController extends Controller
         ]);
     }
 
+
+    public function actionExchange($term=null,$department=null,$banji=null,$teacher_id=null,$subject=null)
+    {
+        //准备参数
+        $courseArr = $tcourseArr = array();
+        $name = null;
+        $allTerm = TeachYearManage::getYearArray();
+        $term = $term?$term:key($allTerm);
+        $departments = TeachDepartment::getDepartmentArray();
+        $department = $department?$department:key($departments);
+        $allClass = TeachClass::getClassArray($department);
+        $banji = $banji?$banji:key($allClass);
+        $allDaytime = TeachDaytime::getDepartmentDaytime($department);
+        //获取班级课表数据
+        $courseArr = TeachCourse::getClassWeekCourse($term,$banji);
+
+        if($teacher_id!=null&&$subject!=null&&$term!=null)
+        {
+           //$teacher = TeachManage::findOne(['teacher_id'=>$teacher_id]);
+           $name    = UserTeacher::findOne($teacher_id)->name; 
+           $tcourseArr = TeachCourse::getTeacherWeekCourse($term,$subject,$teacher_id); 
+        }
+
+        $courseCount = TeachCourse::getClassCourseCount($banji,$term);
+        $courseLimit = TeachCourseLimit::getLimitArray($department);
+
+        return $this->render('exchange', [
+            'allTerm'=>$allTerm,
+            'term'=>$term,
+            'departments'=>$departments,
+            'department'=>$department,
+            'allClass'=>$allClass,
+            'banji'=>$banji,
+            'courseArr'=>$courseArr,
+            'tcourseArr'=>$tcourseArr,
+            'teacherName'=>$name,//=========
+            'subject'=>$subject,
+            'allDaytime'=>$allDaytime,
+            'courseCount'=>$courseCount,
+            'courseLimit'=>$courseLimit
+        ]);
+    }
+
     //负责返回顶部自动生成的选择框
     public function actionGetclass($department)
     {
