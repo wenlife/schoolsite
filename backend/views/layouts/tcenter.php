@@ -4,6 +4,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
+use yii\web\Session;
 use common\models\Indexsetting;
 backend\assets\AppAsset::register($this);
 dmstr\web\AdminLteAsset::register($this);
@@ -83,76 +84,43 @@ NavBar::end();
 </div>
 </div>
 </div>
+<?php
+$session = new Session;
+$session->open();
+$filepath = 'counter.txt';
+if (!$session->get('temp'))//判断$_SESSION[temp]的值是否为空,其中的temp为自定义的变量
+{
+    if (!file_exists($filepath))//检查文件是否存在，不存在刚新建该文件并赋值为0
+    {
+        $fp = fopen($filepath,'w');
+        fwrite($fp,0);
+        fclose($fp);
+        counter($filepath);
+    }else{
+        counter($filepath);
+    }
+    $session->set('temp',1);
+}
+//$session->destroy();
+
+//counter()方法用来得到文件内的数字
+
+function counter($f_value)
+{
+ //用w模式打开文件时会清空里面的内容，所以先用r模式打开，取出文件内容，保存到变量
+ $fp = fopen($f_value,'r') or die('打开文件时出错。');
+ $countNum = fgets($fp,1024);
+ fclose($fp);
+ $countNum++;
+ $fpw = fopen($f_value,'w');
+ fwrite($fpw,$countNum);
+ fclose($fpw);
+}
+?>
 <div class="main-footer">
     <div class="container">
         <p class="text-center">攀枝花七中信息技术教研组 All Right Reserved</p>
-<script type="text/javascript">
-var caution=false
-function setCookie(name,value,expires,path,domain,secure) 
-{
- var curCookie=name+"="+escape(value) +
- ((expires)?";expires="+expires.toGMTString() : "") +
- ((path)?"; path=" + path : "") +
- ((domain)? "; domain=" + domain : "") +
- ((secure)?";secure" : "")
- if(!caution||(name + "=" + escape(value)).length <= 4000)
- {
- document.cookie = curCookie
- }
- else if(confirm("Cookie exceeds 4KB and will be cut!"))
- {
- document.cookie = curCookie
- }
-}
-function getCookie(name) 
-{
- var prefix = name + "="
- var cookieStartIndex = document.cookie.indexOf(prefix)
- if (cookieStartIndex == -1)
- {
- return null
- }    
- var cookieEndIndex=document.cookie.indexOf(";",cookieStartIndex+prefix.length)
- if(cookieEndIndex == -1)
- {
- cookieEndIndex = document.cookie.length
- }
- return unescape(document.cookie.substring(cookieStartIndex+prefix.length,cookieEndIndex))
-}
-function deleteCookie(name, path, domain) 
-{
- if(getCookie(name)) 
- {
- document.cookie = name + "=" + 
- ((path) ? "; path=" + path : "") +
- ((domain) ? "; domain=" + domain : "") +
- "; expires=Thu, 01-Jan-70 00:00:01 GMT"
- }
-}
-function fixDate(date) 
-{
- var base=new Date(0)
- var skew=base.getTime()
- if(skew>0)
- {
- date.setTime(date.getTime()-skew)
- }    
-}
-var now=new Date()
-fixDate(now)
-now.setTime(now.getTime()+365 * 24 * 60 * 60 * 1000)
-var visits = getCookie("counter")
-if(!visits)
-{
- visits=1;
-}  
-else
-{
- visits=parseInt(visits)+1;
-}  
-setCookie("counter", visits, now)
-document.write("<p style='text-align:center'>您是到访的第" + visits + "位用户！</p>")
-</script>
+        <?='<p style="text-align:center">您是本站第'.file_get_contents($filepath).'位访客</p>';?>
     </div>
 </div>
 

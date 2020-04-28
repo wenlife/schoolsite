@@ -88,6 +88,7 @@ class TeachcourseController extends Controller
 
     public function actionExchange($term=null,$department=null,$banji=null,$teacher_id=null,$subject=null)
     {
+        //$this->layout = false;
         //准备参数
         $courseArr = $tcourseArr = array();
         $name = null;
