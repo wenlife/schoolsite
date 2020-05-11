@@ -159,8 +159,12 @@
                 self.disX = oEvent.clientX - obj.offsetLeft;
                 self.disY = oEvent.clientY - obj.offsetTop;
                 $(obj).css("zIndex",self.zIndex++);
-                index = $(obj).index();
-                self.options.cbStart(index);
+                
+                indeX = $(obj).attr("sname");
+                week_id = $(obj).attr("week_id");
+                time_id = $(obj).attr("time_id");
+
+                self.options.cbStart(week_id,time_id);
                 //self.options.cbStart();
             },
             move: function (ev, obj) {
@@ -225,7 +229,10 @@
                 if(self.options.pos==true){
                     self.animation(obj, self.aPos[$(obj).attr("index")]);
                 }
-                self.options.cbEnd();
+                var oNear1=self.findNearest(obj);
+                week2_id = $(oNear1).attr("week_id");
+                time2_id = $(oNear1).attr("time_id");
+                self.options.cbEnd(week2_id, time2_id);
                 if(self.options.handle!=null){
                     $(obj).find(self.options.handle).unbind("onmousemove");
                     $(obj).find(self.options.handle).unbind("onmouseup");

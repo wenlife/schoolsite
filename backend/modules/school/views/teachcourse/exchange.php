@@ -11,126 +11,115 @@ $this->params['breadcrumbs'][] = $this->title;
 $week = CommonFunction::getWeekday();
 $allSubject = CommonFunction::getAllSubjects();
 ?>
-<div class="col-md-7">
+
+
 <div class="tab">
 <div class="box box-success">
     <div class="box-header no-border">
-        <h3 class="box-title" style="text-align:center;padding-bottom:5px;margin-bottom: 15px;border-bottom: 1px dashed #ccc;width:100%">班级课程安排表</h3>
-        <?php 
-            $form = ActiveForm::begin(['id'=>'form1','method'=>'get','action'=>Url::toRoute(['index']),'options'=>['class'=>'form-inline']]); ?>
-        <div class="form-group">
-          <?php echo Html::dropDownList('term',$term,$allTerm,['class'=>'form-control']);?>
-        </div>
-        <div class="form-group">
-          <?php echo Html::dropDownList('department',$department,$departments,[
-            'class'=>'form-control',
-            'onChange'=>'
-                  $("select#classoption").empty();
-                  url = "index.php?r=school/teachcourse/getclass&department="+$(this).val();           
-                  $.post(url,null,function(data){
-                    var result = JSON.parse(data);
-                    for(var x in result)
-                    {
-                        $("select#classoption").append("<option value="+x+">"+result[x]+"</option>");
-                    }
-                  });
-            ']);?>
-        </div>
-        <div class="form-group">
-          <?php echo Html::dropDownList('banji',$banji,$allClass,['class'=>'form-control autosubmit','id'=>'classoption','style'=>"width:120px"]);?>
-        </div>
-        <button type="submit" class="btn btn-primary">查询</button>
-        <?php ActiveForm::end(); ?>
     </div>
     <!-- /.box-header -->
     <div class="box-body no-padding">
       <div class="box-body">
-        <table class="my">
-          <thead>
-          <tr>
-            <th class="div1" style="width: 10px">#</th>
-            <th class="div1" style="width: 100px">节次</th>
-            <?php foreach ($week as $id => $weekday) {echo '<th class="div1">'.$weekday.'</th>';}?>
-            </tr>
-          </thead>
-          <tbody>
+
+        <div class="boxList1">
+          <div class="one div8">#</div>
+          <div class="one div8">节次</div>
+          <?php foreach ($week as $id => $weekday) {echo '<div class="one div8">'.$weekday.'</div>';}?>
+        </div>
+        <div class="left">
+            <?php
+              foreach ($allDaytime as $time_id => $daytime) {//注意此处没有使用indexby来让ID成为key
+              //echo "<div class='course'>".ArrayHelper::getValue($daytime,'sort')."</td>";
+              //echo "<div class='course'>".ArrayHelper::getValue($daytime,'title')."</td>";
+            }
+            ?>
+        </div>
+
+       <div class="boxList" id="allcourse">
           <?php
               foreach ($allDaytime as $time_id => $daytime) {//注意此处没有使用indexby来让ID成为key
-              echo "<td class='div1'>".ArrayHelper::getValue($daytime,'sort')."</td>";
-              echo "<td class='div1'>".ArrayHelper::getValue($daytime,'title')."</td>";
+              echo "<div class='one div8' sname='ak'>".ArrayHelper::getValue($daytime,'sort')."</div>";
+              echo "<div class='one div8'>".ArrayHelper::getValue($daytime,'title')."</div>";
               foreach ($week as $week_id => $weekday) { 
                     $courseName = '<span class="glyphicon glyphicon-plus-sign"></span>';
                     $name = ArrayHelper::getValue($courseArr,$time_id.'.'.$week_id.'.sub');
                     $name2 = ArrayHelper::getValue($courseArr,$time_id.'.'.$week_id.'.sub2');
                     if($name)
                       $courseName = $name;
-                    echo '<td class="div1"><div class="div11">';
+                    echo '<div class="one div8" week_id="'.$week_id.'" time_id="'.$time_id.'">';
                       if($name2){
                         echo '<small>'.$courseName.'/'.$name2.'</small>';
                       }else{
                         echo $courseName;
                       }
-                      echo '</div></td>';
+                      echo '</div>';
               }
-              echo "</tr>";
-             }?>  
-        </tbody>
-      </table>
-      </div>
+             }?> 
+
+       </div>
+
     </div>
 </div>
 </div>
 </div>
-
 <?php
-$this->registerJsFile('js/Tdrag.js', [\backend\assets\AppAsset::className(), 'depends' => 'backend\assets\AppAsset']);
-$this->registerJs(<<<JS
- var index;
- $(".div1").Tdrag({
-     scope:".my",
-     pos:true,
-     dragChange:true,
-     cbEnd:function(index){
-         console.log(index)
-      },
+ $this->registerJsFile('js/Tdrag.js', [\backend\assets\AppAsset::className(), 'depends' => 'backend\assets\AppAsset']);
 
-  });
+$this->registerJs(<<<JS
+
+var week, time;
+$(".one").Tdrag({    
+    scope:".boxList",
+    pos:true,
+    dragChange:true,
+    cbStart:function(week_id,time_id){
+        week = week_id;
+        time = time_id;
+        $('.div8').addClass("red");
+    },
+    cbEnd:function(week2_id,time2_id){
+        console.log('移动前：星期'+week+'第'+time+'节');
+        console.log('移动后：星期'+week2_id+'第'+time2_id+'节');
+        $('.div8').removeClass('red');
+    }
+});
+
 JS,View::POS_LOAD);
 ?>
 <style type="text/css">
-.my{
 
-    border: 1px solid #ff0033;
-    height: 500px;
-    margin: 5px;
-    padding:5px;
-    position: relative;
-    width: 800px;
-  }
-.div1{
-    border: 1px solid #ccc;
-    width: 100px;
+  .course{
     height: 40px;
-    cousor:hand;
-}
-td:hover{
-  border:1px solid red;
+    margin: 5px;
+    border: 1px solid #ccc;
+    width: 80px;
+    float: left;
+  }
+  .red{
+    background-color: red;
+  }
+  .one{
+    width: 80px;
+    height: 40px;
+    border: 1px solid #ccc;
+   /* position: absolute;*/
+    margin: 5px;
 }
 .boxList{
-/*    border: 1px solid #ff0033;
+    border: 1px solid #ff0033;
     height: 550px;
     margin: 30px;
     position: relative;
-    width: 500px;*/
+    width: 900px;
 }
-.div1{
-/*  width: 200px;
-    height: 200px;
-    float:left;
-    margin: 20px;
-    float: right;
-    background:transparent url(images/tezml2.PNG) no-repeat;
-    top: 50px;
-    right: 100px;*/
+.boxList1{
+    border: 1px solid #ff0033;
+    height: 50px;
+    margin: 30px;
+    position: relative;
+    width: 900px;
+}
+.div8{
+    float: left;
 }
 </style>
