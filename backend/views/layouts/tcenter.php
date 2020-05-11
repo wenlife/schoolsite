@@ -88,17 +88,16 @@ NavBar::end();
 $session = new Session;
 $session->open();
 $filepath = 'counter.txt';
+if (!file_exists($filepath))//检查文件是否存在，不存在刚新建该文件并赋值为0
+{
+    $fp = fopen($filepath,'w');
+    fwrite($fp,0);
+    fclose($fp);
+    counter($filepath);
+}
 if (!$session->get('temp'))//判断$_SESSION[temp]的值是否为空,其中的temp为自定义的变量
 {
-    if (!file_exists($filepath))//检查文件是否存在，不存在刚新建该文件并赋值为0
-    {
-        $fp = fopen($filepath,'w');
-        fwrite($fp,0);
-        fclose($fp);
-        counter($filepath);
-    }else{
-        counter($filepath);
-    }
+    counter($filepath);
     $session->set('temp',1);
 }
 //$session->destroy();
@@ -120,7 +119,7 @@ function counter($f_value)
 <div class="main-footer">
     <div class="container">
         <p class="text-center">攀枝花七中信息技术教研组 All Right Reserved</p>
-        <?='<p style="text-align:center">您是本站第'.file_get_contents($filepath).'位访客</p>';?>
+        <?='<p style="text-align:center">您是本站第'.file_get_contents('counter.txt').'位访客(Since 2020-05-11)</p>';?>
     </div>
 </div>
 
