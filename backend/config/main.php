@@ -53,6 +53,10 @@ return [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'TaMa1ELJgYLdQy-9wU0zv8EwRICrl3IR',
                 'csrfParam' => '_backendCSRF',
+
+            'trustedHosts' => [
+            '192.168.3.0/24',
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
