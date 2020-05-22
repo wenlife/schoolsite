@@ -15,6 +15,14 @@ class TcenterController extends \yii\web\Controller
 {
 	public $layout="tcenter";
 
+    public function actionInit()
+    {
+        if(Yii::$app->user->isGuest)
+        {
+            $this->redirect(['/site/login']);
+        }
+    }
+
     public function actionIndex($term=null,$subject='yw',$teacher_id=null)
     {
 
