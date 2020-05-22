@@ -1,0 +1,71 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	padding-top: 0px;	
+}
+
+nav{
+	background-color:#3c8dbc;
+	color:#fff;
+	margin-bottom: 0px;
+}
+
+nav a{
+	color: #fff;
+}
+
+nav button.navbar-toggle span{
+	border:1px #fff solid;
+}
+
+nav ul li:hover{
+	background-color: #fff;
+}
+
+.breadcrumb{
+	margin:0px;
+	background:#fff;
+}
+
+.my .panel{
+	border:none;
+}
+.my .panel-heading{
+	padding:0;
+	margin:0;
+	border:0;	
+}
+.my .panel-notice{
+    height:36px;
+	background:#fff url(/images/notice.png) no-repeat;
+}
+
+.my .panel-student{
+	height:36px;
+	background:#fff url(/images/panel.jpg) no-repeat;
+}
+
+.my .panel-school{
+	height:36px;
+	background:#fff url(/images/school.png) no-repeat;
+}
+.my .panel-title{
+	line-height:36px;
+}
+.my .panel-title img{
+	margin:10px 10px 0 0;
+}
+
+.my .panel-body{
+	min-height:150px;
+	
+}
+
+table.my .media img{
+	height:100px;
+	width:100px;	
+}
+table.my th,table.my td{
+        text-align: center;
+}
+

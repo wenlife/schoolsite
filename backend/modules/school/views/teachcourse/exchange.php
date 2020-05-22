@@ -55,6 +55,30 @@ $allSubject = CommonFunction::getAllSubjects();
    </div>
 
 </div>
+<?php
+$this->registerJsFile('js/Tdrag.js', [\backend\assets\AppAsset::className(), 'depends' => 'backend\assets\AppAsset']);
+$this->registerJs(<<<JS
+var week, time;
+$(".one").Tdrag({    
+    //scope:".boxList",
+    pos:true,
+    dragChange:true,
+    cbStart:function(week_id,time_id){
+        week = week_id;
+        time = time_id;
+        $('.one').addClass("red");
+    },
+    cbEnd:function(week2_id,time2_id){
+        console.log('移动前：星期'+week+'第'+time+'节');
+        console.log('移动后：星期'+week2_id+'第'+time2_id+'节');
+        $('.one').removeClass('red');
+        $('#changeinfo').html('星期'+week+'第'+time+'节将和星期'+week2_id+'第'+time2_id+'节对换');
+    }
+});
+
+JS,View::POS_LOAD);
+?>
+
 <style type="text/css">
    
    .item{
@@ -129,30 +153,4 @@ $allSubject = CommonFunction::getAllSubjects();
     width: 900px;
 }
 </style>
-
-<?php
- $this->registerJsFile('js/Tdrag.js', [\backend\assets\AppAsset::className(), 'depends' => 'backend\assets\AppAsset']);
-
-$this->registerJs(<<<JS
-
-var week, time;
-$(".one").Tdrag({    
-    //scope:".boxList",
-    pos:true,
-    dragChange:true,
-    cbStart:function(week_id,time_id){
-        week = week_id;
-        time = time_id;
-        $('.one').addClass("red");
-    },
-    cbEnd:function(week2_id,time2_id){
-        console.log('移动前：星期'+week+'第'+time+'节');
-        console.log('移动后：星期'+week2_id+'第'+time2_id+'节');
-        $('.one').removeClass('red');
-        $('#changeinfo').html('星期'+week+'第'+time+'节将和星期'+week2_id+'第'+time2_id+'节对换');
-    }
-});
-
-JS,View::POS_LOAD);
-?>
 
