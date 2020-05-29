@@ -98,7 +98,7 @@ class SiteController extends Controller
             $user = AdminUser::findByUsername($model->username);
             if($user->type == "ma")
             {
-               return  $this->redirect(['/tcenter/mcenter']);
+               return  $this->redirect(['/tcenter']);
             }else{
                return  $this->redirect(['/tcenter']);
             }
@@ -156,7 +156,7 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         //return $this->goHome();
-        return $this->redirect(['/tcenter']);
+        return $this->redirect(['site/login']);
     }
 
     public function actionResetpwd($username)
@@ -175,6 +175,7 @@ class SiteController extends Controller
 
     public function actionSecode()
     {
+        exit('接入互联网后不再提供！');
         $this->layout = false;
         $secodeArr = UserTeacher::find()->select(['name','subject','secode'])->all();
         //var_export($secodeArr);

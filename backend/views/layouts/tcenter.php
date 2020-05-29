@@ -44,6 +44,7 @@ echo Nav::widget([
 $menuItems = [
 
 ['label'=>'管理中心','url'=>['tcenter/mcenter'],'visible'=>Yii::$app->user->can('schoolPost')],
+['label'=>'报名管理','url'=>['/signsheet'],'visible'=>Yii::$app->user->can('userPost')]
 ];
 
 if (Yii::$app->user->isGuest) {

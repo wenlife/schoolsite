@@ -24,7 +24,7 @@ dmstr\web\AdminLteAsset::register($this);
 <div class="content-wrapper">
 <?php
 NavBar::begin([
-    'brandLabel' => '攀枝花七中校内网',
+    'brandLabel' => '攀枝花七中校园网',
     'brandUrl' =>'http://www.pzhqz.com', //Yii::$app->homeUrl,
     'options' => [
         'class' => 'navbar navbar-static-top navbar-custom',
@@ -33,8 +33,8 @@ NavBar::begin([
 
 echo Nav::widget([
     'items'=>[
-            ['label'=>'个人中心','url'=>['tcenter/index']],
-            ['label'=>'学校校历','url'=>['tcenter/cal']],
+        ['label'=>'艺体报名','url'=>['/signsheet/create']],
+        ['label'=>'报名查询','url'=>['/signsheet/query']],
     ],
     'options'=>['class'=>'navbar-nav'],
 ]);
@@ -43,9 +43,10 @@ $menuItems = [
 ];
 
 if (Yii::$app->user->isGuest) {
-    $menuItems[] = ['label' => '登录', 'url' => ['/site/login']];
-    $menuItems[] = ['label' => 'signup', 'url' => ['/site/signup']];
+        $menuItems[] = ['label' => '登录', 'url' => ['/site/login']];
+
 } else {
+    $menuItems[] =['label'=>'报名管理','url'=>['/signsheet'],'visible'=>Yii::$app->user->can('userPost')];
     $menuItems[] = '<li>'
         . Html::beginForm(['/site/logout'], 'post')
         . Html::submitButton(
