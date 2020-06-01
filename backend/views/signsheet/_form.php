@@ -17,8 +17,8 @@ use kartik\datetime\DateTimePicker;
         <div class="row">
             <div class="col-md-6">
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-            <?= $form->field($model, 'gender')->dropDownlist(['男'=>'男','女'=>'女'],['prompt'=>'请选择性别']) ?>
-            <?= $form->field($model, 'old')->textInput() ?>
+            <?php $form->field($model, 'gender')->dropDownlist(['男'=>'男','女'=>'女'],['prompt'=>'请选择性别']) ?>
+            <?php $form->field($model, 'old')->textInput() ?>
             <?= $form->field($model, 'minzu')->dropDownlist(SysNation::getList(),['prompt'=>'请选择民族']) ?>
             </div>
         <div class="col-md-6">
@@ -27,7 +27,7 @@ use kartik\datetime\DateTimePicker;
 
         </div>
     </div>
-    <?= $form->field($model, 'birth')->textInput(['maxlength' => true,'id'=>'birth']) ?>
+    <?php $form->field($model, 'birth')->textInput(['maxlength' => true,'id'=>'birth']) ?>
 
     <?= $form->field($model, 'graduate')->textInput(['maxlength' => true]) ?>
 

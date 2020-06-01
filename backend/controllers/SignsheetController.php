@@ -164,9 +164,17 @@ public function actions()
     public function actionCreate()
     {
         $model = new SignSheet();
+        $model->scenario = 'create';
 
         if ($model->load(Yii::$app->request->post())) {
             //自动填写出生日期 性别 年龄
+            $model->birth = date('Y-m-d',strtotime(substr($model->idcard, 6, 8)));
+            $gender = substr($model->idcard, (strlen($model->idcard)==15 ? -2 : -1), 1) % 2 ? '1' : '0';
+            $model->gender =$gender==1?'男':'女';
+            $date=strtotime(substr($model->idcard,6,8));
+            $today=strtotime('today');
+            $diff=floor(($today-$date)/86400/365);
+            $model->old=strtotime(substr($model->idcard,6,8).' +'.$diff.'years')>$today?($diff+1):$diff;
 
              $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             if($url = $model->upload()) {
@@ -239,7 +247,29 @@ public function actions()
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->birth = date('Y-m-d',strtotime(substr($model->idcard, 6, 8)));
+            $gender = substr($model->idcard, (strlen($model->idcard)==15 ? -2 : -1), 1) % 2 ? '1' : '0';
+            $model->gender =$gender==1?'男':'女';
+            $date=strtotime(substr($model->idcard,6,8));
+            $today=strtotime('today');
+            $diff=floor(($today-$date)/86400/365);
+            $model->old=strtotime(substr($model->idcard,6,8).' +'.$diff.'years')>$today?($diff+1):$diff;
+
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if($model->imageFile)
+            {              
+                if($url = $model->upload()) {
+                    $model->photo = $url;
+                }
+
+            }
+                        
+            if($model->validate(['id','name','gender','idcard','cat1','photo','parentphone','note']))
+            {
+                $model->save(false);
+            }
+            
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

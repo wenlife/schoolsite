@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 echo $ss;
                 ?></td>
         </tr>
-
+ 
         <tr>
             <td class="title">出生日期</td><td colspan="2"><?=$model->birth?></td><td></td>
             <td class="title">身高(cm)</td><td colspan="2"><?=$model->height?></td>

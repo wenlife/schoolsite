@@ -59,7 +59,8 @@ class SignSheet extends \yii\db\ActiveRecord
             [['birth'], 'string', 'max' => 30],
             [['graduate', 'cat3', 'parentname', 'note','verifymsg'], 'string', 'max' => 100],
             ['idcard','match','pattern'=>'/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/','message'=>'身份证号格式不正确！'],
-            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg'],
+            [['imageFile'], 'file', 'extensions' => 'png, jpg, jpeg'],
+            [['imageFile'], 'file', 'skipOnEmpty' => false,'on'=>'create'],
             ['captcha','required','message'=>'验证码不能为空'],  //必须输入验证码      
             ['captcha','captcha','captchaAction'=>'signsheet/captcha','message'=>'验证码不正确']
         ];
