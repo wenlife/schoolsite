@@ -24,8 +24,6 @@ use kartik\datetime\DateTimePicker;
         <div class="col-md-6">
             <?= $form->field($model, 'imageFile')->fileInput(['id'=>'fileupload'])->label('请选择一张自己最近的免冠证件照上传') ?>
             <img src="img/boxed-bg.png" width="120" height="160" id="preview">
-            <img src="img/fukuan.jpg" width="150" style="margin-left: 20px">
-        <?= $form->field($model, 'note')->textInput(['placeholder'=>'微信昵称+缴费时间'])->label('扫描二维码缴费后备注自己的微信昵称和缴费时间（手机端请长按上图识别）') ?>
         </div>
     </div>
     <?php $form->field($model, 'birth')->textInput(['maxlength' => true,'id'=>'birth']) ?>
@@ -53,6 +51,10 @@ use kartik\datetime\DateTimePicker;
     <?= $form->field($model, 'parentrelation')->dropDownlist(['dady'=>'父亲','mom'=>'母亲'],['prompt'=>'请选择监护人关系']) ?>
 
     <?= $form->field($model, 'parentphone')->textInput(['maxlength' => true]) ?>
+    <div class="col-md-12">
+    <img src="img/fukuan.jpg" width="150" style="margin-left: 20px">
+    <?= $form->field($model, 'note')->textInput(['placeholder'=>'微信昵称+缴费时间'])->label('扫描二维码缴费后备注自己的微信昵称和缴费时间（手机端请长按上图识别）') ?>
+</div>
 
     <?php echo $form->field($model, 'captcha')->widget(Captcha::className(), [
                 'captchaAction' => 'signsheet/captcha',
