@@ -48,7 +48,7 @@ class SignSheet extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'gender', 'old', 'minzu','idcard', 'birth', 'graduate', 'cat1', 'height', 'weight', 'photo', 'graduate_id', 'score', 'parentname', 'parentrelation', 'parentphone'], 'required'],
-            //['note','required','message'=>'请备注缴费账号昵称，否则将影响参考！'],
+            ['note','required','message'=>'请备注缴费微信昵称和缴费时间，否则将影响参考！'],
             ['idcard', 'unique', 'targetClass' => '\backend\models\SignSheet', 'message' => '该身份证号已经存在，请确认自己是否已经报名，如有疑问请电话咨询学校'],
             [['old', 'verify'], 'integer'],
             [['height', 'weight', 'score'], 'number'],
