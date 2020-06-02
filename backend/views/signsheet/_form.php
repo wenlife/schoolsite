@@ -24,6 +24,7 @@ use kartik\datetime\DateTimePicker;
         <div class="col-md-6">
             <?= $form->field($model, 'imageFile')->fileInput(['id'=>'fileupload'])->label('请选择一张自己最近的免冠证件照上传') ?>
             <img src="img/boxed-bg.png" width="120" height="160" id="preview">
+            <img src="img/fukuan.jpg" width="150" style="margin-left: 20px">
 
         </div>
     </div>

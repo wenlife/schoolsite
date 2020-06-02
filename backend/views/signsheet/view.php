@@ -29,11 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
         if($model->verify != 0){
           if(Yii::$app->user->can('schoolPost'))
           {
-            echo Html::a('审核', ['verify', 'id' => $model->id], ['class' => 'btn btn-success btn-large']);
+            echo Html::a('已审核', ['verify', 'id' => $model->id], ['class' => 'btn btn-success btn-large']);
           }else{
-            echo Html::a('审核', [], ['class' => 'btn btn-success btn-large','disabled'=>'disabled']);
+            echo Html::a('已审核', [], ['class' => 'btn btn-success btn-large','disabled'=>'disabled']);
           }
            
+        }else{
+          echo Html::a('审核', ['verify', 'id' => $model->id], ['class' => 'btn btn-success btn-large']);
         }
         ?>
     </p>
