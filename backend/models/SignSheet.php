@@ -78,7 +78,7 @@ class SignSheet extends \yii\db\ActiveRecord
             //$this->imageFile->saveAs('upload/cover/' . $name . '.' . $this->imageFile->extension);
             $this->imageFile->saveAs('upload/files/' . $name);
              
-            //$this->scaleImg($url,'upload', $maxx = 295, $maxy = 413);
+            $this->scaleImg($url,'upload', $maxx = 295, $maxy = 413);
             return $url;
         } else {
             exit(var_export($this->getErrors()));
@@ -200,10 +200,5 @@ class SignSheet extends \yii\db\ActiveRecord
            'verifymsg' => '审核信息',
         ];
     }
-
-
-
-   
-
 
 }
