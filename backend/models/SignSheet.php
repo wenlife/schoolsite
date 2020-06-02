@@ -47,7 +47,7 @@ class SignSheet extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'gender', 'old', 'idcard', 'birth', 'graduate', 'cat1', 'height', 'weight', 'photo', 'graduate_id', 'score', 'parentname', 'parentrelation', 'parentphone'], 'required'],
+            [['name', 'gender', 'old', 'minzu','idcard', 'birth', 'graduate', 'cat1', 'height', 'weight', 'photo', 'graduate_id', 'score', 'parentname', 'parentrelation', 'parentphone'], 'required'],
             //['note','required','message'=>'请备注缴费账号昵称，否则将影响参考！'],
             ['idcard', 'unique', 'targetClass' => '\backend\models\SignSheet', 'message' => '该身份证号已经存在，请确认自己是否已经报名，如有疑问请电话咨询学校'],
             [['old', 'verify'], 'integer'],
@@ -78,7 +78,7 @@ class SignSheet extends \yii\db\ActiveRecord
             //$this->imageFile->saveAs('upload/cover/' . $name . '.' . $this->imageFile->extension);
             $this->imageFile->saveAs('upload/files/' . $name);
              
-            $this->scaleImg($url,'upload', $maxx = 295, $maxy = 413);
+            $this->scaleImg($url,'upload', $maxx = 600, $maxy = 800);
             return $url;
         } else {
             exit(var_export($this->getErrors()));
@@ -101,7 +101,7 @@ class SignSheet extends \yii\db\ActiveRecord
      * @return $string 返回后的图片名称（） 如a.jpg->s.jpg
      *
      **/
-    protected function scaleImg($picName,$savePath, $maxx = 295, $maxy = 413)
+    protected function scaleImg($picName,$savePath, $maxx, $maxy)
     {
         $info = getimageSize($picName);//获取图片的基本信息
         $w = $info[0];//获取宽度

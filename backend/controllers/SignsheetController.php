@@ -53,7 +53,7 @@ class SignsheetController extends Controller
 
     public $layout = 'simple';
 
-public function actions()
+    public function actions()
     {
         return [
             'error' => [

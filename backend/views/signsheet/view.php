@@ -1,5 +1,5 @@
 <?php
-
+use yii\web\View;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use backend\models\SysNation;
@@ -68,10 +68,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <tr><td class="title">姓名</td><td width="200px"><?=$model->name?></td>
             <td class="title">性别</td><td  width="200px"><?=$model->gender?></td>
             <td class="title">民族</td><td  width="200px"><?php
-                //echo ArrayHelper::getValue(SysNation::getlist(),$model->minzu)  
-                echo $model->nation->nation;  
+                //echo ArrayHelper::getValue(SysNation::getlist(),$model->minzu)
+                echo $model->nation?$model->nation->nation:$model->nation;  
             ?></td>
-            <td rowspan="3" width="201"><img width="200px" src="<?=$model->photo?>"/></td>
+            <td rowspan="3" style="width:181px;height: 241px"><img width="200px" id="simg" src="<?=$model->photo?>"/></td>
         </tr>
         <tr><td class="title">身份证号</td><td colspan="5"><?=$model->idcard?></td></tr>
         <tr><td class="title">毕业学校</td><td colspan="2"><?=$model->graduate?></td>
@@ -144,3 +144,24 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 </div>
+
+<?php
+$this->registerJsFile(
+    'specialcontent\js\jquery.rotate.min.js',
+    ['depends' => [\backend\assets\AppAsset::className()]]
+);
+$this->registerJs(<<<JS
+$(function(){
+        var image = new Image();
+        image.src = $('#simg').attr('src');
+        if(image.width > image.height)
+        {
+            $('#simg').attr('width','181px');
+             //$('#simg').css('transform','rotate(90deg)');
+            $('#simg').rotate(90);
+        }
+});
+
+JS,View::POS_LOAD);
+?>
+

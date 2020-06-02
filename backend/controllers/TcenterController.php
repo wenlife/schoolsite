@@ -3,6 +3,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\BackendLoginForm;
 use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
 use backend\modules\guest\models\UserTeacher;
 use backend\modules\school\models\TeachCourse;
 use backend\modules\school\models\TeachManage;
@@ -13,15 +14,29 @@ use backend\modules\school\models\TeachDepartment;
 
 class TcenterController extends \yii\web\Controller
 {
+        public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only'=>['index','mcenter','cal','bcourse'],
+                'rules' => [
+                    // [
+                    //     'actions' => ['create', 'query','success','CaptchaAction'],
+                    //     'allow' => true,
+                    //     'roles'=>['?']
+                    // ],
+                   [
+                        'actions' => ['index','mcenter','cal','bcourse'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
 	public $layout="tcenter";
 
-    public function actionInit()
-    {
-        if(Yii::$app->user->isGuest)
-        {
-            $this->redirect(['/site/login']);
-        }
-    }
 
     public function actionIndex($term=null,$subject='yw',$teacher_id=null)
     {
