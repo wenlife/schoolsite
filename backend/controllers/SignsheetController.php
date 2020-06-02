@@ -169,8 +169,9 @@ public function actions()
         if ($model->load(Yii::$app->request->post())) {
             //自动填写出生日期 性别 年龄
             $model->birth = date('Y-m-d',strtotime(substr($model->idcard, 6, 8)));
-            $gender = substr($model->idcard, (strlen($model->idcard)==15 ? -2 : -1), 1) % 2 ? '1' : '0';
-            $model->gender =$gender==1?'男':'女';
+            //echo substr('abcdef',-2,1);
+            //exit(substr($model->idcard, -1, 1));
+            $model->gender = substr($model->idcard, -2, 1) % 2 ? '男' : '女';
             $date=strtotime(substr($model->idcard,6,8));
             $today=strtotime('today');
             $diff=floor(($today-$date)/86400/365);
@@ -249,8 +250,7 @@ public function actions()
 
         if ($model->load(Yii::$app->request->post())) {
             $model->birth = date('Y-m-d',strtotime(substr($model->idcard, 6, 8)));
-            $gender = substr($model->idcard, (strlen($model->idcard)==15 ? -2 : -1), 1) % 2 ? '1' : '0';
-            $model->gender =$gender==1?'男':'女';
+            $model->gender = substr($model->idcard,-2, 1) % 2 ? '男':'女';
             $date=strtotime(substr($model->idcard,6,8));
             $today=strtotime('today');
             $diff=floor(($today-$date)/86400/365);

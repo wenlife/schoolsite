@@ -25,7 +25,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
         <?= Html::a('更新', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('审核', ['verify', 'id' => $model->id], ['class' => 'btn btn-success btn-large']) ?>
+        <?php
+        if($model->verify != 0){
+          if(Yii::$app->user->can('schoolPost'))
+          {
+            echo Html::a('审核', ['verify', 'id' => $model->id], ['class' => 'btn btn-success btn-large']);
+          }else{
+            echo Html::a('审核', [], ['class' => 'btn btn-success btn-large','disabled'=>'disabled']);
+          }
+           
+        }
+        ?>
     </p>
 
     <style type="text/css">
