@@ -30,7 +30,7 @@ use kartik\datetime\DateTimePicker;
 
     <?= $form->field($model, 'graduate')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'cat1')->dropDownlist(['ty'=>'体育','yy'=>'音乐','ms'=>'美术'],['prompt'=>'请选择专业类别','id'=>'cat1']) ?>
+    <?= $form->field($model, 'cat1')->dropDownlist(['ty'=>'体育','yy'=>'音乐'],['prompt'=>'请选择专业类别','id'=>'cat1']) ?>
 
     <?= $form->field($model, 'cat2')->dropDownlist([],['id'=>'cat2']) ?>
 

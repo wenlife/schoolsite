@@ -49,7 +49,7 @@ $('#cat1').change(function(){
 		.append("<option value='声乐-民族'>声乐-民族</option>")
 		.append("<option value='声乐-美声'>声乐-美声</option>")
 		.append("<option value='钢琴'>钢琴</option>")
-		.append("<option value='器乐'>器乐</option>")
+		//.append("<option value='器乐'>器乐</option>")
 		.append("<option value='舞蹈-中国舞'>舞蹈-中国舞</option>")
 		.append("<option value='舞蹈-民族舞'>舞蹈-民族舞</option>");
 	}
