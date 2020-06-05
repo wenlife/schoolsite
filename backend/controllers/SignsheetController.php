@@ -166,6 +166,7 @@ class SignsheetController extends Controller
         $model->scenario = 'create';
 
         if ($model->load(Yii::$app->request->post())) {
+            //$model->scenario = 'default';
             //自动填写出生日期 性别 年龄
             $model->birth = date('Y-m-d',strtotime(substr($model->idcard, 6, 8)));
             //echo substr('abcdef',-2,1);
@@ -192,7 +193,8 @@ class SignsheetController extends Controller
             if($url = $model->upload()) {
                 $model->photo = $url;
             }
-            if($model->validate(['id','name','gender','idcard','cat1','photo','parentphone','note']))
+            if($model->validate(['id','name','gender','idcard','cat1','cat2','photo','parentphone','note']))
+           // if($model->validate())
             {
                 $model->save(false);
                 return $this->redirect(['success']);

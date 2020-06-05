@@ -9,6 +9,10 @@ use kartik\datetime\DateTimePicker;
 /* @var $this yii\web\View */
 /* @var $model backend\models\SignSheet */
 /* @var $form yii\widgets\ActiveForm */
+// $arr1 = ['田径'=>'田径','女子排球'=>'女子排球','男子排球'=>'男子排球','女子足球'=>'女子足球'];
+// $arr2 = ['声乐-民族唱法'=>'声乐-民族唱法','声乐-民族唱法'=>'声乐-民族唱法',
+//           '钢琴'=>'钢琴','舞蹈-古典舞'=>'舞蹈-古典舞','舞蹈-民族舞'=>'舞蹈-民族舞',
+//            '舞蹈-民间舞'=>'舞蹈-民间舞','舞蹈-现代舞(非街舞、拉丁舞)'=>'舞蹈-现代舞(非街舞、拉丁舞)',];
 ?>
 <style type="text/css">
     .score{
@@ -115,6 +119,7 @@ use kartik\datetime\DateTimePicker;
 </div>
 
 <?php
+$va1 = 'ss';
 $this->registerJsFile('specialcontent\inputmask\inputmask.js',
       ['depends' => [\backend\assets\AppAsset::className()]]);
 $this->registerJsFile('specialcontent\inputmask\inputmask.extensions.js',
@@ -139,7 +144,34 @@ var file = e.target.files || e.dataTransfer.files;
 });
 
 
-//$('.field-cat2').hide();
+
+if($('#cat1').val()=== 'ty'){
+    $('.field-cat2').show();
+    
+    $("select#cat2").append("<option value>请选择第二专业类别</option>")
+    .append("<option value='田径'>田径</option>")
+    .append("<option value='女子排球'>女子排球</option>")
+    .append("<option value='男子排球'>男子排球</option>")
+    .append("<option value='女子足球'>女子足球</option>");
+    //.append("<option value='男子足球'>男子足球</option>");
+    $("select#cat2").val('{$model->cat2}');
+}
+if($('#cat1').val() === 'yy'){
+    $('.field-cat2').show();
+    $("select#cat2").append("<option value>请选择第二专业类别</option>")
+    .append("<option value='声乐-民族唱法'>声乐-民族唱法</option>")
+    .append("<option value='声乐-民族唱法'>声乐-民族唱法</option>")
+    .append("<option value='钢琴'>钢琴</option>")
+    //.append("<option value='器乐'>器乐</option>")
+    .append("<option value='舞蹈-古典舞'>舞蹈-古典舞</option>")
+    .append("<option value='舞蹈-民族舞'>舞蹈-民族舞</option>")
+    .append("<option value='舞蹈-民间舞'>舞蹈-民间舞</option>")
+    .append("<option value='舞蹈-现代舞(非街舞、拉丁舞)'>舞蹈-现代舞(非街舞、拉丁舞)</option>");
+    $("select#cat2").val('{$model->cat2}');
+}
+
+
+
 $('.field-cat3').hide();
 $('#cat1').change(function(){
     $('.field-cat2').hide();
@@ -158,14 +190,14 @@ $('#cat1').change(function(){
     if(this.value === 'yy'){
         $('.field-cat2').show();
         $("select#cat2").append("<option value>请选择第二专业类别</option>")
-        .append("<option value='声乐-民族'>声乐-民族唱法</option>")
-        .append("<option value='声乐-美声'>声乐-美声唱法</option>")
+        .append("<option value='声乐-民族唱法'>声乐-民族唱法</option>")
+        .append("<option value='声乐-民族唱法'>声乐-民族唱法</option>")
         .append("<option value='钢琴'>钢琴</option>")
         //.append("<option value='器乐'>器乐</option>")
-        .append("<option value='舞蹈-中国舞'>舞蹈-古典舞</option>")
-        .append("<option value='舞蹈-中国舞'>舞蹈-民族舞</option>")
-        .append("<option value='舞蹈-中国舞'>舞蹈-民间舞</option>")
-        .append("<option value='舞蹈-民族舞'>舞蹈-现代舞(非街舞、拉丁舞)</option>");
+        .append("<option value='舞蹈-古典舞'>舞蹈-古典舞</option>")
+        .append("<option value='舞蹈-民族舞'>舞蹈-民族舞</option>")
+        .append("<option value='舞蹈-民间舞'>舞蹈-民间舞</option>")
+        .append("<option value='舞蹈-现代舞(非街舞、拉丁舞)'>舞蹈-现代舞(非街舞、拉丁舞)</option>");
     }
     if(this.value === 'ms'){
         //alert('ms');

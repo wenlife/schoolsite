@@ -116,14 +116,14 @@ $this->params['breadcrumbs'][] = $this->title;
         </tr>
         <tr>
             <td class="title">家长姓名</td><td><?=$model->parentname?></td>
-            <td  class="title">关系</td><td><?=$model->parentrelation=='dady'?'父亲':'母亲'?></td>
+            <td class="title">关系</td><td><?=$model->parentrelation=='dady'?'父亲':'母亲'?></td>
             <td class="title">联系电话</td><td colspan="2"><?=$model->parentphone?></td>
         </tr>
         <tr><td class="title center" colspan="7">成绩</td></tr>
         <tr>
             <td>语文</td><td>数学</td><td>英语</td>
-            <td>物理</td><td>化学</td><td>生物</td>
-            <td>实验</td> 
+            <td>物理(0.9)</td><td>化学(0.8)</td><td>生物(0.3)</td>
+            <td>实验(0.5)</td> 
         </tr>
         <tr>
             <td><?=$model->yw?></td><td><?=$model->sx?></td><td><?=$model->yy?></td>
@@ -131,7 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <td><?=$model->sy?></td>
         </tr>
         <tr>
-            <td>政治</td><td>历史</td><td>地理</td>
+            <td>政治(0.35)</td><td>历史(0.35)</td><td>地理(0.3)</td>
             <td>体育</td><td colspan="3">总分（折合）</td>
         </tr>
         <tr>
