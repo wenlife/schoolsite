@@ -61,10 +61,9 @@ class SignsheetController extends Controller
             ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
-                //admin\controllers\action\CaptchaAction
                 //'class' => 'backend\controllers\action\CaptchaAction',
-                'maxLength'=>5,
-                'minLength'=>5,
+                'maxLength'=>4,
+                'minLength'=>4,
                 'padding'=>5,
                 'height'=>39,
                 'width'=>100,
@@ -177,6 +176,18 @@ class SignsheetController extends Controller
             $diff=floor(($today-$date)/86400/365);
             $model->old=strtotime(substr($model->idcard,6,8).' +'.$diff.'years')>$today?($diff+1):$diff;
 
+            //计算成绩
+            $score = $model->yw+$model->sx+$model->yy+$model->ty;
+            $score += $model->wl*0.9;
+            $score +=$model->hx*0.8;
+            $score += ($model->zz+$model->ls)*0.35;
+            $score += ($model->sw+$model->dl)*0.3;
+            $score += $model->sy *0.5;
+            $model->score = $score;
+
+            $model->signtime = date("Y-m-d H:i",time());
+
+
              $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             if($url = $model->upload()) {
                 $model->photo = $url;
@@ -186,7 +197,7 @@ class SignsheetController extends Controller
                 $model->save(false);
                 return $this->redirect(['success']);
             }else{
-               // var_export($model->getErrors());
+                var_export($model->getErrors());
             }
        
         }
@@ -227,6 +238,8 @@ class SignsheetController extends Controller
             // $model->verify = $state;
             // $model->verifymsg = $msg;
             $model->load(Yii::$app->request->post());
+            $model->verifytime = date("Y-m-d H:i",time());
+            $model->verifyadmin = Yii::$app->user->identity->username;
             if(!$model->save(false))
             {
                  exit(var_export($model->getErrors()));
@@ -255,6 +268,15 @@ class SignsheetController extends Controller
             $today=strtotime('today');
             $diff=floor(($today-$date)/86400/365);
             $model->old=strtotime(substr($model->idcard,6,8).' +'.$diff.'years')>$today?($diff+1):$diff;
+
+         //计算成绩
+            $score = $model->yw+$model->sx+$model->yy+$model->ty;
+            $score += $model->wl*0.9;
+            $score +=$model->hx*0.8;
+            $score += ($model->zz+$model->ls)*0.35;
+            $score += ($model->sw+$model->dl)*0.3;
+            $score += $model->sy *0.5;
+            $model->score = $score;
 
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             if($model->imageFile)
