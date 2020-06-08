@@ -56,7 +56,7 @@ if (Yii::$app->user->isGuest) {
         . Html::submitButton(
             '<span class="fa  fa-power-off"> 退出</span> (' . Yii::$app->user->identity->username . ')',
            // ['class' => 'btn btn-link','style'=>'height:50px;']
-            ['class' => 'btn btn-link','style'=>'line-height:20px;color:#fff']
+            ['class' => 'btn btn-link','style'=>'line-height:20px;']
         )
         . Html::endForm()
         . '</li>';

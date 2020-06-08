@@ -11,22 +11,20 @@ use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Alert;
 use backend\libary\CommonFunction;
+use backend\models\SysNotice;
 $this->title = '教师中心';
 $this->params['breadcrumbs'][] = $this->title;
 $week = CommonFunction::getWeekday();
-      // foreach ($courseArr as $key1 => $value1) {
-      //    foreach ($value1 as $key2 => $value2) {
-      //       echo $key1."-".$key2."-".$value2->title."<br>";
-      //    }
-      // }
-
+$msg = SysNotice::findOne(['pos'=>'pos_course']);
+if($msg)
+{
 echo Alert::widget([
   'options' => [
-      'class' => 'alert-info',
+      'class' => $msg->level,
   ],
-  // 'body' => '各位老师，由于本网站尚在测试完善当中，安全性亦不符合主管部门的要求。因此本网站目前只能从学校内部网络访问，在完成后续工作后将尽快接入互联网，敬请期待！',
-  'body'=>''
+   'body' => $msg->content,
 ]);
+}
 ?>
 <div class="row">
 <div class="col-md-9">

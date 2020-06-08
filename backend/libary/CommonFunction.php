@@ -6,6 +6,16 @@ use yii\helpers\ArrayHelper;
 
 class CommonFunction{
 
+	static function getNoticepos()
+	{
+		return ['pos_course'=>'课表系统通知'];
+	}
+	static function getNoticelevel()
+	{
+		return ['alert-success'=>'好消息','alert-primary'=>'一般消息',
+		         'alert-warning'=>'警告消息','alert-danger'=>'危险警告'];
+	}
+
 	static function getSubjects()
 	{
     	$subjects = [

@@ -18,9 +18,11 @@ nav button.navbar-toggle span{
 	border:1px #fff solid;
 }
 
-nav ul li:hover{
+.nav > li:hover{
 	background-color: #fff;
+	color:white;
 }
+
 
 .breadcrumb{
 	margin:0px;
