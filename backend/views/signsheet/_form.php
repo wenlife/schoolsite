@@ -191,7 +191,7 @@ $('#cat1').change(function(){
         $('.field-cat2').show();
         $("select#cat2").append("<option value>请选择第二专业类别</option>")
         .append("<option value='声乐-民族唱法'>声乐-民族唱法</option>")
-        .append("<option value='声乐-民族唱法'>声乐-民族唱法</option>")
+        .append("<option value='声乐-美声唱法'>声乐-美声唱法</option>")
         .append("<option value='钢琴'>钢琴</option>")
         //.append("<option value='器乐'>器乐</option>")
         .append("<option value='舞蹈-古典舞'>舞蹈-古典舞</option>")
