@@ -12,7 +12,7 @@ class CommonFunction{
 	}
 	static function getNoticelevel()
 	{
-		return ['alert-success'=>'好消息','alert-primary'=>'一般消息',
+		return ['alert-success'=>'好消息','alert-info'=>'一般消息',
 		         'alert-warning'=>'警告消息','alert-danger'=>'危险警告'];
 	}
 

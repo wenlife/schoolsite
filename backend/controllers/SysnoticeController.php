@@ -66,7 +66,18 @@ class SysnoticeController extends Controller
     {
         $model = new SysNotice();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $temp_model = SysNotice::findOne(['pos'=>$model->pos]);
+            if($temp_model)
+            {
+                $temp_model->content = $model->content;
+                $temp_model->level = $model->level;
+                $temp_model->save();
+            }else{
+                $model->save();
+            }
+
+            //if($mode->find()->where(['pos'=>$]))
             return $this->redirect(['index']);
         }
 

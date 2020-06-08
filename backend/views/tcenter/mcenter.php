@@ -51,9 +51,9 @@ $this->title = '';
                 <!-- <span class="badge bg-teal">67</span> -->
                 <i class="fa fa-users"></i> 学生
               </a>
-              <a class="btn btn-app">
-                <span class="badge bg-aqua">0</span>
-                <i class="fa fa-envelope"></i> 信息
+              <a class="btn btn-app" href="<?=Url::toRoute(['/sysnotice'])?>">
+                <!-- <span class="badge bg-aqua">0</span> -->
+                <i class="fa fa-envelope"></i> 通知
               </a>
               <a class="btn btn-app">
                 <span class="badge bg-red">531</span>
