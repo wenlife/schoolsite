@@ -6,13 +6,14 @@ use yii\captcha\Captcha;
 //use backend\controllers\action\CaptchaAction;
 use backend\models\SysNation;
 use kartik\datetime\DateTimePicker;
+use backend\libary\CommonFunction;
 /* @var $this yii\web\View */
 /* @var $model backend\models\SignSheet */
 /* @var $form yii\widgets\ActiveForm */
-// $arr1 = ['田径'=>'田径','女子排球'=>'女子排球','男子排球'=>'男子排球','女子足球'=>'女子足球'];
-// $arr2 = ['声乐-民族唱法'=>'声乐-民族唱法','声乐-民族唱法'=>'声乐-民族唱法',
-//           '钢琴'=>'钢琴','舞蹈-古典舞'=>'舞蹈-古典舞','舞蹈-民族舞'=>'舞蹈-民族舞',
-//            '舞蹈-民间舞'=>'舞蹈-民间舞','舞蹈-现代舞(非街舞、拉丁舞)'=>'舞蹈-现代舞(非街舞、拉丁舞)',];
+$arrCat1 = CommonFunction::getCat11();
+$arrcat_ty = json_encode(CommonFunction::getCat21());
+$arrcat_yy = json_encode(CommonFunction::getCat22());
+$arrcat_tj = json_encode(CommonFunction::getCat31());
 ?>
 <style type="text/css">
     .score{
@@ -38,11 +39,11 @@ use kartik\datetime\DateTimePicker;
 
 
 
-    <?= $form->field($model, 'cat1')->dropDownlist(['ty'=>'体育','yy'=>'音乐'],['prompt'=>'请选择专业类别','id'=>'cat1']) ?>
+    <?= $form->field($model, 'cat1')->dropDownlist($arrCat1,['prompt'=>'请选择专业类别','id'=>'cat1']) ?>
 
     <?= $form->field($model, 'cat2')->dropDownlist([],['id'=>'cat2']) ?>
 
-    <?= $form->field($model, 'cat3')->textInput(['id'=>'cat3']) ?>
+    <?= $form->field($model, 'cat3')->dropDownlist([],['id'=>'cat3'])?>
 
     <?= $form->field($model, 'height')->textInput() ?>
 
@@ -77,8 +78,6 @@ use kartik\datetime\DateTimePicker;
     </table>
     <?php // $form->field($model, 'score')->textInput(['readonly'=>'readonly'])->label('折后后(自动生成，不用填写)') 
     ?>
-
-
     <?= $form->field($model, 'parentname')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'parentrelation')->dropDownlist(['dady'=>'父亲','mom'=>'母亲'],['prompt'=>'请选择监护人关系']) ?>
@@ -143,61 +142,49 @@ var file = e.target.files || e.dataTransfer.files;
     }
 });
 
+function options(json,item,msg)
+{
+    $(item).html("");
+    $(item).append("<option value>"+msg+"</option>")
+    for(var title in json){
+       // alert(item +"=>"+json[item]);
+       $(item).append("<option value='"+title+"'>"+json[title]+"</option>");
+       
+    }
 
+}
+
+    
 
 if($('#cat1').val()=== 'ty'){
     $('.field-cat2').show();
-    
-    $("select#cat2").append("<option value>请选择第二专业类别</option>")
-    .append("<option value='田径'>田径</option>")
-    .append("<option value='女子排球'>女子排球</option>")
-    .append("<option value='男子排球'>男子排球</option>")
-    .append("<option value='女子足球'>女子足球</option>");
-    //.append("<option value='男子足球'>男子足球</option>");
+    options({$arrcat_ty},"select#cat2","请选择第二专业类别");
     $("select#cat2").val('{$model->cat2}');
 }
 if($('#cat1').val() === 'yy'){
     $('.field-cat2').show();
-    $("select#cat2").append("<option value>请选择第二专业类别</option>")
-    .append("<option value='声乐-民族唱法'>声乐-民族唱法</option>")
-    .append("<option value='声乐-美声唱法'>声乐-美声唱法</option>")
-    .append("<option value='钢琴'>钢琴</option>")
-    //.append("<option value='器乐'>器乐</option>")
-    .append("<option value='舞蹈-古典舞'>舞蹈-古典舞</option>")
-    .append("<option value='舞蹈-民族舞'>舞蹈-民族舞</option>")
-    .append("<option value='舞蹈-民间舞'>舞蹈-民间舞</option>")
-    .append("<option value='舞蹈-现代舞(非街舞、拉丁舞)'>舞蹈-现代舞(非街舞、拉丁舞)</option>");
+    options({$arrcat_yy},"select#cat2","请选择第二专业类别");
     $("select#cat2").val('{$model->cat2}');
 }
 
-
-
 $('.field-cat3').hide();
+if($('#cat2').val() === '田径'){
+    $('.field-cat3').show();
+    options({$arrcat_tj},"select#cat3","请选择第三专业类别");
+    $("select#cat3").val('{$model->cat3}');
+}
 $('#cat1').change(function(){
     $('.field-cat2').hide();
     $('.field-cat3').hide();
     $('#cat2').html('');
-    $('#cat3').val('');
+    $('#cat3').html('');
     if(this.value === 'ty'){
         $('.field-cat2').show();
-        $("select#cat2").append("<option value>请选择第二专业类别</option>")
-        .append("<option value='田径'>田径</option>")
-        .append("<option value='女子排球'>女子排球</option>")
-        .append("<option value='男子排球'>男子排球</option>")
-        .append("<option value='女子足球'>女子足球</option>");
-        //.append("<option value='男子足球'>男子足球</option>");
+        options({$arrcat_ty},"select#cat2","请选择第二专业类别");
     }
     if(this.value === 'yy'){
         $('.field-cat2').show();
-        $("select#cat2").append("<option value>请选择第二专业类别</option>")
-        .append("<option value='声乐-民族唱法'>声乐-民族唱法</option>")
-        .append("<option value='声乐-美声唱法'>声乐-美声唱法</option>")
-        .append("<option value='钢琴'>钢琴</option>")
-        //.append("<option value='器乐'>器乐</option>")
-        .append("<option value='舞蹈-古典舞'>舞蹈-古典舞</option>")
-        .append("<option value='舞蹈-民族舞'>舞蹈-民族舞</option>")
-        .append("<option value='舞蹈-民间舞'>舞蹈-民间舞</option>")
-        .append("<option value='舞蹈-现代舞(非街舞、拉丁舞)'>舞蹈-现代舞(非街舞、拉丁舞)</option>");
+        options({$arrcat_yy},"select#cat2","请选择第二专业类别");
     }
     if(this.value === 'ms'){
         //alert('ms');
@@ -205,12 +192,16 @@ $('#cat1').change(function(){
 });
 $('#cat2').change(function(){
    $('.field-cat3').hide();
-   $('#cat3').val('');
-   if(this.value === '器乐')
+   $('select#cat3').html('');
+   $('select#cat3').removeAttr('required');
+   if(this.value === '田径')
    {
-      $('.field-cat3').show();
-   }
+        $('.field-cat3').show();
+        $('select#cat3').attr('required','required');
+        options({$arrcat_tj},"select#cat3","请选择第三专业类别");
+        $("select#cat3").val('{$model->cat2}');
 
+   }
 });
 
 $('#idcard').blur(function(){

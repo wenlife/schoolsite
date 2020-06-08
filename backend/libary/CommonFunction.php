@@ -120,63 +120,34 @@ class CommonFunction{
 	    return $gradelist;
 	}
 
-	static function dataCompare($datafore,$datanow)
-	{
-		
-	}
-
-
-static function export($title='export',$headerArr=null,Array $data)
+    
+    static function getCat11()
     {
-    	$cellName = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ']; 
-        if ($headerArr==null) {
-          $headerArr = ['编号','用户名','生成时间'];
-        }
-        
-        $fileName = "export.xlsx";
-        $objPHPExcel = new PHPExcel();
-        $objProps = $objPHPExcel->getProperties();
-
-        $key = 0;
-        foreach($headerArr as $keyhead=>$v){
-        	$colum = $cellName[$key];
-             $objPHPExcel->setActiveSheetIndex(0)->setCellValue($colum.'1',$v);
-            $key++;
-            if ($key>count($cellName)) {
-            	break;
-            }
-        }
-
-        $recordArr = array();
-        $key=0;
-        if ($data!=null) {
-            $row = '2';
-            foreach ($data as $row_id => $val) {
-               $colum = 0;
-               foreach ($val as $key2 => $val2) {
-               	    $columAsc = $cellName[$colum];
-                    $recordArr[$row][$columAsc] = $val2;
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($columAsc.$row,$val2);
-                    $colum++;
-               }
-                 $row++;
-            }
-        }
-        //exit(var_export(count($data)));
-       // exit(var_export($recordArr));
-
-        $objPHPExcel->getActiveSheet()->setTitle('sheet1');
-        $objPHPExcel->setActiveSheetIndex(0);
-
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header("Content-Disposition: attachment; filename=\"$fileName\"");
-        header('Cache-Control: max-age=0');
-
-        $writer = \PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel2007');
-        $writer->save('php://output');
-        return 0;
+    	return ['ty'=>'体育','yy'=>'音乐'];
     }
 
+	static function getCat21()
+	{
+        return ['田径'=>'田径','女子排球'=>'女子排球','男子排球'=>'男子排球','女子足球'=>'女子足球'];
+	}
+
+	static function getCat22()
+	{
+		return ['声乐-民族唱法'=>'声乐-民族唱法','声乐-美声唱法'=>'声乐-美声唱法',
+          '钢琴'=>'钢琴','舞蹈-古典舞'=>'舞蹈-古典舞','舞蹈-民族舞'=>'舞蹈-民族舞',
+           '舞蹈-民间舞'=>'舞蹈-民间舞','舞蹈-现代舞(非街舞、拉丁舞)'=>'舞蹈-现代舞(非街舞、拉丁舞)'];
+
+	}
+
+	static function getCat31()
+	{
+		return ['100m'=>'100m','200m'=>'200m','400m'=>'400m','800m'=>'800m','1500m'=>'1500m',
+          '女子100米栏'=>'女子100米栏（间距8.5米，栏高0.84米）',
+          '男子110米栏'=>'男子110米栏（间距9.14米，栏高1.00米）',
+          '跳高'=>'跳高','跳远'=>'跳远','三级跳远'=>'三级跳远',
+          '铅球'=>'铅球（女：4kg，男：5kg）','铁饼'=>'铁饼（女：1kg，男：1.5kg）',
+          '标枪'=>'标枪（女：600g，男：700g）'];
+	}
 
     //==========================================
 }
