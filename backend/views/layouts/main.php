@@ -1,10 +1,11 @@
 <?php
 use yii\helpers\Html;
-
 /* @var $this \yii\web\View */
 /* @var $content string */
-
-
+if(!Yii::$app->user->can('schoolPost'))
+{
+   exit('您没有权限！');
+}
 if (Yii::$app->controller->action->id === 'login') { 
 /**
  * Do not use this code in your template. Remove it. 
@@ -40,7 +41,6 @@ if (Yii::$app->controller->action->id === 'login') {
     <body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
     <?php $this->beginBody() ?>
     <div class="wrapper">
-
         <?= $this->render(
             'header.php',
             ['directoryAsset' => $directoryAsset]
@@ -51,7 +51,6 @@ if (Yii::$app->controller->action->id === 'login') {
             ['directoryAsset' => $directoryAsset]
         )
         ?>
-
         <?= $this->render(
             'content.php',
             ['content' => $content, 'directoryAsset' => $directoryAsset]

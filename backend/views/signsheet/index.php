@@ -58,7 +58,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 return ArrayHelper::getValue($arr,$model->verify);
             }],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+             'header'=>'操作',
+              'template'=>'{view}',
+            ],
+           // ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 
