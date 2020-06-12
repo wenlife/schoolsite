@@ -19,7 +19,8 @@ class TcenterController extends \yii\web\Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only'=>['index','mcenter','cal','bcourse','bcourse','cal'],
+               // 'only'=>['index','mcenter','cal','bcourse','bcourse','cal'],
+                'only'=>['mcenter','cal','bcourse','bcourse','cal'],
                 'rules' => [
                     // [
                     //     'actions' => ['create', 'query','success','CaptchaAction'],
@@ -27,7 +28,8 @@ class TcenterController extends \yii\web\Controller
                     //     'roles'=>['?']
                     // ],
                    [
-                        'actions' => ['index','mcenter','cal','bcourse','cal'],
+                       // 'actions' => ['index','mcenter','cal','bcourse','cal'],
+                        'actions' => ['mcenter','cal','bcourse','cal'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],

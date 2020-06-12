@@ -99,7 +99,7 @@ class SignsheetController extends Controller
                 'id'=>$sdata->id,
                 'name'=>$sdata->name,
                 'gender'=>$sdata->gender,
-                'minzu'=>$sdata->nation->nation,
+                'minzu'=>$sdata->nation?$sdata->nation->nation:'null',
                 'old'=>$sdata->old,
                 'idcard'=>$sdata->idcard." ",
                 'birth'=>$sdata->birth,
@@ -113,16 +113,30 @@ class SignsheetController extends Controller
                 'prizedetail'=>$sdata->prizedetail,
                 'photo'=>$sdata->photo,
                 'score'=>$sdata->score,
+                'yw'=>$sdata->yw,
+                'sx'=>$sdata->sx,
+                'yy'=>$sdata->yy,
+                'wl'=>$sdata->wl,
+                'hx'=>$sdata->hx,
+                'sw'=>$sdata->sw,
+                'zz'=>$sdata->zz,
+                'dl'=>$sdata->dl,
+                'ls'=>$sdata->ls,
+                'sy'=>$sdata->sy,
+                'ty'=>$sdata->ty,
                 'parentname'=>$sdata->parentname,
-                'parentrelation'=>$sdata->parentrelation == 'daddy'?'父亲':'母亲',
+                'parentrelation'=>$sdata->parentrelation == 'dady'?'父亲':'母亲',
                 'parentphone'=>$sdata->parentphone." ",
+                'payacount'=>$sdata->payacount,
+                'paytime'=>$sdata->paytime,
+                'verify'=>$sdata->verify,
+                'verifyadmin'=>$sdata->verifyadmin,
+                'verifymsg'=>$sdata->verifymsg
             ];
         }
         $excel = new SaveExcel([
             'array' => $exportArr,
-            'headerDataArray' => ['报名号', '姓名','性别','民族','年龄','身份证号','出生日期','毕业学校',
-                                  '专业一类','专业二类','专业三类','身高','体重','会考号','获奖情况','照片',
-                                  '会考分','父母姓名','关系','联系电话'],
+            'headerDataArray' => ['报名号', '姓名','性别','民族','年龄','身份证号','出生日期','毕业学校','专业一类','专业二类','专业三类','身高','体重','会考号','获奖情况','照片','会考分','语文','数学','英语','物理','化学','生物','政治','地理','历史','实验','体育','父母姓名','关系','联系电话','付款账号','付款时间','审核情况','审核人（1为通过）','审核信息',],
         ]);
         $excel->arrayToExcel();
 
