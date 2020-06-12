@@ -89,10 +89,10 @@ class SiteController extends Controller
 
     public function actionLogin()
     {
-        //$this->layout = false;
-        if (!Yii::$app->user->isGuest) {
-            return $this->redirect(['/tcenter']);
-        }
+        $this->layout = 'main-login';
+        // if (!Yii::$app->user->isGuest) {
+        //     return $this->redirect(['/tcenter']);
+        // }
         $model = new BackendLoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             $user = AdminUser::findByUsername($model->username);
