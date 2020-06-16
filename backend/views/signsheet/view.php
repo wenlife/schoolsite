@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
           {
             echo Html::a('已审核', ['verify', 'id' => $model->id], ['class' => 'btn btn-success btn-large']);
           }else{
-            echo Html::a('已审核', [], ['class' => 'btn btn-success btn-large','disabled'=>'disabled']);
+            echo Html::a('已审核',null, ['class' => 'btn btn-success btn-large','disabled'=>'disabled']);
           }
            
         }elseif($model->verify == 3){
