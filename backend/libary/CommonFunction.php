@@ -18,7 +18,7 @@ class CommonFunction{
 
 	static function getVerifyState()
 	{
-		return ['0'=>'未审核','1'=>'审核通过','2'=>'未通过','3'=>'等待重新审核'];
+		return ['0'=>'未审核','1'=>'审核通过','2'=>'未通过审核','3'=>'等待重新审核'];
 	}
 
 	static function getSubjects()

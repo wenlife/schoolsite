@@ -18,13 +18,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>      
-        <?php Html::a('删除', ['delete', 'id' => $model->id], [
+        <?php
+        if(Yii::$app->user->can('schoolPost')&&$model->verify == 2)    
+        echo Html::a('删除', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
-            ],
-        ]) ?>
+            ],]) ;
+         ?>
         <?= Html::a('修改信息', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php
         if($model->verify != 0 &&$model->verify != 3){
