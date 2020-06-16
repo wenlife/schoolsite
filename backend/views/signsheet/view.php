@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use backend\models\SysNation;
 use yii\helpers\ArrayHelper;
+use backend\libary\CommonFunction;
 /* @var $this yii\web\View */
 /* @var $model backend\models\SignSheet */
 
@@ -24,9 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a('更新', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('修改信息', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php
-        if($model->verify != 0){
+        if($model->verify != 0 &&$model->verify != 3){
           if(Yii::$app->user->can('schoolPost'))
           {
             echo Html::a('已审核', ['verify', 'id' => $model->id], ['class' => 'btn btn-success btn-large']);
@@ -34,8 +35,10 @@ $this->params['breadcrumbs'][] = $this->title;
             echo Html::a('已审核', [], ['class' => 'btn btn-success btn-large','disabled'=>'disabled']);
           }
            
+        }elseif($model->verify == 3){
+              echo Html::a('重新审核', ['verify', 'id' => $model->id], ['class' => 'btn btn-success btn-large']);
         }else{
-          echo Html::a('审核', ['verify', 'id' => $model->id], ['class' => 'btn btn-success btn-large']);
+            echo Html::a('审核', ['verify', 'id' => $model->id], ['class' => 'btn btn-success btn-large']);
         }
         ?>
     </p>
@@ -61,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <tr><td class="title">报名编号</td><td><?=$model->id?></td>
             <td class="title">审核情况</td><td>
                 <?php
-                  $s = ['0'=>'未审核','1'=>'已通过','2'=>'未通过'];
+                  $s = CommonFunction::getVerifyState();
                   echo ArrayHelper::getValue($s,$model->verify);
                 ?>
             </td>

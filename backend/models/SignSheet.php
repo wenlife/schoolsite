@@ -56,6 +56,7 @@ class SignSheet extends \yii\db\ActiveRecord
             [['height', 'weight', 'score','yw', 'sx', 'yy', 'wl', 'hx', 'sw', 'zz', 'dl', 'ls', 'sy', 'ty'], 'number'],
             [['photo', 'prizedetail'], 'string'],
             [['name', 'minzu', 'cat1', 'cat2', 'graduate_id', 'paytime', 'signtime', 'verifyadmin', 'verifytime'], 'string', 'max' => 50],
+            //[['paytime'],'string','min'=>16,'tooShort'=>'请输入精确到分的时间'],
             [['gender', 'parentrelation'], 'string', 'max' => 10],
             [['idcard', 'parentphone'], 'string', 'max' => 20],
             [['birth'], 'string', 'max' => 30],

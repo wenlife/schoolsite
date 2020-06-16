@@ -6,8 +6,6 @@ use yii\helpers\Html;
 /* @var $model backend\models\SignSheet */
 
 $this->title = '修改学生信息';
-$this->params['breadcrumbs'][] = ['label' => '报名表', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 ?>
 <div class="sign-sheet-update">
 

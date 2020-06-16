@@ -2,9 +2,13 @@
 
 use yii\helpers\Html;
 use yii\web\View;
-
+use yii\bootstrap\Alert;
+use backend\models\SysNotice;
 /* @var $this yii\web\View */
 /* @var $model backend\models\SignSheet */
+$msg = SysNotice::findOne(['pos'=>'pos_ytbm']);
+
+
 
 $this->title = '报名表';
 ?>
@@ -12,9 +16,19 @@ $this->title = '报名表';
 
     <h1 style="text-align: center; ">攀枝花第七高级中学校</h1>
     <h3 style="text-align: center;">2020年艺体特长招生考试报名</h3>
-    <div class="box box-warning">
+    <div class="box box-primary">
     <div class="box-header with-border">
-      <h3 class="box-title text-danger">请正确如实填报自己的信息以完成报名</h3>
+      <?php
+      if($msg)
+        {
+        echo Alert::widget([
+          'options' => [
+              'class' => $msg->level,
+          ],
+           'body' => $msg->content,
+        ]);
+        }
+      ?>
     </div>
     <!-- /.box-header -->
     <div class="box-body">

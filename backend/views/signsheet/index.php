@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
-
+use backend\libary\CommonFunction;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\SignsheetSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'parentrelation',
             'parentphone',
             ['attribute'=>'verify','value'=>function($model){
-                $arr = ['0'=>'未审核','1'=>'已通过','2'=>'未通过'];
+                $arr = CommonFunction::getVerifyState();
                 return ArrayHelper::getValue($arr,$model->verify);
             }],
 

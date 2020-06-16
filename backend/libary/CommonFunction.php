@@ -8,12 +8,17 @@ class CommonFunction{
 
 	static function getNoticepos()
 	{
-		return ['pos_course'=>'课表系统通知'];
+		return ['pos_course'=>'课表系统通知','pos_ytbm'=>'艺体报名提示信息'];
 	}
 	static function getNoticelevel()
 	{
 		return ['alert-success'=>'好消息','alert-info'=>'一般消息',
 		         'alert-warning'=>'警告消息','alert-danger'=>'危险警告'];
+	}
+
+	static function getVerifyState()
+	{
+		return ['0'=>'未审核','1'=>'审核通过','2'=>'未通过','3'=>'等待重新审核'];
 	}
 
 	static function getSubjects()

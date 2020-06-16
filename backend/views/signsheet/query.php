@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use backend\libary\CommonFunction;
 ?>
 <div class="box box-primary">
 <div class="box-header with-border">
@@ -24,12 +25,18 @@ $form = ActiveForm::begin(['id'=>'form1','method'=>'get',
 <table class="table table-bordered">
 	<thead>
 		<tr><th>身份证号</th><th>姓名</th>
-			<th>报名审核情况</th><th>审核结果信息</th></tr>
+			<th>报名审核情况</th><th>审核结果信息</th><th>可用操作</th></tr>
 		<tr><td><?=$msg->idcard?></td><td><?=$msg->name?></td>
 			<td><?php
-			   $arr = ['0'=>'未审核','1'=>'已通过','2'=>'未通过'];
+			   $arr = CommonFunction::getVerifyState();
 			    echo ArrayHelper::getValue($arr,$msg->verify);?></td>
 		    <td><?=$msg->verifymsg?></td>
+		    <td><?php
+               if($msg->verify == 2)
+               {
+               		echo Html::a('修改报名信息',['rewrite','idcard'=>$msg->idcard],['class'=>"btn btn-primary"]);
+               }
+		    ?></td>
 		</tr>
 	</thead>
 </table>

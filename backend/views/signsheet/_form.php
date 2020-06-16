@@ -32,8 +32,9 @@ $arrcat_tj = json_encode(CommonFunction::getCat31());
             <?= $form->field($model, 'graduate')->textInput(['maxlength' => true]) ?>
             </div>
         <div class="col-md-6">
-            <?= $form->field($model, 'imageFile')->fileInput(['id'=>'fileupload'])->label('请选择一张自己最近的免冠证件照上传') ?>
+            <?= $form->field($model, 'imageFile')->fileInput(['id'=>'fileupload'])->label('请依据样片选择一张自己的证件照上传 ') ?>
             <img src="img/boxed-bg.png" width="120" height="160" id="preview">
+             <img src="img/example.jpg" width="120" height="160" id="preview" style="margin-left: 10px">
         </div>
     </div>
 
@@ -218,8 +219,10 @@ $('#idcard').blur(function(){
 $("#ss1").inputmask("datetime", {
     inputFormat: "dd/mm/yyyy",
     outputFormat: "mm-yyyy-dd",
-    inputEventOnly: true
+    inputEventOnly: true,
+    clearIncomplete: true
 });
+
 $('#signsheet-captcha-image').trigger('click');
 $('.score').change(function(){
     sc = $('#signsheet-score')

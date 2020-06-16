@@ -223,6 +223,8 @@ class SignsheetController extends Controller
         ]);
     }
 
+
+
     public function actionSuccess()
     {
         return $this->render('success');
@@ -314,6 +316,64 @@ class SignsheetController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
+    }
+
+    public function actionRewrite($idcard)
+    {
+
+        $model = SignSheet::find()->where(['idcard'=>$idcard])->one();
+        $model->scenario = 'create';
+        if($model->verify == 2)
+        {
+            if ($model->load(Yii::$app->request->post())) {
+                $model->birth = date('Y-m-d',strtotime(substr($model->idcard, 6, 8)));
+                $model->gender = substr($model->idcard,-2, 1) % 2 ? '男':'女';
+                $date=strtotime(substr($model->idcard,6,8));
+                $today=strtotime('today');
+                $diff=floor(($today-$date)/86400/365);
+                $model->old=strtotime(substr($model->idcard,6,8).' +'.$diff.'years')>$today?($diff+1):$diff;
+
+             //计算成绩
+                $score = $model->yw+$model->sx+$model->yy+$model->ty;
+                $score += $model->wl*0.9;
+                $score +=$model->hx*0.8;
+                $score += ($model->zz+$model->ls)*0.35;
+                $score += ($model->sw+$model->dl)*0.3;
+                $score += $model->sy *0.5;
+                $model->score = $score;
+
+                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+                if($model->imageFile)
+                {              
+                    if($url = $model->upload()) {
+                        $model->photo = $url;
+                    }
+
+                }
+
+                $model->verify = 3;
+                $model->verifymsg = "";
+                $model->verifyadmin = "";
+                $model->verifytime = "";
+                            
+                if($model->validate(['id','name','gender','idcard','cat1','photo','parentphone','note']))
+                {
+                    $model->save(false);
+                }
+                
+              return $this->redirect(['success']);
+            }
+
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+
+        }else{
+            exit('当前不在审核不通过的状态，不能修改！');
+        }
+
+       
+        
     }
 
     /**
