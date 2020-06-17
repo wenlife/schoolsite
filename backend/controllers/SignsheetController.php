@@ -198,7 +198,7 @@ class SignsheetController extends Controller
             $score += ($model->zz+$model->ls)*0.35;
             $score += ($model->sw+$model->dl)*0.3;
             $score += $model->sy *0.5;
-            $model->score = $score;
+            $model->score = round($score,2);
 
             $model->signtime = date("Y-m-d H:i",time());
 
@@ -294,7 +294,7 @@ class SignsheetController extends Controller
             $score += ($model->zz+$model->ls)*0.35;
             $score += ($model->sw+$model->dl)*0.3;
             $score += $model->sy *0.5;
-            $model->score = $score;
+            $model->score = round($score,2);
 
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             if($model->imageFile)
