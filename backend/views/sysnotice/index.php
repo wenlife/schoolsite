@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['attribute'=>'level','value'=>function($model){
                 return ArrayHelper::getValue(CommonFunction::getNoticelevel(),$model->level);
             },'filter'=>CommonFunction::getNoticelevel()],
-            'content:ntext',
+            ['attribute'=>'content','format'=>'html'],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

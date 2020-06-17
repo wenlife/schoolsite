@@ -15,6 +15,11 @@ class CommonFunction{
 		return ['alert-success'=>'好消息','alert-info'=>'一般消息',
 		         'alert-warning'=>'警告消息','alert-danger'=>'危险警告'];
 	}
+	static function getLabel()
+	{
+		return ['0'=>'label label-default','1'=>'label label-success',
+		         '2'=>'label label-danger','3'=>'label label-default'];
+	}
 
 	static function getVerifyState()
 	{

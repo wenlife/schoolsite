@@ -49,13 +49,16 @@ $this->params['breadcrumbs'][] = $this->title;
             //'photo:ntext',
             //'graduate_id',
             //'prizedetail:ntext',
-            //'score',
+            ['attribute'=>'score','label'=>'折合成绩'],
             //'parentname',
             //'parentrelation',
             'parentphone',
-            ['attribute'=>'verify','value'=>function($model){
+            ['attribute'=>'verify','format'=>'raw',
+             'value'=>function($model){
                 $arr = CommonFunction::getVerifyState();
-                return ArrayHelper::getValue($arr,$model->verify);
+                $label = CommonFunction::getLabel();
+                return "<label class='".ArrayHelper::getValue($label,$model->verify)."'>"
+                               .ArrayHelper::getValue($arr,$model->verify)."</span>";
             }],
 
             ['class' => 'yii\grid\ActionColumn',
