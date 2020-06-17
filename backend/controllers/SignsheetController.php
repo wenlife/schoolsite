@@ -240,11 +240,8 @@ class SignsheetController extends Controller
         $msg = '';
         if($idcard != null)
         {
-          if(is_numeric($idcard))
-          {
-             $msg = SignSheet::find()->where(['idcard'=>$idcard])->one();
-          }
-
+            $idcard = Html::encode($idcard);
+            $msg = SignSheet::find()->where(['idcard'=>$idcard])->one();
         }
 
         return $this->render('query',['msg'=>$msg]);
