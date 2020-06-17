@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
+use common\models\Adminuser;
 use yii\filters\AccessControl;
 use backend\models\SignSheet;
 use backend\models\SignsheetSearch;
@@ -164,8 +165,12 @@ class SignsheetController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $admin = Adminuser::findByUsername($model->verifyadmin);
+        if($admin)
+           $model->verifyadmin = $admin->name;
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model
         ]);
     }
 
