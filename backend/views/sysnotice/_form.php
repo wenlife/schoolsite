@@ -17,7 +17,12 @@ use backend\libary\CommonFunction;
 
     <?= $form->field($model, 'level')->dropDownList(CommonFunction::getNoticelevel()) ?>
 
-    <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'content')->widget('common\widgets\ueditor\Ueditor',[
+    'options'=>[
+        'initialFrameWidth' => 850,
+        'initialFrameHeight' => 250,
+    ]
+    ]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('保存', ['class' => 'btn btn-success']) ?>
