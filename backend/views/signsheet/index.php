@@ -40,7 +40,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 $arr2 = ['ty'=>'体育','yy'=>'音乐','ms'=>'美术']; 
                 return ArrayHelper::getValue($arr2,$model->cat1);
             },'filter'=>['ty'=>'体育','yy'=>'音乐','ms'=>'美术'],
-            'contentOptions'=>['width'=>'100px']
+            'filterInputOptions'=>['prompt'=>'请选择','class'=>'form-control','style'=>'width:100px'],
+            'contentOptions'=>['width'=>'100px','align'=>'center']
             ],
             'cat2',
             //'cat3',
@@ -59,11 +60,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 $label = CommonFunction::getLabel();
                 return "<label class='".ArrayHelper::getValue($label,$model->verify)."'>"
                                .ArrayHelper::getValue($arr,$model->verify)."</span>";
-            },'filter'=>CommonFunction::getVerifyState()],
+            },'filter'=>CommonFunction::getVerifyState(),
+              'filterInputOptions'=>['prompt'=>'请选择','class'=>'form-control','style'=>'width:100px'],
+            ],
+              
 
             ['class' => 'yii\grid\ActionColumn',
              'header'=>'操作',
               'template'=>'{view}',
+              'contentOptions'=>['width'=>'50px','align'=>'center']
             ],
            // ['class' => 'yii\grid\ActionColumn'],
         ],
