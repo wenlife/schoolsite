@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 $label = CommonFunction::getLabel();
                 return "<label class='".ArrayHelper::getValue($label,$model->verify)."'>"
                                .ArrayHelper::getValue($arr,$model->verify)."</span>";
-            }],
+            },'filter'=>CommonFunction::getVerifyState()],
 
             ['class' => 'yii\grid\ActionColumn',
              'header'=>'操作',

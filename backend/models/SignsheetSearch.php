@@ -17,9 +17,9 @@ class SignsheetSearch extends SignSheet
     public function rules()
     {
         return [
-            [['id', 'old'], 'integer'],
-            [['name', 'gender', 'idcard', 'birth', 'graduate', 'cat1', 'cat2', 'cat3', 'photo', 'graduate_id', 'prizedetail', 'parentname', 'parentrelation', 'parentphone', 'note'], 'safe'],
-            [['height', 'weight', 'score'], 'number'],
+            [['id', 'old', 'verify'], 'integer'],
+            [['name', 'gender', 'minzu', 'idcard', 'birth', 'graduate', 'cat1', 'cat2', 'cat3', 'photo', 'graduate_id', 'prizedetail', 'parentname', 'parentrelation', 'parentphone', 'payacount', 'paytime', 'note', 'signtime', 'verifyadmin', 'verifytime', 'verifymsg'], 'safe'],
+            [['height', 'weight', 'score', 'yw', 'sx', 'yy', 'wl', 'hx', 'sw', 'zz', 'dl', 'ls', 'sy', 'ty'], 'number'],
         ];
     }
 
@@ -47,7 +47,7 @@ class SignsheetSearch extends SignSheet
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination'=>['pagesize'=>20]
+            'pagination'=>['pagesize'=>20] 
         ]);
 
         $this->load($params);
@@ -65,10 +65,23 @@ class SignsheetSearch extends SignSheet
             'height' => $this->height,
             'weight' => $this->weight,
             'score' => $this->score,
+            'yw' => $this->yw,
+            'sx' => $this->sx,
+            'yy' => $this->yy,
+            'wl' => $this->wl,
+            'hx' => $this->hx,
+            'sw' => $this->sw,
+            'zz' => $this->zz,
+            'dl' => $this->dl,
+            'ls' => $this->ls,
+            'sy' => $this->sy,
+            'ty' => $this->ty,
+            'verify' => $this->verify,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'gender', $this->gender])
+            ->andFilterWhere(['like', 'minzu', $this->minzu])
             ->andFilterWhere(['like', 'idcard', $this->idcard])
             ->andFilterWhere(['like', 'birth', $this->birth])
             ->andFilterWhere(['like', 'graduate', $this->graduate])
@@ -81,7 +94,13 @@ class SignsheetSearch extends SignSheet
             ->andFilterWhere(['like', 'parentname', $this->parentname])
             ->andFilterWhere(['like', 'parentrelation', $this->parentrelation])
             ->andFilterWhere(['like', 'parentphone', $this->parentphone])
-            ->andFilterWhere(['like', 'note', $this->note]);
+            ->andFilterWhere(['like', 'payacount', $this->payacount])
+            ->andFilterWhere(['like', 'paytime', $this->paytime])
+            ->andFilterWhere(['like', 'note', $this->note])
+            ->andFilterWhere(['like', 'signtime', $this->signtime])
+            ->andFilterWhere(['like', 'verifyadmin', $this->verifyadmin])
+            ->andFilterWhere(['like', 'verifytime', $this->verifytime])
+            ->andFilterWhere(['like', 'verifymsg', $this->verifymsg]);
 
         return $dataProvider;
     }

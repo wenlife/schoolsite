@@ -21,9 +21,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'gender') ?>
 
+    <?= $form->field($model, 'minzu') ?>
+
     <?= $form->field($model, 'old') ?>
 
-    <?= $form->field($model, 'idcard') ?>
+    <?php // echo $form->field($model, 'idcard') ?>
 
     <?php // echo $form->field($model, 'birth') ?>
 
@@ -47,13 +49,49 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'score') ?>
 
+    <?php // echo $form->field($model, 'yw') ?>
+
+    <?php // echo $form->field($model, 'sx') ?>
+
+    <?php // echo $form->field($model, 'yy') ?>
+
+    <?php // echo $form->field($model, 'wl') ?>
+
+    <?php // echo $form->field($model, 'hx') ?>
+
+    <?php // echo $form->field($model, 'sw') ?>
+
+    <?php // echo $form->field($model, 'zz') ?>
+
+    <?php // echo $form->field($model, 'dl') ?>
+
+    <?php // echo $form->field($model, 'ls') ?>
+
+    <?php // echo $form->field($model, 'sy') ?>
+
+    <?php // echo $form->field($model, 'ty') ?>
+
     <?php // echo $form->field($model, 'parentname') ?>
 
     <?php // echo $form->field($model, 'parentrelation') ?>
 
     <?php // echo $form->field($model, 'parentphone') ?>
 
+    <?php // echo $form->field($model, 'payacount') ?>
+
+    <?php // echo $form->field($model, 'paytime') ?>
+
     <?php // echo $form->field($model, 'note') ?>
+
+    <?php // echo $form->field($model, 'signtime') ?>
+
+    <?php // echo $form->field($model, 'verify') ?>
+
+    <?php // echo $form->field($model, 'verifyadmin') ?>
+
+    <?php // echo $form->field($model, 'verifytime') ?>
+
+    <?php // echo $form->field($model, 'verifymsg') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

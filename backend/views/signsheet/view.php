@@ -47,22 +47,31 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <style type="text/css">
         table{
-            border:4px solid #ccc;
+            border-bottom:2px solid #acd;
+            border-left:2px solid #acd;
+            border-right:2px solid #acd;
         }
         table td{
             border:1px solid #ccc;
-            height: 50px
+            height: 45px;
         }
         .title{
             width:100px;
+            font-weight: bold;
+            color:#1ad;
         }
         .center{
             text-align: center;
             font-weight: bold;
+            line-height: 40px;
         }
     </style>
 
-    <table class="table table-borderd" style="width:890px">
+    <div class="box box-primary"  style="width:960px">
+
+    <!-- /.box-header -->
+    <div class="box-body  no-padding">
+    <table class="table table-borderd">
         <tr><td class="title">报名编号</td><td><?=$model->id?></td>
             <td class="title">审核情况</td><td>
                 <?php
@@ -83,6 +92,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 echo $model->nation?$model->nation->nation:$model->nation;  
             ?></td>
             <td rowspan="5" style="width:181px;height: 241px"><img width="200px" id="simg" src="<?=$model->photo?>"/></td>
+        </tr>
+        <tr>
+            <td class="title">出生日期</td><td><?=$model->birth?></td>
+            <td class="title">年龄</td><td><?=$model->old?></td>
+            
+        </tr>
+        <tr>
+            <td class="title">身高(cm)</td><td><?=$model->height?></td>
+            <td class="title">体重(kg)</td><td><?=$model->weight?></td>
+            <td colspan="2"></td>
         </tr>
         <tr>
             <td class="title">身份证号</td><td colspan="2"><?=$model->idcard?></td>
@@ -109,22 +128,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 ?></td>
         </tr>
  
-        <tr>
-            <td class="title">出生日期</td><td><?=$model->birth?></td>
-            <td class="title">年龄</td><td><?=$model->old?></td>
-            
-        </tr>
-        <tr>
-            <td class="title">身高(cm)</td><td><?=$model->height?></td>
-            <td class="title">体重(kg)</td><td><?=$model->weight?></td>
-            <td colspan="2"></td>
-        </tr>
+
         <tr>
             <td class="title">家长姓名</td><td><?=$model->parentname?></td>
             <td class="title">关系</td><td><?=$model->parentrelation=='dady'?'父亲':'母亲'?></td>
             <td class="title">联系电话</td><td colspan="2"><?=$model->parentphone?></td>
         </tr>
-        <tr><td class="title center" colspan="7">成绩</td></tr>
+        <tr><td class="center" colspan="7">成绩</td></tr>
         <tr>
             <td>语文</td><td>数学</td><td>英语</td>
             <td>物理(0.9)</td><td>化学(0.8)</td><td>生物(0.3)</td>
@@ -147,6 +157,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <tr><td colspan="7"><?=$model->prizedetail?></td></tr>
 
     </table>
+</div>
+</div>
 </div>
 
 <?php
