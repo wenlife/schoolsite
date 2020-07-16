@@ -181,6 +181,20 @@ class SignsheetController extends Controller
      */
     public function actionCreate()
     {
+        //设置截止日期
+        $endtime = strtotime('2020-07-16 23:30:00');
+        //echo $endtime;
+        //echo "<br>";
+        $diff = $endtime - time();
+        if($diff = 1)
+        {
+            return $this->render('end');
+        }
+        // $day = intval($diff/86400);
+        // $hour = ($diff % 86400)/3600;
+        // $min = ($diff % 3600)/60;
+        // $sec = $diff % 60;
+        // echo intval($day)."天".intval($hour)."小时".intval($min)."分".intval($sec)."秒";
         $model = new SignSheet();
         $model->scenario = 'create';
 

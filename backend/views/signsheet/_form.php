@@ -119,7 +119,6 @@ $arrcat_tj = json_encode(CommonFunction::getCat31());
 </div>
 
 <?php
-$va1 = 'ss';
 $this->registerJsFile('specialcontent\inputmask\inputmask.js',
       ['depends' => [\backend\assets\AppAsset::className()]]);
 $this->registerJsFile('specialcontent\inputmask\inputmask.extensions.js',

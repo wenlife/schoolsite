@@ -143,6 +143,12 @@ class TcenterController extends \yii\web\Controller
         ]);
     }
 
+    public function actionAvatar()
+    {
+        $post = Yii::$app->request->post();
+        return json_encode($post);
+    }
+
     public function actionGetteacher($subject)
     {
         $teachers =  UserTeacher::getSubjectTeacherArray($subject);
