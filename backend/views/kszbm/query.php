@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <tr><th style="width:300px">报名点</th><th>总数</th><th>待处理</th><th>完成数</th><th>比率</th></tr>
         </thead>
         <tbody>
-            <tr><td><?=$bmd?></td><td><?=$all?></td><td><?=$prefor?></td><td><?=$complete?></td><td><?=round($complete/$all,2)?></td></tr>
+            <tr><td><?=$bmd?></td><td><?=$all?></td><td><?=$prefor?></td><td><?=$complete?></td><td><?=$all>0?round($complete/$all,2):0?></td></tr>
         </tbody>
     </table>
 
