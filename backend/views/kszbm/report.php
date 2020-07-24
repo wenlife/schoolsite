@@ -61,7 +61,7 @@ label{
 
     <?= $form->field($model, 'health')->radioList(['健康或良好'=>'健康或良好','一般或较弱'=>'一般或较弱','有慢性病'=>'有慢性病','有生理缺陷'=>'有生理缺陷','有残疾'=>'有残疾']) ?>
 
-    <?= $form->field($model, 'address')->textInput(['maxlength' => true])->("家庭地址(详细到门牌号)") ?>
+    <?= $form->field($model, 'address')->textInput(['maxlength' => true])->label("家庭地址(详细到门牌号)") ?>
 
     <?= $form->field($model, 'if_pre_educate')->radioList(['1'=>'是','0'=>'否']) ?>
 
