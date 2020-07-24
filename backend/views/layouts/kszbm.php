@@ -33,8 +33,7 @@ NavBar::begin([
 
 echo Nav::widget([
     'items'=>[
-        ['label'=>'艺体招生报名','url'=>['/signsheet/create']],
-        ['label'=>'艺体报名查询','url'=>['/signsheet/query']],
+        ['label'=>'录取查询','url'=>['/kszbm/find']],
     ],
     'options'=>['class'=>'navbar-nav'],
 ]);
@@ -42,20 +41,6 @@ $menuItems = [
 
 ];
 
-if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => '登录', 'url' => ['/site/login']];
-
-} else {
-    $menuItems[] =['label'=>'报名管理','url'=>['/signsheet'],'visible'=>Yii::$app->user->can('userPost')];
-    $menuItems[] = '<li>'
-        . Html::beginForm(['/site/logout'], 'post')
-        . Html::submitButton(
-            'Logout (' . Yii::$app->user->identity->username . ')',
-            ['class' => 'btn btn-link']
-        )
-        . Html::endForm()
-        . '</li>';
-}
 
 echo Nav::widget([
     'options' => ['class' => 'navbar-nav navbar-right'],

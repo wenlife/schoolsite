@@ -8,8 +8,6 @@ use backend\models\SysNotice;
 /* @var $model backend\models\SignSheet */
 $msg = SysNotice::findOne(['pos'=>'pos_ytbm']);
 
-
-
 $this->title = '报名表';
 ?>
 <div class="sign-sheet-create">

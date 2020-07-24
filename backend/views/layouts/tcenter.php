@@ -42,9 +42,11 @@ echo Nav::widget([
     'options'=>['class'=>'navbar-nav'],
 ]);
 $menuItems = [
-
-['label'=>'管理中心','url'=>['tcenter/mcenter'],'visible'=>Yii::$app->user->can('schoolPost')],
-['label'=>'报名管理','url'=>['/signsheet'],'visible'=>Yii::$app->user->can('userPost')]
+//['label'=>'艺体报名','url'=>['/signsheet'],'visible'=>Yii::$app->user->can('userPost')],
+['label'=>'录取查询','url'=>['/kszbm/query'],'visible'=>Yii::$app->user->can('userPost')],
+['label'=>'新生录取','url'=>['/kszbm'],'visible'=>Yii::$app->user->can('userPost')],
+['label'=>'基础信息','url'=>['/signbase'],'visible'=>Yii::$app->user->can('schoolPost')],
+['label'=>'管理中心','url'=>['tcenter/mcenter'],'visible'=>Yii::$app->user->can('schoolPost')]
 ];
 
 if (Yii::$app->user->isGuest) {

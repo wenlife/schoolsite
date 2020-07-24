@@ -8,7 +8,14 @@ class CommonFunction{
 
 	static function getNoticepos()
 	{
-		return ['pos_course'=>'课表系统通知','pos_ytbm'=>'艺体报名提示信息'];
+		return ['pos_course'=>'课表系统通知',
+		        'pos_ytbm'=>'艺体报名提示信息',
+		        'pos_kszbm'=>'跨市州报名提示信息',
+		       ];
+	}
+	static function getLqjd()
+	{
+		return ['0'=>'未录取','1'=>'可录取/待填表','2'=>'已填写报名表','3'=>'已缴费并录取'];
 	}
 	static function getNoticelevel()
 	{

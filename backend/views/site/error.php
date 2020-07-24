@@ -23,7 +23,7 @@ $this->title = $name;
             </p>
 
             <p>
-                <?=Html::a('回到首页',Url::home())?>
+                
             </p>
 
 

@@ -188,7 +188,7 @@ class SignsheetController extends Controller
         $diff = $endtime - time();
         if($diff = 1)
         {
-            return $this->render('end');
+          //  return $this->render('end');
         }
         // $day = intval($diff/86400);
         // $hour = ($diff % 86400)/3600;
