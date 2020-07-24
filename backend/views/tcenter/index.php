@@ -123,9 +123,9 @@ table th{
 }
 </style>
 
-<button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#avatar-modal" style="margin: 10px;">
+<!-- <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#avatar-modal" style="margin: 10px;">
         修改头像
-    </button>
+    </button> -->
     <div class="user_pic" style="margin: 10px;">
       <img src=""/>
     </div>

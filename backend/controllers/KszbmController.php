@@ -150,19 +150,19 @@ class KszbmController extends Controller
     {
         //设置报名点的cookie,或者重新读取
         $msg = null;
-        if ($bmd!=null) {
-            $cookies = Yii::$app->response->cookies; 
-            $uCookie=$cookies->add(new Cookie([
-              'name' => 'bmd',
-              'value' =>$bmd,
-              'expire' =>time()+ 30*24*3600
-            ]));
-        }else{
-            $cookies = Yii::$app->request->cookies;
-            if ($cookies->has('bmd')) {
-              $bmd = $cookies->get('bmd');
-            }
-        }
+        // if ($bmd!=null) {
+        //     $cookies = Yii::$app->response->cookies; 
+        //     $uCookie=$cookies->add(new Cookie([
+        //       'name' => 'bmd',
+        //       'value' =>$bmd,
+        //       'expire' =>time()+ 30*24*3600
+        //     ]));
+        // }else{
+        //     $cookies = Yii::$app->request->cookies;
+        //     if ($cookies->has('bmd')) {
+        //       $bmd = $cookies->get('bmd');
+        //     }
+        // }
         $complete = $all = $prefor = 0;
         if($bmd!=null)
         {
