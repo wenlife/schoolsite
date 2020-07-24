@@ -150,19 +150,22 @@ class KszbmController extends Controller
     {
         //设置报名点的cookie,或者重新读取
         $msg = null;
-        // if ($bmd!=null) {
-        //     $cookies = Yii::$app->response->cookies; 
-        //     $uCookie=$cookies->add(new Cookie([
-        //       'name' => 'bmd',
-        //       'value' =>$bmd,
-        //       'expire' =>time()+ 30*24*3600
-        //     ]));
-        // }else{
-        //     $cookies = Yii::$app->request->cookies;
-        //     if ($cookies->has('bmd')) {
-        //       $bmd = $cookies->get('bmd');
-        //     }
-        // }
+        $bmds = SignBase::find()->select(['bmd'])->distinct()->indexby('bmd')->column();
+        if ($bmd!=null) {
+            $cookies = Yii::$app->response->cookies; 
+            $uCookie=$cookies->add(new Cookie([
+              'name' => 'bmd',
+              'value' =>$bmd,
+              'expire' =>time()+ 30*24*3600
+            ]));
+        }else{
+            $cookies = Yii::$app->request->cookies;
+            if ($cookies->has('bmd')) {
+              $bmd = $cookies->get('bmd');
+            }
+            if($bmd == null)
+                $bmd = current($bmds);
+        }
         $complete = $all = $prefor = 0;
         if($bmd!=null)
         {
@@ -202,7 +205,7 @@ class KszbmController extends Controller
             }
         }
 
-        $bmds = SignBase::find()->select(['bmd'])->distinct()->indexby('bmd')->column();
+
 
         return $this->render('query',['bmd'=>$bmd,'msg'=>$msg,'bmds'=>$bmds,'all'=>$all,'prefor'=>$prefor,'complete'=>$complete]);
     }
