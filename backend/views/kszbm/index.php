@@ -1,6 +1,8 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
+use backend\libary\CommonFunction;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -35,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'zk_exam_id',
             'name',
             'gender',
-            'birth_place',
+            //'birth_place',
             //'origin_place',
             'minzu',
             //'id_card',
@@ -74,13 +76,21 @@ $this->params['breadcrumbs'][] = $this->title;
             //'if_uniform',
             //'create_time',
             //'update_time',
-            'verify',
+            //'verify',
+            ['attribute'=>'verify','value'=>function($model){
+                return ArrayHelper::getValue(CommonFunction::getLqjd(),$model->verify);
+            },'filter'=>CommonFunction::getLqjd()],
             //'verify_time',
             //'verify_admin',
             //'verify_msg',
             //'note:ntext',
 
-            ['class' => 'yii\grid\ActionColumn'],
+           // ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+             'header'=>'操作',
+              'template'=>'{view}',
+              'contentOptions'=>['width'=>'50px','align'=>'center']
+            ],
         ],
     ]); ?>
 </div>
