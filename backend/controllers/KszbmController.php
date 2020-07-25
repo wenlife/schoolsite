@@ -190,14 +190,14 @@ class KszbmController extends Controller
             {
                 $result2 = SignBase::find()->where(['kh'=>$kh])->orWhere(['sfzh'=>$kh])->one();
                 $msg = ['id'=>$result1->id,'kh'=>$result1->zk_exam_id,'xm'=>$result1->name,
-                        'lqzf'=>$result1->zk_score,'lqxx'=>$result2->lqxx,'bmjd'=>$result1->verify,'url'=>'view'];
+                        'lqzf'=>$result1->zk_score,'lqxx'=>$result2->lqxx,'bmjd'=>$result1->verify,'flag'=>$result2->flag,'url'=>'view'];
                // return $this->redirect(['view','id'=>$result1->id]);
             }else{
                 $result2 = SignBase::find()->where(['kh'=>$kh])->orWhere(['sfzh'=>$kh])->one();
                 if($result2)
                     $msg = ['id'=>$result2->id,'kh'=>$result2->kh,'xm'=>$result2->xm,
                         'lqzf'=>$result2->lqzf,'lqxx'=>$result2->lqxx,
-                        'bmjd'=>$result2->flag,'url'=>'signbase/view'];
+                        'bmjd'=>$result2->flag,'flag'=>$result2->flag,'url'=>'signbase/view'];
                     //$msg = ['type'=>'base','data'=>$result2,'url'=>'signbase/view'];
                    //return $this->redirect(['signbase/view','id'=>$result2->id]);
                 else

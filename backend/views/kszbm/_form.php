@@ -18,9 +18,9 @@ label{
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id_card')->textInput(['style'=>'max-width:500px','readonly'=>'readonly']) ?>
+    <?= $form->field($model, 'id_card')->textInput(['style'=>'max-width:500px']) ?>
 
-    <?= $form->field($model, 'name')->textInput(['style'=>'max-width:500px','readonly'=>'readonly']) ?>
+    <?= $form->field($model, 'name')->textInput(['style'=>'max-width:500px']) ?>
 
     <?= $form->field($model, 'birth_place')->textInput(['maxlength' => true]) ?>
 

@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?=Html::dropDownlist('bmd',$bmd,$bmds,['class'=>'form-control','id'=>'bmdselect'])?>
         </div>
         <div class="form-group">
-         <?= Html::a('任务概览', ['task'], ['class' => 'btn btn-primary']) ?>
+         <?= Html::a('任务概览', ['task'], ['class' => 'btn btn-primary','target'=>"_blank"]) ?>
         </div>
      <?php ActiveForm::end(); ?>
     </p>
@@ -62,7 +62,14 @@ $this->params['breadcrumbs'][] = $this->title;
           echo ArrayHelper::getValue($msg,'lqxx');
           echo "</td><td>";
           $jd = CommonFunction::getLqjd();
+          if(ArrayHelper::getValue($msg,'flag') == 1)
+          {
+              echo "<label class='label label-success'>";
+          }else{
+              echo "<label class='label label-danger'>";
+          }
           echo ArrayHelper::getValue($jd,ArrayHelper::getValue($msg,'bmjd'));
+          echo "</label>";
           echo "</td><td>";
           echo Html::a('查看详情',[ArrayHelper::getValue($msg,'url'),'id'=>ArrayHelper::getValue($msg,'id')]);
           echo "</td></tr></table";
