@@ -17,6 +17,7 @@ $nationList = SysNation::getList();
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>    
+    <?= Html::a('录入新的市外考生', ['create'], ['class' => 'btn btn-success']) ?>
     <?php
         if($model->verify !=3)
         {
@@ -33,7 +34,7 @@ $nationList = SysNation::getList();
         <?= Html::a('添加缴费信息', ['verify', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('<<返回查询页面', ['query'], ['class' => 'btn btn-success']) ?>
         <?= Html::a('查看任务完成', ['index'], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('录入新的市外考生', ['create'], ['class' => 'btn btn-success']) ?>
+
     </p>
     <div class="box box-primary">
 

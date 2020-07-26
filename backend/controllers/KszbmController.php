@@ -213,7 +213,7 @@ class KszbmController extends Controller
                     //$msg = ['type'=>'base','data'=>$result2,'url'=>'signbase/view'];
                    //return $this->redirect(['signbase/view','id'=>$result2->id]);
                 else
-                   $msg = "考号为:".$kh."的考生不存在！";
+                   $msg = "(".$kh.")相关数据考生不存在！";
             }
         }
 
@@ -287,7 +287,7 @@ class KszbmController extends Controller
                 {
                     return $this->render('result',['result'=>$result]);
                 }else{
-                    $msg = "未查询到您的信息，请检查输入是否有错或是否被其他学校录取！";
+                    $msg = "未查询到您的信息，请检查考号或身份证号是否输入有错！";
                 }
             }
         }
