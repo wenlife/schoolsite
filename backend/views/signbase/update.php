@@ -24,9 +24,9 @@ $this->params['breadcrumbs'][] = '修改信息';
 
     <?= $form->field($model, 'bmd')->textInput(['maxlength' => true,'readonly'=>'readonly']) ?>
 
-    <?= $form->field($model, 'flag')->radiolist(['0'=>'未录取','1'=>'已录取','2'=>'异常状态'])->label("录取状态(出现异常未录取请选择异常状态并备注信息)") ?>
+    <?= $form->field($model, 'flag')->radiolist(['0'=>'未录取','1'=>'已录取'])->label("录取状态(修改录取状态请备注原因)") ?>
 
-    <?= $form->field($model, 'note')->textInput(['maxlength' => true])->label("如该生放弃录取或其他情况，请备注此处") ?>
+    <?= $form->field($model, 'note')->textInput(['maxlength' => true,'required'=>"required"])->label("特招或该生放弃录取等情况，请备注此处") ?>
 
     <div class="form-group">
         <?= Html::submitButton('保存', ['class' => 'btn btn-success']) ?>

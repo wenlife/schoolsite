@@ -315,6 +315,7 @@ class KszbmController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
            // var_export($model->birth_date);
+           $model->verify = 4;
             if($model->save())
             {
                 return $this->redirect(['view', 'id' => $model->id]);
