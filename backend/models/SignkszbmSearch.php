@@ -1,7 +1,7 @@
 <?php
 
 namespace backend\models;
-
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\SignKszbm;
@@ -41,7 +41,13 @@ class SignkszbmSearch extends SignKszbm
      */
     public function search($params)
     {
-        $query = SignKszbm::find();
+        if(Yii::$app->user->can('schoolPost'))
+        {
+            $query = SignKszbm::find();
+        }else{
+            $query = SignKszbm::find()->where(['verify_admin'=>\Yii::$app->user->identity->username]);
+        }
+        
 
         // add conditions that should always apply here
 

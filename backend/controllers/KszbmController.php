@@ -60,6 +60,10 @@ class KszbmController extends Controller
      */
     public function actionIndex()
     {
+        if(!Yii::$app->user->can('userPost'))
+        {
+            exit("您没有访问该页面的权限！");
+        }
         $searchModel = new SignkszbmSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -84,6 +88,10 @@ class KszbmController extends Controller
 
     public function actionExport()
     {
+        if(!Yii::$app->user->can('schoolPost'))
+        {
+            exit("您没有访问该页面的权限！");
+        }
         $data = SignKszbm::find()->all();
         $exportArr = [];
         $trans = ['ty'=>'体育','yy'=>'音乐','ms'=>'美术'];
@@ -148,6 +156,10 @@ class KszbmController extends Controller
 
     public function actionQuery($bmd=null)
     {
+        if(!Yii::$app->user->can('userPost'))
+        {
+            exit("您没有访问该页面的权限！");
+        }
         //设置报名点的cookie,或者重新读取
         $msg = null;
         $bmds = SignBase::find()->select(['bmd'])->distinct()->indexby('bmd')->column();
@@ -213,6 +225,10 @@ class KszbmController extends Controller
 
     public function actionVerify($id)
     {
+        if(!Yii::$app->user->can('userPost'))
+        {
+            exit("您没有访问该页面的权限！");
+        }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
@@ -311,11 +327,17 @@ class KszbmController extends Controller
      */
     public function actionCreate()
     {
+        if(!Yii::$app->user->can('userPost'))
+        {
+            exit("您没有访问该页面的权限！");
+        }
         $model = new SignKszbm();
 
         if ($model->load(Yii::$app->request->post())) {
            // var_export($model->birth_date);
            $model->verify = 4;
+           $model->verify_time = date("Y-m-d H:i",time());
+           $model->verify_admin = Yii::$app->user->identity->username;
             if($model->save())
             {
                 return $this->redirect(['view', 'id' => $model->id]);

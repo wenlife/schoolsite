@@ -51,12 +51,17 @@ class SignbaseController extends Controller
         ];
     }
 
+
     /**
      * Lists all SignBase models.
      * @return mixed
      */
     public function actionIndex()
     {
+        if(!Yii::$app->user->can('schoolPost'))
+        {
+            exit("您没有访问该页面的权限！");
+        }
         $searchModel = new SignbaseSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -68,6 +73,10 @@ class SignbaseController extends Controller
 
     public function actionImport()
     {
+        if(!Yii::$app->user->can('schoolPost'))
+        {
+            exit("您没有访问该页面的权限！");
+        }
         $form = new ExcelUpload();
         $errMSG = array();
         if($post=Yii::$app->request->post())
@@ -132,6 +141,10 @@ class SignbaseController extends Controller
      */
     public function actionCreate()
     {
+        if(!Yii::$app->user->can('schoolPost'))
+        {
+            exit("您没有访问该页面的权限！");
+        }
         $model = new SignBase();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

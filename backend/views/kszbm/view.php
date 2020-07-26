@@ -8,7 +8,6 @@ use backend\models\SysNation;
 /* @var $model backend\models\SignKszbm */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => '新生报名', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 //\yii\web\YiiAsset::register($this);
 $nationList = SysNation::getList();
@@ -28,11 +27,13 @@ $nationList = SysNation::getList();
                 'method' => 'post',
             ],
             ]);
-            echo Html::a('修改报名信息', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
+            echo Html::a('修改报名信息', ['update', 'id' => $model->id], ['class' => 'btn btn-success']);
         }
         ?>
         <?= Html::a('添加缴费信息', ['verify', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('<<返回查询页面', ['query'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('查看任务完成', ['index'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('录入新的市外考生', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <div class="box box-primary">
 

@@ -123,7 +123,7 @@ label{
     </div>
     <hr>
     <div class="form-group">
-        <?= Html::submitButton('提交报名表', ['class' => 'btn btn-success','onclick'=>"confirm('您确定要提交表格吗？')"]) ?>
+        <?= Html::submitButton('提交报名表', ['class' => 'btn btn-success','onclick'=>"return confirm('您确定要提交表格吗？')"]) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?php echo $model->flag == 1?Html::a('辅助填报', ['kszbm/report', 'id' => $model->id], ['class' => 'btn btn-primary','target'=>"_blank"]):"" ?>
-        <?= Yii::$app->user->can('schoolPost')?Html::a('更改信息', ['update', 'id' => $model->id], ['class' => 'btn btn-warning']):"" ?>
+        <?= Yii::$app->user->can('userPost')?Html::a('更改信息', ['update', 'id' => $model->id], ['class' => 'btn btn-warning']):"" ?>
         <?= Html::a('<<返回查询页面', ['kszbm/query'], ['class' => 'btn btn-success']) ?>
     </p>
     <div class="box box-primary">
