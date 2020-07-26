@@ -60,7 +60,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'flag',
             //'note',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+             'header'=>'操作',
+              'template'=>'{view}',
+              'contentOptions'=>['width'=>'50px','align'=>'center']
+            ],
         ],
     ]); ?>
 
