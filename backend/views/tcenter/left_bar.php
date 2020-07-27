@@ -24,7 +24,7 @@ $file = "img/seven.jpg";
 
     <img class="profile-user-img img-responsive img-circle" src="<?=$file?>" alt="User profile picture">
     <h3 class="profile-username text-center"><?=$teacher->name?></a></h3>
-    <p class="text-muted text-center"><?=CommonFunction::getAllSubjects()[$teacher->subject]?>教师</p>
+    <p class="text-muted text-center"><?=CommonFunction::getAllTeachDuty()[$teacher->subject]?>教师</p>
     <ul class="list-group list-group-unbordered">
       <li class="list-group-item">
         <b>本学期</b> <a class="pull-right"><?=ArrayHelper::getValue($thisTerm,'start_date')." 至 ".ArrayHelper::getValue($thisTerm,'end_date')?></a>
