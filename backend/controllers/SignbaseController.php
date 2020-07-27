@@ -165,6 +165,10 @@ class SignbaseController extends Controller
      */
     public function actionUpdate($id)
     {
+        if(!Yii::$app->user->can('schoolPost'))
+        {
+            exit("您没有访问该页面的权限！");
+        }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
