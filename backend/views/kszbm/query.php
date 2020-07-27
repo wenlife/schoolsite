@@ -16,25 +16,25 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php $form = ActiveForm::begin(['id'=>'form1','method'=>'get','action'=>'index.php?r=kszbm/query','options'=>['class'=>'form-inline']]); ?>
 
         <div class="form-group">
-        <?=Html::dropDownlist('bmd',$bmd,$bmds,['class'=>'form-control','id'=>'bmdselect'])?>
+        <?=Html::dropDownlist('bmd',$bmd,$bmds,['class'=>'form-control','id'=>'bmdselect','style'=>"max-width:120px"])?>
         </div>
-        <div class="form-group">
+   
          <?= Html::a('任务概览', ['task'], ['class' => 'btn btn-primary','target'=>"_blank"]) ?>
-        </div>
+
      <?php ActiveForm::end(); ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="box box-primary">
     <div class="box-header with-border">
-    <table class="table tabel-bordered">
+<!--     <table class="table tabel-bordered">
         <thead>
             <tr><th style="width:300px">报名点</th><th>总数</th><th>待处理</th><th>完成数</th><th>比率</th></tr>
         </thead>
         <tbody>
             <tr><td><?=$bmd?></td><td><?=$all?></td><td><?=$prefor?></td><td><?=$complete?></td><td><?=$all>0?round($complete/$all,2):0?></td></tr>
         </tbody>
-    </table>
+    </table> -->
 
     </div>
     <!-- /.box-header -->
@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php $form = ActiveForm::begin(['options'=>['class'=>'form-inline text-center']]); ?>
         <div class="form-group">
-        <?=Html::textInput('kh',null,['placeholder'=>'请输入中考考号或者身份证号','class'=>'form-control','style'=>'width:400px;height:50px;font-size:25px'])?>
+        <?=Html::textInput('kh',null,['placeholder'=>'请输入考号或者身份证号','class'=>'form-control','style'=>'height:50px;font-size:20px'])?>
         </div>
         <button type="submit" class="btn btn-primary" style="width:150px;height:50px;font-size:20px">查询考生</button>
      <?php ActiveForm::end(); ?>
