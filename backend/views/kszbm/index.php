@@ -18,7 +18,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('新建报名', ['create'], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('数据导出', ['export'], ['class' => 'btn btn-success']) ?>
+        <?php
+        if(Yii::$app->user->can('schoolPost'))
+          echo Html::a('数据导出', ['export'], ['class' => 'btn btn-success']);
+        ?>
         <?= Html::a('信息查询', ['query'], ['class' => 'btn btn-primary']) ?>
     </p>
 
