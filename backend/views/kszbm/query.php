@@ -18,9 +18,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="form-group">
         <?=Html::dropDownlist('bmd',$bmd,$bmds,['class'=>'form-control','id'=>'bmdselect','style'=>"max-width:120px"])?>
         </div>
-   
+      <div class="form-group">
          <?= Html::a('任务概览', ['task'], ['class' => 'btn btn-primary','target'=>"_blank"]) ?>
-
+      </div>
      <?php ActiveForm::end(); ?>
     </p>
 

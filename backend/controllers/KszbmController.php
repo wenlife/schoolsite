@@ -181,16 +181,15 @@ class KszbmController extends Controller
         $complete = $all = $prefor = 0;
         if($bmd!=null)
         {
-            //统计该报名点的数据
-            $allItem = SignBase::find()->where(['bmd'=>$bmd])->all();
-            $all = count($allItem);
+            //统计该报名点的数据,暂时屏蔽该功能
+            // $allItem = SignBase::find()->where(['bmd'=>$bmd])->all();
+            // $all = count($allItem);
 
-            $ids = ArrayHelper::getColumn($allItem,'sfzh');
-            // var_export($ids);
-            // exit();
-            $prefor = SignKszbm::find()->where(['in','id_card',$ids])->andWhere(['verify'=>'2'])->count();
+            // $ids = ArrayHelper::getColumn($allItem,'sfzh');
 
-            $complete = SignKszbm::find()->where(['in','id_card',$ids])->andWhere(['verify'=>'3'])->count();
+            // $prefor = SignKszbm::find()->where(['in','id_card',$ids])->andWhere(['verify'=>'2'])->count();
+
+            // $complete = SignKszbm::find()->where(['in','id_card',$ids])->andWhere(['verify'=>'3'])->count();
 
         }
         if($post = Yii::$app->request->post())
@@ -216,8 +215,6 @@ class KszbmController extends Controller
                    $msg = "(".$kh.")相关数据考生不存在！";
             }
         }
-
-
 
         return $this->render('query',['bmd'=>$bmd,'msg'=>$msg,'bmds'=>$bmds,'all'=>$all,'prefor'=>$prefor,'complete'=>$complete]);
     }
