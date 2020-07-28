@@ -17,7 +17,7 @@ $nationList = SysNation::getList();
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>    
-    <?= Html::a('市外录入', ['create'], ['class' => 'btn btn-success']) ?>
+    <?php Html::a('市外录入', ['create'], ['class' => 'btn btn-success']) ?>
     <?php
         if($model->verify !=3)
         {
@@ -28,6 +28,7 @@ $nationList = SysNation::getList();
                 'method' => 'post',
             ],
             ]);
+            echo "&nbsp";
             echo Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-success']);
         }
         ?>
