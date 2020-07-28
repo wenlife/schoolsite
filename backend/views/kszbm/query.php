@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
    
         <?php $form = ActiveForm::begin(['id'=>'form1','method'=>'get','action'=>'index.php?r=kszbm/query','options'=>['class'=>'form-inline']]); ?>
       <div class="input-group">
-      <?=Html::dropDownlist('bmd',$bmd,$bmds,['class'=>'form-control','id'=>'bmdselect','style'=>"max-width:120px"])?>
+      <?=Html::dropDownlist('bmd',$bmd,$bmds,['class'=>'form-control','id'=>'bmdselect'])?>
       <span class="input-group-btn">
         <?= Html::a('任务概览', ['task'], ['class'=>'btn btn-primary','target'=>"_blank"]) ?>
       </span>
