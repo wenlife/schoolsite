@@ -22,7 +22,8 @@ $fieldOptions2 = [
 
 <div class="login-box">
     <div class="login-logo">
-        <a href="#"><b>攀枝花第七高级中学校</b>录取查询系统</a>
+        <p><b>攀枝花第七高级中学</b></p>
+        <p>录取查询系统</p>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -34,12 +35,12 @@ $fieldOptions2 = [
         <?= $form
             ->field($model, 'kh', $fieldOptions1)
             ->label(false)
-            ->textInput(['placeholder' =>'中考考号']) ?>
+            ->textInput(['placeholder' =>'中考考号','required'=>'required']) ?>
 
         <?= $form
             ->field($model, 'sfzh', $fieldOptions2)
             ->label(false)
-            ->textInput(['placeholder' =>'身份证号']) ?>
+            ->textInput(['placeholder' =>'身份证号','required'=>'required']) ?>
 
         <div class="row">
             <div class="col-xs-4">
