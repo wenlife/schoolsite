@@ -277,7 +277,13 @@ class KszbmController extends Controller
             $result = SignKszbm::find()->where(['zk_exam_id'=>$kh,'id_card'=>$sfzh])->one();
             if($result)
             {
-                $msg = "您已经填报了报名表，请进行后续缴费事项！";
+                if($result->verify == 3)
+                {
+                    $msg = "恭喜您，您已被我校录取。欢迎来到攀枝花市第七高级中学校！";
+                }else{
+                    $msg = "您已经填报了报名表，请进行后续缴费事项！";
+                }
+                
             }else{
                 $result = SignBase::find()->where(['kh'=>$kh,'sfzh'=>$sfzh])->one();
                 if($result)
