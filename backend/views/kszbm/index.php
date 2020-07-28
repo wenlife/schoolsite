@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
         if(Yii::$app->user->can('schoolPost'))
           echo Html::a('数据导出', ['export'], ['class' => 'btn btn-success']);
         ?>
-        <?= Html::a('信息查询', ['query'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('录取查询', ['query'], ['class' => 'btn btn-primary']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

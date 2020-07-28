@@ -12,18 +12,21 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sign-kszbm-index">
     <h1><?= Html::encode($this->title) ?></h1>
-    <p>    
+    <p>
+   
         <?php $form = ActiveForm::begin(['id'=>'form1','method'=>'get','action'=>'index.php?r=kszbm/query','options'=>['class'=>'form-inline']]); ?>
-
-        <div class="form-group">
-        <?=Html::dropDownlist('bmd',$bmd,$bmds,['class'=>'form-control','id'=>'bmdselect','style'=>"max-width:120px"])?>
-        </div>
-      <div class="form-group">
-         <?= Html::a('任务概览', ['task'], ['class' => 'btn btn-primary','target'=>"_blank"]) ?>
-      </div>
+      <div class="input-group">
+      <?=Html::dropDownlist('bmd',$bmd,$bmds,['class'=>'form-control','id'=>'bmdselect','style'=>"max-width:120px"])?>
+      <span class="input-group-btn">
+        <?= Html::a('任务概览', ['task'], ['class'=>'btn btn-primary','target'=>"_blank"]) ?>
+      </span>
+    </div><!-- /input-group -->
      <?php ActiveForm::end(); ?>
-    </p>
 
+
+      
+
+    </p>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="box box-primary">
     <div class="box-header with-border">
