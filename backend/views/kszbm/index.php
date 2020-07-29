@@ -23,6 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
           echo Html::a('数据导出', ['export'], ['class' => 'btn btn-success']);
         ?>
         <?= Html::a('录取查询', ['query'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('完成统计', ['summary'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

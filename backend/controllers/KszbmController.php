@@ -210,13 +210,30 @@ class KszbmController extends Controller
                         'lqzf'=>$result2->lqzf,'lqxx'=>$result2->lqxx,
                         'bmjd'=>$result2->flag,'flag'=>$result2->flag,'url'=>'signbase/view'];
                     //$msg = ['type'=>'base','data'=>$result2,'url'=>'signbase/view'];
-                   //return $this->redirect(['signbase/view','id'=>$result2->id]);
+                    //return $this->redirect(['signbase/view','id'=>$result2->id]);
                 else
                    $msg = "(".$kh.")相关数据考生不存在！";
             }
         }
 
         return $this->render('query',['bmd'=>$bmd,'msg'=>$msg,'bmds'=>$bmds,'all'=>$all,'prefor'=>$prefor,'complete'=>$complete]);
+    }
+
+
+    public function actionSummary()
+    {
+        $bmds = SignBase::find()->select(['bmd'])->distinct()->indexby('bmd')->column();
+        $returnArr = array();
+        foreach ($bmds as $key => $bmd) {
+            //统计该报名点的数据
+             $allItem = SignBase::find()->where(['bmd'=>$bmd])->all();
+             $all = count($allItem);
+             $ids = ArrayHelper::getColumn($allItem,'sfzh');
+             $prefor = SignKszbm::find()->where(['in','id_card',$ids])->andWhere(['verify'=>'2'])->count();
+             $complete = SignKszbm::find()->where(['in','id_card',$ids])->andWhere(['verify'=>'3'])->count();
+             $returnArr[$bmd] = ['all'=>$all,'prefor'=>$prefor,'complete'=>$complete];
+        }
+        return $this->render('summary',['data'=>$returnArr]);
     }
 
 
