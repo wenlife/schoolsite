@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             $all = ArrayHelper::getValue($bdata,'all');
             $prefor = ArrayHelper::getValue($bdata,'prefor');
             $complete = ArrayHelper::getValue($bdata,'complete');
-            $rate = $all>0?round($complete/$all,2)*100:0;
+            $rate = $all>0?round($complete/$all,4)*100:0;
              echo "<tr><td>$bmd</td><td>$all</td><td>$prefor</td><td>$complete</td><td>$rate%</td></tr>";
            }
         ?> 
