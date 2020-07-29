@@ -226,7 +226,7 @@ class KszbmController extends Controller
         $returnArr = array();
         foreach ($bmds as $key => $bmd) {
             //统计该报名点的数据
-             $allItem = SignBase::find()->where(['bmd'=>$bmd])->all();
+             $allItem = SignBase::find()->where(['bmd'=>$bmd,'flag'=>1])->all();
              $all = count($allItem);
              $ids = ArrayHelper::getColumn($allItem,'sfzh');
              $prefor = SignKszbm::find()->where(['in','id_card',$ids])->andWhere(['verify'=>'2'])->count();
