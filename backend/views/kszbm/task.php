@@ -9,6 +9,7 @@ use backend\libary\CommonFunction;
 
 $this->title = '报名点数据';
 $this->params['breadcrumbs'][] = $this->title;
+$color = ['1'=>'label label-danger','2'=>'label label-default','3'=>'label label-success']
 ?>
 <div class="sign-kszbm-index">
     <h1><?= Html::encode($this->title) ?></h1>
@@ -38,7 +39,9 @@ $this->params['breadcrumbs'][] = $this->title;
             $i++;
              echo "<tr><td>$i</td><td>$student->kh</td><td>$student->xm</td><td>$student->lxdh</td><td>$student->lqzf</td><td>$student->lqxx</td><td>";
              $lqjd = CommonFunction::getLqjd();
+             echo "<label class='".ArrayHelper::getValue($color,$student->flag)."'>";
              echo ArrayHelper::getValue($lqjd,$student->flag);
+             echo "</label>";
              echo "</td><td>";
              echo $student->note;
              echo "</td></tr>";
