@@ -311,9 +311,16 @@ class KszbmController extends Controller
 
         foreach ($students as $key => $student) {
             $if = SignKszbm::find()->where(['id_card'=>$student->sfzh])->one();
+            $username = null;
             if($if)
             {
                 $student->flag = $if->verify;
+                $username = $if->verify_admin;
+                if($username)
+                {
+                    $admin = Adminuser::findByUsername($model->verifyadmin);
+                    $username = $admin->name;
+                }
             }
             $exportArr[] = [
                 'id'=>$i++,
@@ -322,14 +329,16 @@ class KszbmController extends Controller
                 'lxdh'=>$student->lxdh,
                 'lqzf'=>$student->lqzf,
                 'lqxx'=>$student->lqxx,
+                'bmd'=>$bmd,
                 'flag'=>ArrayHelper::getValue(CommonFunction::getLqjd(),$student->flag),
+                'verifyadmin'=>$username,
                 'note'=>$student->note,
            ];
         }
 
         $excel = new SaveExcel([
             'array' => $exportArr,
-            'headerDataArray' => ['编号', '中考考号','姓名','联系电话','录取分','录取信息','录取结果','备注'],
+            'headerDataArray' => ['编号', '中考考号','姓名','联系电话','录取分','录取信息','报名点','录取结果','录取人','备注'],
         ]);
         $excel->arrayToExcel();
         }else{
