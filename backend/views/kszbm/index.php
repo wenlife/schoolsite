@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 return ArrayHelper::getValue(CommonFunction::getLqjd(),$model->verify);
             },'filter'=>CommonFunction::getLqjd()],
             //'verify_time',
-            ['attribute'=>'verify_admin'],
+            ['attribute'=>'verify_admin','value'=>'realname.name'],
             //'verify_msg',
             //'note:ntext',
 

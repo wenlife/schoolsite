@@ -3,7 +3,7 @@
 namespace backend\models;
 
 use Yii;
-
+use common\models\Adminuser;
 /**
  * This is the model class for table "sign_kszbm".
  *
@@ -107,6 +107,11 @@ class SignKszbm extends \yii\db\ActiveRecord
     public function getBase()
     {
         return $this->hasOne(SignBase::className(),['kh'=>'zk_exam_id']);
+    }
+
+    public function getRealname()
+    {
+        return $this->hasOne(Adminuser::className(),['username'=>'verify_admin']);
     }
 
     /**
