@@ -6,8 +6,7 @@ use yii\web\cookie;
 use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 use backend\libary\CommonFunction;
-
-$this->title = '报名点数据';
+$this->title = (string)$bmd.'数据';
 $this->params['breadcrumbs'][] = $this->title;
 $color = ['1'=>'label label-danger','2'=>'label label-default','3'=>'label label-success']
 ?>
@@ -18,6 +17,9 @@ $color = ['1'=>'label label-danger','2'=>'label label-default','3'=>'label label
 
         <div class="form-group">
           <?=Html::dropDownlist('bmd',$bmd,$bmds,['class'=>'form-control','id'=>'bmdselect'])?>
+        </div>
+        <div class="form-group">
+          <?= Html::a('导出数据', ['bmdexport','bmd'=>(string)$bmd], ['class' => 'btn btn-success']) ?>
         </div>
         <div class="form-group">
           <?= Html::a('<<回到查询', ['query'], ['class' => 'btn btn-primary']) ?>

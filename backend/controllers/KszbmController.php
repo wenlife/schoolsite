@@ -15,6 +15,7 @@ use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
 use backend\models\SysNation;
 use ciniran\excel\SaveExcel;
+use backend\libary\CommonFunction;
 /**
  * KszbmController implements the CRUD actions for SignKszbm model.
  */
@@ -280,6 +281,60 @@ class KszbmController extends Controller
         }
 
         return $this->render('task',['bmd'=>$bmd,'bmds'=>$bmds,'students'=>$students]);
+    }
+
+    public function actionBmdexport($bmd)
+    {
+        if(!Yii::$app->user->can('userPost'))
+        {
+            exit("您没有访问该页面的权限！");
+        }
+
+
+
+        $bmds = SignBase::find()->select(['bmd'])->distinct()->column();
+        // //exit(var_export(current($bmds)));
+        // if($bmd == null)
+        // {
+        //     $cookies = Yii::$app->request->cookies;
+        //     if ($cookies->has('bmd')) {
+        //       $bmd = $cookies->get('bmd');
+        //     }
+        //     $bmd = $bmd==null?current($bmds):$bmd;
+        // }
+        // exit(var_export($bmd));
+      if(in_array($bmd, $bmds))
+      {
+       $students = SignBase::find()->where(['bmd'=>$bmd])->all();
+       $i = 1;
+       $exportArr = array();
+
+        foreach ($students as $key => $student) {
+            $if = SignKszbm::find()->where(['id_card'=>$student->sfzh])->one();
+            if($if)
+            {
+                $student->flag = $if->verify;
+            }
+            $exportArr[] = [
+                'id'=>$i++,
+                'kh'=>$student->kh,
+                'xm'=>$student->xm,
+                'lxdh'=>$student->lxdh,
+                'lqzf'=>$student->lqzf,
+                'lqxx'=>$student->lqxx,
+                'flag'=>ArrayHelper::getValue(CommonFunction::getLqjd(),$student->flag),
+                'note'=>$student->note,
+           ];
+        }
+
+        $excel = new SaveExcel([
+            'array' => $exportArr,
+            'headerDataArray' => ['编号', '中考考号','姓名','联系电话','录取分','录取信息','录取结果','备注'],
+        ]);
+        $excel->arrayToExcel();
+        }else{
+            $this->redirect(['task']);
+        }
     }
 
     public function actionFind()
