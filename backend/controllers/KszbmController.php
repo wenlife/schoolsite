@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
+use common\models\Adminuser;
 use backend\models\SignKszbm;
 use backend\models\SignkszbmSearch;
 use backend\models\SignBase;
@@ -318,7 +319,7 @@ class KszbmController extends Controller
                 $username = $if->verify_admin;
                 if($username)
                 {
-                    $admin = Adminuser::findByUsername($model->verifyadmin);
+                    $admin = Adminuser::findByUsername($username);
                     $username = $admin->name;
                 }
             }
