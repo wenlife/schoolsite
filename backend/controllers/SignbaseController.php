@@ -124,7 +124,7 @@ class SignbaseController extends Controller
 
     public function actionCheck()
     {
-      $all = SignBase::find()->where(['flag'=>'1'])->all();
+      $all = SignBase::find()->where(['flag'=>'1'])->orderby('bmd')->all();
 
       return $this->render('check',['students'=>$all]);
     }
