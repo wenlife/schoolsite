@@ -21,7 +21,7 @@ $color = ['1'=>'label label-danger','2'=>'label label-default','3'=>'label label
     <div class="box-header with-border">
     <table class="table tabel-bordered">
         <thead>
-            <tr><th style="width:100px">序号</th><th>中考考号</th><th>姓名</th><th>联系电话</th><th>录取分</th><th>录取信息</th><th>录取进度</th><th>备注</th></tr>
+            <tr><th style="width:100px">序号</th><th>中考考号</th><th>姓名</th><th>联系电话</th><th>录取分</th><th>录取信息</th><th>报名点</th><th>录取进度</th><th>备注</th></tr>
         </thead>
         <tbody>
         <?php
@@ -30,7 +30,7 @@ $color = ['1'=>'label label-danger','2'=>'label label-default','3'=>'label label
                 if($student->kszbm &&$student->kszbm->verify == 2)
                 {
                   $i++;
-                 echo "<tr><td>$i</td><td>$student->kh</td><td>$student->xm</td><td>$student->lxdh</td><td>$student->lqzf</td><td>$student->lqxx</td><td>";
+                 echo "<tr><td>$i</td><td>$student->kh</td><td>$student->xm</td><td>$student->lxdh</td><td>$student->lqzf</td><td>$student->lqxx</td><td>$student->bmd</td><td>";
                  $lqjd = CommonFunction::getLqjd();
                  echo "<label class='".ArrayHelper::getValue($color,$student->kszbm->verify)."'>";
                  echo ArrayHelper::getValue($lqjd,$student->kszbm->verify);
@@ -52,7 +52,7 @@ $color = ['1'=>'label label-danger','2'=>'label label-default','3'=>'label label
     <div class="box-body">
         <table class="table tabel-bordered">
         <thead>
-            <tr><th style="width:100px">序号</th><th>中考考号</th><th>姓名</th><th>联系电话</th><th>录取分</th><th>录取信息</th><th>录取进度</th><th>备注</th></tr>
+            <tr><th style="width:100px">序号</th><th>中考考号</th><th>姓名</th><th>联系电话</th><th>录取分</th><th>录取信息</th><th>报名点</th><th>录取进度</th><th>备注</th></tr>
         </thead>
         <tbody>
         <?php
@@ -62,7 +62,7 @@ $color = ['1'=>'label label-danger','2'=>'label label-default','3'=>'label label
             if(!is_null($student->kszbm))
                  continue;
              $i++;
-             echo "<tr><td>$i</td><td>$student->kh</td><td>$student->xm</td><td>$student->lxdh</td><td>$student->lqzf</td><td>$student->lqxx</td><td>";
+             echo "<tr><td>$i</td><td>$student->kh</td><td>$student->xm</td><td>$student->lxdh</td><td>$student->lqzf</td><td>$student->lqxx</td><td>$student->bmd</td><td>";
              $lqjd = CommonFunction::getLqjd();
              echo "<label class='".ArrayHelper::getValue($color,$student->flag)."'>";
              echo ArrayHelper::getValue($lqjd,$student->flag);
