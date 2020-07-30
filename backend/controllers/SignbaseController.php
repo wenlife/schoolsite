@@ -121,6 +121,14 @@ class SignbaseController extends Controller
         return $this->render('import',['model'=>$form,'errMSG'=>$errMSG]);
     }
 
+
+    public function actionCheck()
+    {
+      $all = SignBase::find()->where(['flag'=>'1'])->all();
+
+      return $this->render('check',['students'=>$all]);
+    }
+
     /**
      * Displays a single SignBase model.
      * @param integer $id

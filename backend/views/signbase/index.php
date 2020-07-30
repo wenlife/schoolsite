@@ -18,7 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('新建基础数据', ['create'], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('导入数据', ['import'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('计划内未录取', ['check'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('导入数据', ['import'], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('清空基础数据', ['del'], ['class' => 'btn btn-danger pull-right','onclick'=>'return confirm("您确定要删出当前全部基础数据吗？")']) ?>
     </p>
     <div class="box box-primary">
