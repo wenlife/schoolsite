@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'hukou_place',
             //'hukou_type',
             //'height',
-            'health',
+            //'health',
             //'address',
             //'if_pre_educate',
             //'if_sigle',
@@ -56,7 +56,8 @@ $this->params['breadcrumbs'][] = $this->title;
             //'if_ls',
             
             'zk_score',
-            'zk_school',
+            ['attribute'=>'base.bmd','filter'=>$bmds],
+            //'zk_school',
             //'party_type',
             //'speciality:ntext',
             //'if_live',
@@ -85,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 return ArrayHelper::getValue(CommonFunction::getLqjd(),$model->verify);
             },'filter'=>CommonFunction::getLqjd()],
             //'verify_time',
-            //'verify_admin',
+            ['attribute'=>'verify_admin'],
             //'verify_msg',
             //'note:ntext',
 

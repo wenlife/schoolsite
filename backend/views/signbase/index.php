@@ -1,7 +1,9 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
+use backend\libary\CommonFunction;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\SignbaseSearch */
@@ -57,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'lqzf',
             'lqxx',
             'bmd',
-            'flag',
+            ['attribute'=>'flag','filter'=>CommonFunction::getLqjd()],
             //'note',
 
             ['class' => 'yii\grid\ActionColumn',

@@ -68,8 +68,9 @@ class KszbmController extends Controller
         }
         $searchModel = new SignkszbmSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $bmds = SignBase::find()->select(['bmd'])->distinct()->indexby('bmd')->column();
         return $this->render('index', [
+            'bmds'=>$bmds,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

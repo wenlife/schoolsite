@@ -104,6 +104,11 @@ class SignKszbm extends \yii\db\ActiveRecord
         }
     }
 
+    public function getBase()
+    {
+        return $this->hasOne(SignBase::className(),['kh'=>'zk_exam_id']);
+    }
+
     /**
      * {@inheritdoc}
      */

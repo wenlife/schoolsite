@@ -15,7 +15,7 @@ class CommonFunction{
 	}
 	static function getLqjd()
 	{
-		return ['0'=>'未录取','1'=>'可录取/待填表','2'=>'已填写报名表','3'=>'已缴费并录取','4'=>'招生录入'];
+		return ['0'=>'未录取','1'=>'可录取/待填表','2'=>'已填写报名表','3'=>'已缴费并录取','4'=>'招生录入','24'=>'异常状态'];
 	}
 	static function getNoticelevel()
 	{
