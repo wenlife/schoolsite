@@ -99,6 +99,8 @@ class KszbmController extends Controller
         $trans = ['ty'=>'体育','yy'=>'音乐','ms'=>'美术'];
         $nationlist = SysNation::getList();
         foreach ($data as $key => $sdata) {
+            $admin = Adminuser::findByUsername($sdata->verify_admin);
+            $username = $admin?$admin->name:$sdata->verify_admin;
             $exportArr[] = [
                 'id'=>$sdata->id,
                 'name'=>$sdata->name,
@@ -143,7 +145,7 @@ class KszbmController extends Controller
                 'if_uniform'=>$sdata->if_uniform,
                 'verify'=>$sdata->verify,
                 'verify_time'=>$sdata->verify_time,
-                'verify_admin'=>$sdata->verify_admin,
+                'verify_admin'=>$username,
                 'verify_msg'=>$sdata->verify_msg,
                 'note'=>$sdata->note
 
