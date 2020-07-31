@@ -65,12 +65,14 @@ $this->params['breadcrumbs'][] = $this->title;
           echo ArrayHelper::getValue($msg,'lqxx');
           echo "</td><td>";
           $jd = CommonFunction::getLqjd();
-          if(ArrayHelper::getValue($msg,'flag') == 1)
-          {
-              echo "<label class='label label-success'>";
-          }else{
-              echo "<label class='label label-danger'>";
-          }
+          $label = CommonFunction::getLqlabel();
+          // if(ArrayHelper::getValue($msg,'flag') == 1)
+          // {
+          //     echo "<label class='label label-success'>";
+          // }else{
+          //     echo "<label class='label label-danger'>";
+          // }
+          echo "<label class='".ArrayHelper::getValue($label,ArrayHelper::getValue($msg,'bmjd'))."'>";
           echo ArrayHelper::getValue($jd,ArrayHelper::getValue($msg,'bmjd'));
           echo "</label>";
           echo "</td><td>";

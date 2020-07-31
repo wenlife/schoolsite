@@ -17,6 +17,12 @@ class CommonFunction{
 	{
 		return ['0'=>'未录取','1'=>'可录取/待填表','2'=>'已填写报名表','3'=>'已缴费并录取','4'=>'招生录入','24'=>'异常状态'];
 	}
+	static function getLqlabel()
+	{
+		return ['1'=>'label label-default','3'=>'label label-success',
+		         '0'=>'label label-danger','2'=>'label label-success','24'=>'label label-danger',];
+	}
+
 	static function getNoticelevel()
 	{
 		return ['alert-success'=>'好消息','alert-info'=>'一般消息',
@@ -27,6 +33,8 @@ class CommonFunction{
 		return ['0'=>'label label-default','1'=>'label label-success',
 		         '2'=>'label label-danger','3'=>'label label-default'];
 	}
+
+
 
 	static function getVerifyState()
 	{
