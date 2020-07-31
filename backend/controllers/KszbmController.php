@@ -205,8 +205,15 @@ class KszbmController extends Controller
             if($result1)
             {
                 $result2 = SignBase::find()->where(['kh'=>$kh])->orWhere(['sfzh'=>$kh])->one();
+                $lqxx = $flag = "";
+                if($result2)
+                {
+                    $lqxx = $result2->lqxx;
+                    $flag = $result2->flag;
+                }
+
                 $msg = ['id'=>$result1->id,'kh'=>$result1->zk_exam_id,'xm'=>$result1->name,
-                        'lqzf'=>$result1->zk_score,'lqxx'=>$result2->lqxx,'bmjd'=>$result1->verify,'flag'=>$result2->flag,'url'=>'view'];
+                        'lqzf'=>$result1->zk_score,'lqxx'=>$lqxx,'bmjd'=>$result1->verify,'flag'=>$flag,'url'=>'view'];
                // return $this->redirect(['view','id'=>$result1->id]);
             }else{
                 $result2 = SignBase::find()->where(['kh'=>$kh])->orWhere(['sfzh'=>$kh])->one();
