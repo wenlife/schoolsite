@@ -14,7 +14,7 @@ use yii\web\UploadedFile;
 use ciniran\excel\SaveExcel;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-
+exit("功能暂时被禁用！");
 /**
  * SignsheetController implements the CRUD actions for SignSheet model.
  */

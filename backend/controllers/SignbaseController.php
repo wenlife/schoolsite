@@ -13,6 +13,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use ciniran\excel\ReadExcel;
 use yii\filters\AccessControl;
+exit("功能暂时被禁用！");
 /**
  * SignbaseController implements the CRUD actions for SignBase model.
  */

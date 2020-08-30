@@ -17,6 +17,7 @@ use yii\filters\AccessControl;
 use backend\models\SysNation;
 use ciniran\excel\SaveExcel;
 use backend\libary\CommonFunction;
+exit("功能暂时被禁用！");
 /**
  * KszbmController implements the CRUD actions for SignKszbm model.
  */
