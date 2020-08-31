@@ -41,6 +41,11 @@ class CommonFunction{
 		return ['0'=>'未审核','1'=>'审核通过','2'=>'未通过审核','3'=>'等待重新审核'];
 	}
 
+
+	/*
+     该处用于成绩分析
+     */
+
 	static function getSubjects()
 	{
     	$subjects = [
@@ -53,6 +58,9 @@ class CommonFunction{
 		return $subjects;
 	}
 
+    /*
+     该处用于教师职责分配
+     */
 	static function getAllTeachDuty()
 	{
 		    $subjects = [
@@ -66,7 +74,9 @@ class CommonFunction{
 		];
 		return $subjects;
 	}
-
+    /*
+       该处用于教学课程安排
+     */
     static function getAllSubjects()
 	{
 		    $subjects = [

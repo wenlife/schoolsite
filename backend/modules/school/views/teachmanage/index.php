@@ -8,7 +8,7 @@ use backend\libary\CommonFunction;
 
 $this->title = '任教管理';
 $this->params['breadcrumbs'][] = $this->title;
-$allSubject = CommonFunction::getAllTeachDuty();
+$allSubject = CommonFunction::getAllSubjects();
 
 ?>
 <div class="teach-manage-index">
