@@ -6,6 +6,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use ciniran\excel\ReadExcel;
+use ciniran\excel\SaveExcel;
+use yii\helpers\ArrayHelper;
 use backend\modules\guest\forms\teacherUpload;
 use backend\libary\CommonFunction;
 use backend\modules\guest\models\UserTeacher;
@@ -177,6 +179,28 @@ class TeacherController extends Controller
         }
 
         return $this->redirect(['index']);
+    }
+
+    public function actionExportsecode()
+    {
+        $data = UserTeacher::find()->all();
+        $exportArr = [];
+        $allduty = CommonFunction::getAllTeachDuty();
+        foreach ($data as $key => $sdata) {
+            $trans = ArrayHelper::getValue($allduty,$sdata->subject);
+
+            $exportArr[] = [
+                'id'=>$sdata->id,
+                'name'=>$sdata->name,
+                'subject'=>$trans?$trans:$sdata->subject,
+                "secode"=>$sdata->secode,
+            ];
+        }
+        $excel = new SaveExcel([
+            'array' => $exportArr,
+            'headerDataArray' => ['自动编号', '姓名','科目','安全码'],
+        ]);
+        $excel->arrayToExcel();
     }
 
     /**

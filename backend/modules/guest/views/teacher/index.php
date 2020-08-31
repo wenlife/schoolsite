@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('创建教师', ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::a('导入教师', ['import'], ['class' => 'btn btn-success']) ?>
         <?= Html::a('重置安全码', ['secode'], ['class' => 'btn btn-success']) ?>
+         <?= Html::a('导出安全码', ['exportsecode'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([

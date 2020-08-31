@@ -164,7 +164,7 @@ class TeachmanageController extends Controller
                  $class_list = (new \yii\db\Query())->select(['serial','id'])->from('teach_class')
                                 ->where(['grade'=>$depart_year])->indexby('id')->orderby('serial')->column();
                 //$class_list = (new TeachClass())->getClassArray($form->department);
-                //转换教师数据
+                //转换教师数据，科目也会被转换为系统值
                 $data = UserTeacher::translateNametoId($data);
                 $insertData = array();
                 //合并错误信息
@@ -178,21 +178,7 @@ class TeachmanageController extends Controller
                 foreach ($class_list as $class_id => $class_serial){
                    $teach_man = ArrayHelper::getValue($data,$class_serial);
                    foreach ($teach_man as $sub_en => $teacher_id) { 
-                      // $model = TeachManage::find()->where(['year_id'=>$form->year,
-                      //                                      'class_id'=>$class_id,
-                      //                                      'subject'=>$sub_en])->one();
-                      // if($model&&$model->teacher_id != $teacher_id)
-                      // {
-                      //      unset($teach_man[$sub_en]);
-                      //      $model->teacher_id = $teacher_id;
-                      //      if(!$model->save())
-                      //         $errMSG[] = "<".$class_serial."班>的<".ArrayHelper::getValue($subarr,$sub_en).">任教修改失败！";
-                      // }
-                      // if(!$model)
-                      // {
-                      //     array_push($insertData,['year_id'=>$form->year,'class_id'=>$class_id,
-                      //                             'teacher_id'=>$teacher_id,'subject'=>$sub_en]);
-                      // }
+                    
                       array_push($insertData,['year_id'=>$form->year,'class_id'=>$class_id,
                                                    'teacher_id'=>$teacher_id,'subject'=>$sub_en]);
                    }
