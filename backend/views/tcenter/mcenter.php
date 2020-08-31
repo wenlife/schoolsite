@@ -22,27 +22,6 @@ $this->title = '';
               <a class="btn btn-app" href="<?=Url::toRoute(['/guest/teacher'])?>">
                 <i class="fa fa-user"></i> 教师
               </a>
-              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachdepartment'])?>">
-                <i class="fa fa-institution text-success"></i>学部
-              </a>
-              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachyear'])?>">
-                <i class="fa fa-calendar text-success"></i>学期
-              </a>
-              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachmanage'])?>">
-                <i class="fa fa-binoculars text-primary"></i> 任教
-              </a>
-              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/daytime'])?>">
-                <!-- <span class="badge bg-yellow">3</span> -->
-                <i class="fa fa-list-alt text-success"></i> 作息
-              </a>
-              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachcourse'])?>">
-                <!-- <span class="badge bg-green">300</span> -->
-                <i class="fa fa-table text-primary"></i> 课程
-              </a>
-              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachcal'])?>">
-                <!-- <span class="badge bg-green">300</span> -->
-                <i class="fa fa-calendar text-primary"></i> 校历
-              </a>
               <a class="btn btn-app"  href="<?=Url::toRoute(['/guest/adminuser'])?>">
                 <!-- <span class="badge bg-purple">891</span> -->
                 <i class="fa fa-user-md"></i> 管理员
@@ -59,6 +38,40 @@ $this->title = '';
                 <span class="badge bg-red">531</span>
                 <i class="fa fa-heart-o"></i> Likes
               </a>
+
+              <br>
+              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachdepartment'])?>">
+                <i class="fa fa-institution text-success"></i>学部
+              </a>
+              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachyear'])?>">
+                <i class="fa fa-calendar text-success"></i>学期
+              </a>
+              <a class="btn btn-app"   href="<?=Url::toRoute(['/school/teachclass'])?>">
+                <i class="fa fa-group"></i> 班级
+              </a>
+
+              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachmanage'])?>">
+                <i class="fa fa-binoculars text-primary"></i> 任教
+              </a>
+              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachcourse'])?>">
+                <!-- <span class="badge bg-green">300</span> -->
+                <i class="fa fa-table text-primary"></i> 课程
+              </a>
+              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachcourselimit'])?>">
+                <!-- <span class="badge bg-green">300</span> -->
+                <i class="fa fa-table text-primary"></i> 课数
+              </a>
+              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/daytime'])?>">
+                <!-- <span class="badge bg-yellow">3</span> -->
+                <i class="fa fa-list-alt text-success"></i> 作息
+              </a>
+              <a class="btn btn-app"  href="<?=Url::toRoute(['/school/teachcal'])?>">
+                <!-- <span class="badge bg-green">300</span> -->
+                <i class="fa fa-calendar text-primary"></i> 校历
+              </a>
+
+
+
             </div>
             <!-- /.box-body -->
           </div>
@@ -186,7 +199,7 @@ $this->title = '';
           <div class="col-md-6">
             <div class="box box-info">
             <div class="box-header with-border">
-              <h3 class="box-title">班级课表</h3>
+              <h3 class="box-title">系统模块状态</h3>
               
               <div class="box-tools pull-right">
                 <a href="index.php?r=test/task" title="点击管理全部任务"></a>
