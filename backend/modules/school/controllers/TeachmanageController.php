@@ -49,7 +49,9 @@ class TeachmanageController extends Controller
         $term = $term?$term:key($allTerm);
         $allDepartment = TeachDepartment::getDepartmentArray();
         $department = $department?$department:key($allDepartment);
-        $allClass = TeachClass::find()->where(['department_id'=>$department])->indexby('id')->all();
+        $curDepartment = TeachDepartment::findOne($department);
+        //展示当前级部的设置
+        $allClass = TeachClass::find()->where(['department_id'=>$department,'grade'=>$curDepartment->year])->indexby('id')->all();
 
         $classes = (new \yii\db\Query())->select(['id'])->from('teach_class')
                                         ->where(['department_id'=>$department]);
