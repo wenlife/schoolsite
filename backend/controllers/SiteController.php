@@ -10,6 +10,8 @@ use backend\modules\guest\models\UserTeacher;
 use common\models\AdminUser;
 use common\models\BackendLoginForm;
 use backend\models\SignupForm;
+use backend\forms\PasswordResetRequestForm;
+use backend\forms\ResetPasswordForm;
 //use backend\modules\content\models\Information;
 //use backend\modules\content\models\ContentMenu;
 //use backend\modules\content\models\infoitem;
@@ -30,12 +32,12 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error','signup','index','secode'],
+                        'actions' => ['login', 'error','signup','index','secode','request-password-reset','reset-password'],
                         'allow' => true,
                         'roles'=>['?']
                     ],
                     [
-                        'actions' => ['logout','list','detail','vdetail','pdetail','center','test','myclass','resetpwd','myinfo','index','error'],
+                        'actions' => ['logout','list','detail','vdetail','pdetail','center','test','myclass','resetpwd','myinfo','index','error','request-password-reset'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -62,6 +64,8 @@ class SiteController extends Controller
             ],
         ];
     }
+
+    public $layout="tcenter";
 
     public function actionIndex()
     { 
@@ -158,30 +162,58 @@ class SiteController extends Controller
         //return $this->goHome();
         return $this->redirect(['site/login']);
     }
-
-    public function actionResetpwd($username)
+    /**
+     * Requests password reset.
+     *
+     * @return mixed
+     */
+    public function actionRequestPasswordReset()
     {
-        $user = User::findByUsername($username);
-        if ($user) {
-            $user->setPassword($user->username);
-            $user->generateAuthKey();
-            if($user->save())
-            {
-                echo "重置用户".$username.'的密码为用户名成功！';
+        
+        $model = new PasswordResetRequestForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+            if ($model->sendEmail()) {
+                Yii::$app->session->setFlash('success', '请回到邮箱根据邮件内容进行下一步操作.');
+
+            } else {
+                Yii::$app->session->setFlash('error', '重置失败，请检查输入的姓名和邮箱地址是否正确并且相互匹配，如有疑问请联系管理员');
             }
+        }
+
+        return $this->render('requestPasswordResetToken', [
+            'model' => $model,
+        ]);
+    }
+
+
+    public function actionResetPassword($token)
+    {
+        try {
+            $model = new ResetPasswordForm($token);
+        } catch (InvalidParamException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+            Yii::$app->session->setFlash('success', '重置密码成功，请登录.');
+            return $this->redirect(['site/login']);
 
         }
+
+        return $this->render('resetPassword', [
+            'model' => $model,
+        ]);
     }
 
-    public function actionSecode()
-    {
-        exit('接入互联网后不再提供！');
-        $this->layout = false;
-        $secodeArr = UserTeacher::find()->select(['name','subject','secode'])->all();
-        //var_export($secodeArr);
+    // public function actionSecode()
+    // {
+    //     exit('接入互联网后不再提供！');
+    //     $this->layout = false;
+    //     $secodeArr = UserTeacher::find()->select(['name','subject','secode'])->all();
+    //     //var_export($secodeArr);
 
-        return $this->render('secode',['secode'=>$secodeArr]);
-    }
+    //     return $this->render('secode',['secode'=>$secodeArr]);
+    // }
 
 
     // public function actionTest()

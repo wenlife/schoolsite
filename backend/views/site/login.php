@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
-
+use dmstr\widgets\Alert;
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
@@ -21,6 +21,7 @@ $fieldOptions2 = [
 ?>
 
 <div class="login-box">
+     <?= Alert::widget() ?>
     <div class="login-logo">
         <a href="#"><b>攀枝花第七高级中学校</b>信息系统登陆</a>
     </div>
@@ -57,7 +58,7 @@ $fieldOptions2 = [
      
         <!-- /.social-auth-links -->
 
-        <a href="#">我忘记了我的密码</a><br>
+        <a href="<?=Url::to(['site/request-password-reset'])?>">我忘记密码</a><br>
         <a href="<?=Url::to(['site/signup'])?>" class="text-center">我需要注册</a>
 
     </div>

@@ -25,11 +25,17 @@ return [
         'guest' => [
             'class' => 'backend\modules\guest\Module',
         ],
-        // 'testService' => [
-        //     'class' => 'backend\modules\testService\Module',
-        // ],
+        'testService' => [
+            'class' => 'backend\modules\testService\Module',
+        ],
         'school' => [
             'class' => 'backend\modules\school\Module',
+        ],
+        'sys' => [
+            'class' => 'backend\modules\sys\Module',
+        ],
+        'sign' => [
+            'class' => 'backend\modules\sign\Module',
         ],
         // 'guidance' => [
 

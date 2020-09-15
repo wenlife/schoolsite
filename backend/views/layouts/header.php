@@ -25,8 +25,7 @@ use yii\helpers\Html;
                     }
                     if(Yii::$app->user->can('schoolPost'))
                     {
-                        echo '<li>'.Html::a('任教管理',['/school/teachmanage']).'</li>';
-                        echo '<li>'.Html::a('课程安排',['/school/teachcourse']).'</li>';
+                        echo '<li>'.Html::a('管理员',['/guest/adminuser']).'</li>';
                     }
                 ?>
                 <!-- Messages: style can be found in dropdown.less-->

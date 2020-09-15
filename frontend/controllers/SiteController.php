@@ -47,13 +47,13 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                //'only' => ['logout'],
+                'only' => ['logout','avatar','center','test','contact'],
                 'rules' => [
-                    [
-                        'actions' => ['signup','index','contact'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
+                    // [
+                    //     'actions' => ['signup','index','contact','login','request-password-reset'],
+                    //     'allow' => true,
+                    //     'roles' => ['?'],
+                    // ],
                     [
                         'actions' => ['logout','avatar','center','test','contact'],
                         'allow' => true,
@@ -199,7 +199,7 @@ class SiteController extends Controller
        // $this->layout = "content";
         if (!\Yii::$app->user->isGuest) {
            // return $this->goHome();
-            return $this->redirect(['/center']);
+           // return $this->redirect(['/center']);
         }
 
         $model = new FrontendLoginForm();

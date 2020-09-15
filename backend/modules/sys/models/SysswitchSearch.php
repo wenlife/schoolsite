@@ -1,16 +1,15 @@
 <?php
 
-namespace backend\modules\guest\models;
+namespace backend\modules\sys\models;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\modules\guest\models\Teacher;
+use backend\modules\sys\models\SysSwitch;
 
 /**
- * TeacherSearch represents the model behind the search form of `backend\modules\guest\models\Teacher`.
+ * SysswitchSearch represents the model behind the search form of `backend\modules\sys\models\SysSwitch`.
  */
-class TeacherSearch extends Teacher
+class SysswitchSearch extends SysSwitch
 {
     /**
      * {@inheritdoc}
@@ -18,9 +17,8 @@ class TeacherSearch extends Teacher
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['name', 'pinx', 'subject', 'type', 'graduate','username', 'note'], 'safe'],
-            ['secode','string','max'=>5]
+            [['id', 'state'], 'integer'],
+            [['name', 'start', 'end', 'note'], 'safe'],
         ];
     }
 
@@ -42,7 +40,7 @@ class TeacherSearch extends Teacher
      */
     public function search($params)
     {
-        $query = Teacher::find();
+        $query = SysSwitch::find();
 
         // add conditions that should always apply here
 
@@ -61,14 +59,12 @@ class TeacherSearch extends Teacher
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'state' => $this->state,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'subject', $this->subject])
-            ->andFilterWhere(['like', 'type', $this->type])
-            ->andFilterWhere(['like', 'secode', $this->type])
-            ->andFilterWhere(['like', 'graduate', $this->graduate])
-            ->andFilterWhere(['like', 'username', $this->username])
+            ->andFilterWhere(['like', 'start', $this->start])
+            ->andFilterWhere(['like', 'end', $this->end])
             ->andFilterWhere(['like', 'note', $this->note]);
 
         return $dataProvider;

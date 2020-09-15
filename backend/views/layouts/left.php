@@ -36,7 +36,7 @@
                     
                     //成绩分析系统
                 //    ['label' => '系统功能', 'options' => ['class' => 'header']],
-                //    ['label' => '成绩分析','icon' => 'bar-chart text-red', 'url' => ['/testService/exam'],'visible'=>Yii::$app->user->can('analysisPost')],
+                    ['label' => '成绩分析','icon' => 'bar-chart text-red', 'url' => ['/testService/exam'],'visible'=>Yii::$app->user->can('analysisPost')],
                     //选课建议系统
                     //
                     ['label' => '教学安排','icon'=>'calculator text-green','items'=>[

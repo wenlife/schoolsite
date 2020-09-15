@@ -47,6 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 return ArrayHelper::getValue($type,$model->type);
             }],
             'secode',
+            'username',
             //'school',
             //'note',
 
