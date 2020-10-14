@@ -37,7 +37,7 @@ echo Alert::widget([
         ['id'=>'form1','method'=>'get','action'=>Url::toRoute(['index']),'options'=>['class'=>'form-inline']]
       ); ?>
       <div class="form-group">
-        <?php echo Html::dropDownList('year',Html::encode($term),$allTerm,['class'=>'form-control']);?>
+        <?php echo Html::dropDownList('term',Html::encode($term),$allTerm,['class'=>'form-control']);?>
       </div>
       <div class="form-group">
         <?php echo Html::dropDownList('subject',Html::encode($subject),CommonFunction::getAllSubjects(),[

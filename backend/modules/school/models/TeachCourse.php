@@ -106,6 +106,8 @@ class TeachCourse extends \yii\db\ActiveRecord
       $allTClass = (new \yii\db\Query())->select(['class_id'])->from('teach_manage')
                                         ->where(['teacher_id'=>$teacher_id,'year_id'=>$term]);
       //var_export($allTClass->all());
+      //var_export($term);
+      //var_export($allTClass->all());
       $allCourse = static::find()
                          ->where(['year_id'=>$term,'subject_id'=>$subject,'class_id'=>$allTClass])->all();
       //查询双周课表
